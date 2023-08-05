@@ -1,0 +1,16 @@
+<app-search></app-search>
+<ul>
+    <li *ngFor = "let user of users">
+        <a routerLink="/users/{{user._id}}">
+            <!--<img [src]="menu.imageUrl" [alt]="menu.name" />!-->
+            <div class="content">
+                <div class="username">
+                    {{user.username}}
+                </div>
+                <div class="role">
+                    {{user.role}}
+                </div>
+            </div>
+        </a>
+    </li>
+</ul>

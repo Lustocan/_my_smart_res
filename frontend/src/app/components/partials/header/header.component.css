@@ -1,0 +1,63 @@
+header{
+   position : relative ;
+   background: white ;
+   padding : 0 ;
+   border-bottom: 50px solid #000;
+}
+
+a{
+    color: #000;
+    font-style: oblique;
+
+}
+
+a:hover{
+    background: #C0C0C0;
+    color: white ;
+    cursor : pointer;
+}
+
+.container{
+    margin : 0 auto ;
+    display : flex  ;
+    justify-content: space-between ;
+} 
+
+a.logo{
+    font-weight: bold;
+    padding : 1rem ;
+}
+
+ul{
+    display : flex ;
+    list-style-type : none ;
+    margin : 0 ;
+}
+
+ul a{
+    padding: 1rem ;
+    display: inline-block;
+}
+
+a span{
+    background: #ff4d4d    ;
+    color : white          ;   
+    padding : 0.1rem 0.45rem ;
+    border-radius: 100rem    ;
+    font-size: 0.9rem        ;  
+}
+
+.home-container{
+    position : relative ;
+}
+
+.home{
+    position : absolute       ;
+    z-index  : 1              ;
+    background : whitesmoke ;
+    display : none            ;
+}
+
+.home-container:hover .home{
+    display : block ;
+}

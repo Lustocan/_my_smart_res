@@ -10,7 +10,7 @@
     width : 28rem ;
 }
 
-.form{
+form{
     display: flex;
     flex-direction: column;
     justify-content: center;

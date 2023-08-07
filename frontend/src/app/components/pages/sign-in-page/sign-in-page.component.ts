@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in-page',
@@ -7,24 +10,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./sign-in-page.component.css']
 })
 export class SignInPageComponent implements OnInit{
-   signInForm !: FormGroup ;
+   signInForm !: FormGroup  ;
    isSubmitted = false      ;
+   returnUrl   = ''         ;
 
-   constructor ( private formBuilder : FormBuilder ) {}
+   constructor(private formBuilder: FormBuilder, private userService : UserService,
+    private activatedRoute: ActivatedRoute, private router : Router) {}
 
-  submit() : void {
-    this.isSubmitted = true ;
-    if(this.signInForm.invalid){
-      return ;
-    }
-    alert("diomerda")
-  }
 
-  get fc(){
-    return this.signInForm.controls;
-  }
-   
-  ngOnInit(): void {
+   ngOnInit(): void {
       this.signInForm = this.formBuilder.group({
           username: ['', [Validators.required]],
           name: ['', [Validators.required]],
@@ -32,7 +26,24 @@ export class SignInPageComponent implements OnInit{
           role: ['', [Validators.required]],
           password: ['', [Validators.required]]
       })
+
+      this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl ;
+    } 
+
+  submit() : void {
+    this.isSubmitted = true ;
+    if(this.signInForm.invalid){
+      return ;
+    }
+    alert(`username : ${this.fc.username.value}`)
+    this.userService.sign_in({username:this.fc.username.value,
+       name : this.fc.name.value, surname: this.fc.surname.value, 
+       role: this.fc.role.value , password:this.fc.password.value}).subscribe(()=>
+       { this.router.navigateByUrl(this.returnUrl)}) ;
+    }
+
+  get fc(){
+    return this.signInForm.controls;
   }
-
-
+   
 }

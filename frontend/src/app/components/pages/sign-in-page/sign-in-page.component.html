@@ -1,13 +1,10 @@
 <div class = "container">
     <div class="details">
-        <from [formGroup]="signInForm" (ngSubmit)='submit()'>
+        <form [formGroup]="signInForm" (ngSubmit)='submit()'>
             <div class="input-containers">
                 <label>Username</label>
                 <div>
                     <input type="username" placeholder="username" formControlName="username"/>
-                </div>
-                <div class="error-list" *ngIf="fc.username.errors && isSubmitted">
-                    <div *ngIf="fc.username.errors.required">Should not be empty</div>
                 </div>
             </div>
             <div class="input-container">
@@ -15,17 +12,11 @@
                 <div>
                     <input type="name" placeholder="name" formControlName="name"/>
                 </div>
-                <div class="error-list" *ngIf="fc.name.errors && isSubmitted">
-                    <div *ngIf="fc.name.errors.required">Should not be empty</div>
-                </div>
             </div>
             <div class="input-container">
                 <label>Surname</label>
                 <div>
                     <input type="surname" placeholder="surname" formControlName="surname"/>
-                </div>
-                <div class="error-list" *ngIf="fc.surname.errors && isSubmitted">
-                    <div *ngIf="fc.surname.errors.required">Should not be empty</div>
                 </div>
             </div>
             <div class="input-container">
@@ -33,22 +24,16 @@
                 <div>
                     <input type="role" placeholder="role" formControlName="role"/>
                 </div>
-                <div class="error-list" *ngIf="fc.role.errors && isSubmitted">
-                    <div *ngIf="fc.role.errors.required">Should not be empty</div>
-                </div>
             </div>
             <div class="input-container">
                 <label>Password</label>
                 <div>
                     <input type="password" placeholder="password" formControlName="password"/>
                 </div>
-                <div class="error-list" *ngIf="fc.password.errors && isSubmitted">
-                    <div *ngIf="fc.password.errors.required">Should not be empty</div>
-                </div>
             </div>
             <div class="button">
                 <button type="submit">Sign in</button>
             </div>
-        </from>
+        </form>
     </div>
 </div>

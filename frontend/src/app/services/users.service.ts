@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Users } from '../shared/models/users'
-import { Observable } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 import { USERS_URL } from '../shared/constants/urls';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Socket } from 'ngx-socket-io';
+import { HttpOptions } from '../shared/models/httpOptions';
 
 
 @Injectable({
@@ -11,10 +12,13 @@ import { Socket } from 'ngx-socket-io';
 })
 export class usersService {
 
-    constructor(private http : HttpClient) {} 
+    constructor(private http : HttpClient) {
+    } 
 
     getAll() : Observable<Users[]>   {
-        return this.http.get<Users[]>(USERS_URL) ;
+        
+        let httpOptions = new HttpOptions();
+        return this.http.get<Users[]>(USERS_URL,httpOptions);
     }
    /* getAllUsersBySearchTerm(searchTerm : string){
         return this.http.get<Users[]>()

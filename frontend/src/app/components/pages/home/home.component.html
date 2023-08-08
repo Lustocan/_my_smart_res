@@ -14,3 +14,23 @@
         </a>
     </li>
 </ul>
+<ul>
+    <li *ngFor = "let table of tables">
+        <a routerLink="/tables/{{table._id}}">
+            <div class="content">
+                <div class="username">
+                    {{table.number}}
+                </div>
+                <div class="username">
+                    {{table.free}}
+                </div>
+                <div class="username">
+                    {{table.seats}}
+                </div>
+                <div class="username">
+                    {{table.costumers}}
+                </div>
+            </div>
+        </a>
+    </li>
+</ul>

@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Socket } from 'ngx-socket-io';
 import { HttpOptions } from '../shared/models/httpOptions';
 
+//TODO : da discutere la sua esistenza
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,12 @@ export class usersService {
     } 
 
     getAll() : Observable<Users[]>   {
-        
         let httpOptions = new HttpOptions();
         return this.http.get<Users[]>(USERS_URL,httpOptions);
     }
    /* getAllUsersBySearchTerm(searchTerm : string){
         return this.http.get<Users[]>()
     }*/
+
 
 }

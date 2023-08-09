@@ -52,9 +52,9 @@ export class UserService {
 			})
 		);
 	}
-
+	//non cancellare il commento
 	private setUserToLocalStorage(user: Users) {
-		localStorage.setItem(USER_KEY, JSON.stringify(user));
+		localStorage.setItem(USER_KEY, /*JSON.stringify(user)*/ user.toString());
 	}
 
 	private getUSerFromLocalStorage(): Users {

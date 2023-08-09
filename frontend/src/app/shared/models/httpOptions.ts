@@ -9,8 +9,7 @@ export class HttpOptions {
            this.headers = new HttpHeaders({'authorization': token.toString()});
         }
         else{
-            throw new Error("no token in the localStorage");    
+            throw new Error("No token in the localStorage");    
         }
     }
 }
-

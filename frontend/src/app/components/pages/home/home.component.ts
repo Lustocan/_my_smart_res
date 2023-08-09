@@ -23,12 +23,12 @@ export class HomeComponent implements OnInit {
 			}
 			else {
 				usersObservable = usersService.getAll();
-				tablesObservable = tableService.getAll();
+				//tablesObservable = tableService.getAll();
 			}
 			usersObservable.subscribe((serverUsers) => {
 				this.users = serverUsers;
 			});
-			tablesObservable.subscribe((serverTables)=> this.tables = serverTables);
+			//tablesObservable.subscribe((serverTables)=> this.tables = serverTables);
 		})
 	}
 

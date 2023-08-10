@@ -36,11 +36,13 @@ export class SignInPageComponent implements OnInit{
       return ;
     }
     alert(`username : ${this.fc.username.value}`)
+    
     this.userService.sign_in({username:this.fc.username.value,
-       name : this.fc.name.value, surname: this.fc.surname.value, 
-       role: this.fc.role.value , password:this.fc.password.value}).subscribe(()=>
-       { this.router.navigateByUrl(this.returnUrl)}) ;
-    }
+                              name : this.fc.name.value, surname: this.fc.surname.value, 
+                              role: this.fc.role.value , password:this.fc.password.value}).subscribe(()=> {
+                                  this.router.navigateByUrl("/login")
+     });
+  }
 
   get fc(){
     return this.signInForm.controls;

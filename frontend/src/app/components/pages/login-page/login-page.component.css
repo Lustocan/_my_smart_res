@@ -12,7 +12,7 @@ body{
     min-height: 100vh;
     background-image: url("https://images.squarespace-cdn.com/content/v1/5e1b73fb6eeb973ee1becfc4/1592675000454-J3PX30T4VNJIPWH3CT7P/custom-restaurant-tables-david-stine+3.jpg") ;
     background-size: cover;
-    background-attachment: fixed;;
+    background-attachment: fixed;
 }
 
 
@@ -34,7 +34,7 @@ body{
     position: relative;
     width : 100% ;
     height: 50px ;
-    margin : 30px 0 ; 
+    margin : 20px 0 ; 
 }
 
 .input-box input{
@@ -62,25 +62,9 @@ body{
     font-size: 20px ;
 }
 
-.wrapper .remember-forgot {
-    display: flex;
-    justify-content: space-between ;
-    font-size: 14.5px ;
-    margin: -15px 0 15px;
-}
-
-.remember-forgot label input{
-    accent-color: #011638;
-    margin-right: 3px;
-}
-
-
-
-.remember-forgot a:hover{
-    text-decoration: underline;
-}
 
 .wrapper .btn{
+
     width: 100%; 
     height: 45px;
     background: #011638;
@@ -108,4 +92,10 @@ body{
 
 .register-link p a:hover{
     text-decoration: underline ;
+}
+
+.error-list{
+    color :red;
+    margin: 0px 20px;
+    font-style:oblique;
 }

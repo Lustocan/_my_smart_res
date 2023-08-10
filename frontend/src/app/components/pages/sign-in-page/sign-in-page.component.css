@@ -76,3 +76,9 @@ body{
     color : #cdcdcd ;
     font-weight: 600;
 }
+
+.error-list{
+    color :red;
+    margin: 0px 20px;
+    font-style:oblique;
+}

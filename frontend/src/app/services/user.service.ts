@@ -41,13 +41,10 @@ export class UserService {
 	}
 
 	sign_in(userLogin: IUserSign_in): Observable<Users> {
-		return this.http.post<Users>(USERS_SIGN_IN_URL, userLogin).pipe(
+		let httpOptions = new HttpOptions ;
+		return this.http.post<Users>(USERS_SIGN_IN_URL, userLogin, httpOptions).pipe(
 			tap({
-				next: (user) => {
-					this.setUserToLocalStorage(user)
-					this.userSubject.next(user);
-					this.toastrService.success(`Welcome to My smart restaurant ${user.username} !`, 'Login Successful')
-				},
+				next: (user) => { },
 				error: (errorResponse) => {
 					this.toastrService.error(errorResponse.error, 'Sign in Failed')
 				}

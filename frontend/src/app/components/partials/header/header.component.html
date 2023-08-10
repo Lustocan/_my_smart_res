@@ -14,36 +14,22 @@
             <div class="navbar">
                 <div class="items">
                     <ul class="links">
-                        <li><a href="https://localhost:4200/sign_in">User</a></li><br>
+                        <li><a href="#">Home</a></li><br>
                         <li><a href="#">Tables</a></li><br>
-                        <li><a href="#">MyProfile</a></li>
+                        <li><a href="#">MyProfile</a></li><br>
+                        <li><a href="https://localhost:4200/login">Login</a></li>
                     </ul>
-                    <div class="toggle-btn">
+                    <div class="toggle-btn" (click)="toogleTag()">
                         <i class="fa-solid fa-bars"></i>
+                    </div>
+                    <div class="menu overlay" *ngIf="showMe">
+                        <li><a href="#" *ngIf="showMe"><i class="fa fa-home"></i></a></li>
+                        <li><a href="#" *ngIf="showMe"><i class="fa fa-user"></i></a></li>
+                        <li><a href="#" *ngIf="showMe"><i class="fa fa-table"></i></a></li>
+                        <li><a href="https://localhost:4200/login" *ngIf="showMe"><i class="fa-solid fa-right-to-bracket"></i></a></li>
                     </div>
                 </div>
             </div>
-            <div class="dropdown-menu">
-                <li><a class="active" href="#"><i class="fa fa-home"></i></a></li>
-                <li><a href="#"><i class="fa fa-user"></i></a></li>
-                <li><a href="#"><i class="fa fa-table"></i></a></li>
-                <li><a href="#"><i class="fa-solid fa-right-to-bracket"></i></a></li>
-            </div>
         </header>
-
-        <script>
-            const toggleBtn     = document.querySelector('.toggle-btn');
-            const toggleBtnIcon = document.querySelector('.toggle-btn i');
-            const dropDownMenu  = document.querySelector('.dropdown-menu');
-
-            toggleBtn.onclick = function () {
-                dropDownMenu.classList.toggle('open') ;
-                const isOpen = dropDownMenu.classList.contains('open');
-
-                toggleBtnIcon.classList = isOpen
-                    ? 'fa-solid fa-xmark'
-                    : 'fa-regular fa-bars'
-            }
-        </script>
     </body>
 </html>

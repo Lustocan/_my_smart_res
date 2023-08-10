@@ -89,13 +89,14 @@ header{
 
 /* DROPDOWN MENU */
 
-.dropdown-menu{
+
+.menu{
     display: none;
     position: absolute;
     right: 2rem;
     top : 60px;
     width : 120px ;
-    height: 0px;
+    height: -10px;
     background: rgba(1, 63, 249, 0.1);
     backdrop-filter : blur(15px) ;
     overflow: hidden;
@@ -103,74 +104,41 @@ header{
     border-radius: 40px;
 }
 
-.dropdown-menu.open{
+.menu.open{
     height: 240px;
 }
 
-.dropdown-menu li{
+.menu li{
     padding: 0.7rem;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.dropdown-menu .action-btn2{
-    display: flex;
-
+.overlay {
+    z-index: 9;
+    margin: 30px;
 }
-
 
 
 /* RESPONSIVE DESIGN */
 
 
 @media (max-width: 992px){
-    .navbar .items .links,
-    .navbar .items .action-btn1 {
+    .navbar .items .links {
         display: none;
     }
     .navbar .items .toggle-btn {
         display: block;
     }
-    .dropdown-menu{
+    .menu{
         display: block;
     }
 }
 
 @media(max-width: 576px){
-    .dropdown-menu {
+    .menu {
         left : 2rem ;
         width: unset;
     }
-}
-
-/* HERO */
-section#hero {
-    height: calc(100vh - 60px);
-    display : flex ;
-    flex-direction: column;
-    align-items: center ;
-    justify-content: center;
-    text-align: center;
-    color: #011638;
-}
-
-#hero h1{
-    font-size : 3rem ;
-    margin-bottom: 1rem;
-}
-
-#hero p{
-    font-size : 20px;
-}
-
-.mero{
-    background-color: white;
-    padding: 50px 90px 50px 90px;
-    border-radius: 80px;
-    background-size: cover ;
-    background-repeat: no-repeat;
-    background-image: linear-gradient(to top right,white,#a3a3a3);
-    margin : 120px auto 0px ;
-    opacity: 0.8    ;
 }

@@ -19,24 +19,22 @@
                     <i class='bx bxs-user'></i>
                 </div>
                 <div class="error-list" *ngIf="fc.username.errors && isSubmitted">
-                    <div *ngIf="fc.username.errors.required">Should not be empty</div>
+                    <div *ngIf="fc.username.errors.required">Username should not be empty</div>
                 </div>
                 <div class="input-box">
                     <input type="password" placeholder="Password" formControlName="password" required>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
                 <div class="error-list" *ngIf="fc.password.errors && isSubmitted">
-                    <div *ngIf="fc.password.errors.required">Should not be empty</div>
-                </div>
-                <div class="remember-forgot">
-                    <label><input type="checkbox">Remember me</label>
+                    <div *ngIf="fc.password.errors.required">Password should not be empty</div>
                 </div>
 
-                <button type="submit" class="btn">Login</button>
-
+                <div class="input-box">
+                     <button type="submit" class="btn">Login</button>
+                </div>
                 <div class="register-link">
                     <p>Don't have an account?
-                        <a href="#">Register</a></p>
+                        <a href="https://localhost:4200/sign_in">Register</a></p>
                 </div>
             </form>
         </form>

@@ -22,17 +22,19 @@ export class UserService {
 		this.userObservable = this.userSubject.asObservable();
 	}
 
+
+	//TODO da cambiare: eliminare 'User' dal localstorage e mantenere solo 'Token'
 	login(userLogin: IUserLogin): Observable<Users> {
 		let httpOptions = new HttpOptions();
 		return this.http.post<Users>(USERS_LOGIN_URL, userLogin, httpOptions).pipe(
 			tap({
 				next: (user) => {
-					this.setUserToLocalStorage(user)
+					this.setUserToLocalStorage(user);
 					this.userSubject.next(user);
-					this.toastrService.success(`Welcome to My smart restaurant ${user.username} !`, 'Login Successful')
+					this.toastrService.success(`Welcome to My smart restaurant ${user.username} !`, 'Login Successful');
 				},
 				error: (errorResponse) => {
-					this.toastrService.error(errorResponse.error, 'Login Failed')
+					this.toastrService.error(errorResponse.error, 'Login Failed');
 				}
 			})
 		);
@@ -54,7 +56,8 @@ export class UserService {
 	}
 	//non cancellare il commento
 	private setUserToLocalStorage(user: Users) {
-		localStorage.setItem(USER_KEY, /*JSON.stringify(user)*/ user.toString());
+		localStorage.setItem(USER_KEY, JSON.stringify(user));
+		localStorage.setItem('Token', user.toString());
 	}
 
 	private getUSerFromLocalStorage(): Users {

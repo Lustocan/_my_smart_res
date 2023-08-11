@@ -22,8 +22,7 @@ export const _getTableByNumber_ = async (req : express.Request, res : express.Re
         }
 
         const table = await getTableByNumber(number) ;
-
-        return res.sendStatus(200).json(table) ;
+        return res.status(200).json(table) ;
 
     }
     catch(error) {

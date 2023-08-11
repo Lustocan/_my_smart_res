@@ -16,8 +16,7 @@ export class TableService {
 	constructor(private http: HttpClient) {}
 
 	getAll() : Observable<Table[]> {
-		let  x =  this.http.get<Table[]>(TABLES_URL,this.httpOptions);
-		return x;
+		return this.http.get<Table[]>(TABLES_URL,this.httpOptions);
 	}
 
 	buildTable(newTable: Table) : void{
@@ -39,6 +38,10 @@ export class TableService {
 			}
 		});
 
+	}
+
+	getTableByNumber(number : string) : Observable<Table> {
+		return this.http.get<Table>(TABLES_URL+'/'+number,this.httpOptions);
 	}
 
 	deleteTable(id: String){

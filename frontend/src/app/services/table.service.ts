@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Table } from '../shared/models/table';
-import { Observable, Subject, timeout } from 'rxjs';
+import { Observable, Subject, catchError, timeout } from 'rxjs';
 import { HttpOptions } from '../shared/models/httpOptions';
 import { ADD_TABLES_URL, TABLES_URL } from '../shared/constants/urls';
 
@@ -44,9 +44,12 @@ export class TableService {
 		return this.http.get<Table>(TABLES_URL+'/'+number,this.httpOptions);
 	}
 
-	deleteTable(id: String){
-		//this.http.delete()
-
+	deleteTable(number: String): Observable<Table>{
+		return this.http.delete<Table>(TABLES_URL+'/'+number+'/delete',this.httpOptions)
+			.pipe(catchError(()=>{  
+				alert("Table doesn't exist");
+				return new Observable<Table>;
+		}));
 	}
 
 }

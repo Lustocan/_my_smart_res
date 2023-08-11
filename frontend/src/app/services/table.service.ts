@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Table } from '../shared/models/table';
-import { Observable } from 'rxjs';
+import { Observable, Subject, timeout } from 'rxjs';
 import { HttpOptions } from '../shared/models/httpOptions';
 import { ADD_TABLES_URL, TABLES_URL } from '../shared/constants/urls';
 
@@ -10,34 +10,34 @@ import { ADD_TABLES_URL, TABLES_URL } from '../shared/constants/urls';
 })
 export class TableService {
 	httpOptions = new HttpOptions();
-	tables : Table[] = [];
-	
+	//tables : Table[] = [];
+	subject : Subject<Table[]> = new Subject();
 
 	constructor(private http: HttpClient) {}
 
-	async getAll() : Promise<Observable<Table[]>> {
-		return this.http.get<Table[]>(TABLES_URL,this.httpOptions);
+	getAll() : Observable<Table[]> {
+		let  x =  this.http.get<Table[]>(TABLES_URL,this.httpOptions);
+		return x;
 	}
 
-	async buildTable(newTable: Table) : Promise<undefined | Observable<Table>>{
-		let promise = await this.getAll();
-		//promise.then((tableObservable)=> tableObservable.subscribe((serverTables) => this.tables = serverTables));
-		promise.subscribe((serverTables) => this.tables = serverTables);
-		let table = this.tables.filter((t) => t._id === newTable._id);
-		if( table.length > 0){
-			alert("id already exists, please enter a unique id for this table.");
-		}
-		table = [];
-		table = this.tables.filter((t) => t.number === newTable.number);
-		if( table.length > 0){
-			alert("number already exists, please enter a unique number for this table.");
-			return;
-		}
-		else{
-			let t = this.http.post<Table>(ADD_TABLES_URL,newTable,this.httpOptions);
-			alert("TABLE  SUCCESFULL ADDED");
-			return t;
-		}
+	buildTable(newTable: Table) : void{
+		this.subject = new Subject<Table[]>();
+		this.getAll().subscribe((serverTables) => this.subject.next(serverTables));
+		this.subject.subscribe((tables) =>{
+			let table = tables.filter((t) => t._id === newTable._id);
+			if( table.length > 0){
+				alert("id already exists, please enter a unique id for this table.");
+			}
+			table = [];
+			table = tables.filter((t) => t.number === newTable.number);
+			if( table.length > 0){
+				alert("number already exists, please enter a unique number for this table.");
+			}
+			else{
+				this.http.post<Table>(ADD_TABLES_URL,newTable,this.httpOptions).subscribe((table) => console.log(table._id));
+				alert("TABLE  SUCCESFULL ADDED");
+			}
+		});
 
 	}
 

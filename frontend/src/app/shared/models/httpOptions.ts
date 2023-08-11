@@ -7,12 +7,13 @@ export class HttpOptions {
     headers !: HttpHeaders;
     withCredentials: boolean = true;   // send to the server the session cookie
     constructor() {
-        let token: string | null = localStorage.getItem('Token');
+        let token: string | null = localStorage.getItem(TOKEN);
         if (token !== null) {
             this.headers = new HttpHeaders({ 'authorization': token.toString()}); // session token
         }
         else {
             localStorage.setItem(TOKEN, "");
+            this.headers = new HttpHeaders({ 'authorization': ""});
         }
     }
 }

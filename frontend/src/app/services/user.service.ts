@@ -8,8 +8,9 @@ import { tap } from 'rxjs';
 import { Toast, ToastrService } from 'ngx-toastr';
 import { IUserSign_in } from '../shared/interfaces/IUserSign_in';
 import { HttpOptions } from '../shared/models/httpOptions';
+import { TOKEN, USER_KEY } from '../shared/constants/Storage_name';
 
-const USER_KEY = 'User';
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -23,6 +24,7 @@ export class UserService {
 	}
 
 
+	
 	//TODO da cambiare: eliminare 'User' dal localstorage e mantenere solo 'Token'
 	login(userLogin: IUserLogin): Observable<Users> {
 		let httpOptions = new HttpOptions();
@@ -51,10 +53,10 @@ export class UserService {
 			})
 		);
 	}
-	//non cancellare il commento
+
 	private setUserToLocalStorage(user: Users) {
 		localStorage.setItem(USER_KEY, JSON.stringify(user));
-		localStorage.setItem('Token', user.toString());
+		localStorage.setItem(TOKEN, user.toString());
 	}
 
 	private getUSerFromLocalStorage(): Users {

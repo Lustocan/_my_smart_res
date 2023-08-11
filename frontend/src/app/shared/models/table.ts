@@ -1,3 +1,6 @@
+// definition of table object
+
+
 export class Table {
     constructor(number: String, seats: Number, costumers: Number, id?: String, free?: boolean){
         this._id = id === undefined ? undefined : id;

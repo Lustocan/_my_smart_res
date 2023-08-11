@@ -13,6 +13,25 @@ export const getAllTables = async (req : express.Request, res : express.Response
     }
 }
 
+export const _getTableByNumber_ = async (req : express.Request, res : express.Response ) => {
+    try{
+        const { number } = req.params ;
+
+        if(!number){
+            return res.sendStatus(400) ;
+        }
+
+        const table = await getTableByNumber(number) ;
+
+        return res.sendStatus(200).json(table) ;
+
+    }
+    catch(error) {
+        console.log(error) ;
+        return res.sendStatus(400) ;
+    }
+}
+
 export const build_tab = async (req : express.Request , res : express.Response ) => {
     try{
         const { seats, number } = req.body ;

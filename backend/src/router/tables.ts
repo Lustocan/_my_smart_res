@@ -7,5 +7,5 @@ export default (router : express.Router) => {
     router.post("/tables/add", isAuthenticated, isAdmin, build_tab) ;
     router.delete("/tables/:number/delete", isAuthenticated, isAdmin, delete_tab) ;
     router.patch("/tables/:number/update", isAuthenticated , isWaiterOrAdmin, update_tab) ;
-    router.post("/tables/:number", isAuthenticated, isWaiterOrAdmin, _getTableByNumber_ ) ;
+    router.get("/tables/:number", isAuthenticated, isWaiterOrAdmin, _getTableByNumber_ ) ;
 }

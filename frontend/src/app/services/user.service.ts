@@ -16,7 +16,7 @@ import { TOKEN, USER_KEY } from '../shared/constants/Storage_name';
 })
 export class UserService {
 
-	private userSubject = new BehaviorSubject<Users>(this.getUSerFromLocalStorage());
+	private userSubject = new BehaviorSubject<Users>(this.getUserFromLocalStorage());
 	public userObservable: Observable<Users>; // readonly version of userSubject
 
 	constructor(private http: HttpClient, private toastrService: ToastrService) {
@@ -54,14 +54,24 @@ export class UserService {
 		);
 	}
 
+	logout(){
+		this.deleteUserFromLocalStorage() ;
+		window.location.reload();
+	}
+
 	private setUserToLocalStorage(user: Users) {
 		localStorage.setItem(USER_KEY, JSON.stringify(user));
 		localStorage.setItem(TOKEN, user.toString());
 	}
 
-	private getUSerFromLocalStorage(): Users {
+	private getUserFromLocalStorage(): Users {
 		const userJson = localStorage.getItem(USER_KEY);
 		if (userJson) return JSON.parse(userJson) as Users;
 		return new Users;
+	}
+
+	private deleteUserFromLocalStorage() {
+		if(localStorage.getItem(USER_KEY)) localStorage.removeItem(USER_KEY) ;
+		if(localStorage.getItem(TOKEN)) localStorage.removeItem(TOKEN) ;
 	}
 }

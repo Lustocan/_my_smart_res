@@ -18,6 +18,12 @@ export const isAuthenticated = async (req: express.Request, res: express.Respons
 
         const { _id } = jwt.verify(authorization, process.env.ACCESS_TOKEN_SECRET) as jwtPayload;
 
+        const user = await getUserById(_id) ;
+
+        if(!user){
+            return res.sendStatus(401);
+        }
+
         if (authentication(process.env.ACCESS_COOKIE_SECRET, _id) !== sessionCookie) {
             return res.sendStatus(403);
         }
@@ -85,6 +91,32 @@ export const isWaiter = async (req: express.Request, res: express.Response, next
         return res.sendStatus(400)
     }
 }
+
+export const isWaiterOrAdmin = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    try {
+        const { authorization } = req.headers;
+
+        if (!authorization) {
+            return res.sendStatus(401);
+        }
+        dtn.config();
+
+        const { _id } = jwt.verify(authorization, process.env.ACCESS_TOKEN_SECRET) as jwtPayload;
+
+        const ex_user = await getUserById(_id);
+
+        if(ex_user.role != 'waiter'&&ex_user.role != 'casher') {
+            return res.sendStatus(403);
+        }
+
+        return next();
+    }
+    catch (error) {
+        console.log(error);
+        return res.sendStatus(400)
+    }
+}
+
 
 export const sameUser = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {

@@ -79,6 +79,7 @@ export const update_tab = async (req : express.Request, res : express.Response) 
 
         updatedTable = await getTableById(updatedTable._id) ;
 
+
         if(customers<0||customers>updatedTable.seats||!updatedTable){
             return res.sendStatus(400) ;
         }

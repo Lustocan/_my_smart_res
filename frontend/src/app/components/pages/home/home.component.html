@@ -1,36 +1,19 @@
 <app-search></app-search>
-<ul>
-    <li *ngFor = "let user of users">
-        <a routerLink="/users/{{user._id}}">
-           <!-- <img [src]="menu.imageUrl" [alt]="menu.name" />-->
-            <div class="content">
-                <div class="username">
-                    {{user.username}}
-                </div>
-                <div class="role">
-                    {{user.role}}
-                </div>
-            </div>
-        </a>
-    </li>
-</ul>
-<ul>
-    <li *ngFor = "let table of tables">
-        <a routerLink="/tables/{{table._id}}">
-            <div class="content">
-                <div class="username">
-                    {{table.number}}
-                </div>
-                <div class="username">
-                    {{table.free}}
-                </div>
-                <div class="username">
-                    {{table.seats}}
-                </div>
-                <div class="username">
-                    {{table.costumers}}
-                </div>
-            </div>
-        </a>
-    </li>
-</ul>
+<!--<body>      
+    <ul>
+        <div >
+            <li *ngFor = "let user of users">
+                <a routerLink="/users/{{user._id}}">
+                    <div class="content">
+                        <div class="username">
+                            {{user.username}}
+                        </div>
+                        <div class="role">
+                            {{user.role}}
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </div>
+    </ul>
+</body>-->

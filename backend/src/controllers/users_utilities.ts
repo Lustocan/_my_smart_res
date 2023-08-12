@@ -4,6 +4,10 @@ import { random, authentication } from '../helpers/hash_pass' ;
 import jwt from 'jsonwebtoken' ; 
 import dtn from 'dotenv'       ;
 
+interface jwtPayload {
+    _id: string
+}
+
 // this is the login controller
 
 export const login = async (req : express.Request , res : express.Response ) => {
@@ -156,5 +160,36 @@ export const getAllUsers = async(req : express.Request, res: express.Response) =
     catch(error){
         console.log(error);
         return res.sendStatus(400);
+    }
+}
+
+export const getUser = async(req : express.Request, res: express.Response) => {
+    try{
+
+        const sessionCookie = req.cookies['SessionCookie'];
+
+        const { authorization } = req.headers;
+
+        if(!authorization){
+            return res.sendStatus(401);
+        }
+
+        dtn.config();
+
+        const { _id } = jwt.verify(authorization, process.env.ACCESS_TOKEN_SECRET) as jwtPayload;
+
+        const user = await getUserById(_id) ;
+
+        console.log(user);
+
+        if(!user){
+            return res.sendStatus(401);
+        }
+        
+        return res.status(200).json(user);
+    }
+    catch(error){
+        console.log(error);
+        return res.sendStatus(401);
     }
 }

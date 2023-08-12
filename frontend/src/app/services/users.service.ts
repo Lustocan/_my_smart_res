@@ -12,17 +12,17 @@ import { HttpOptions } from '../shared/models/httpOptions';
   providedIn: 'root'
 })
 export class usersService {
+    users : any ;
 
     constructor(private http : HttpClient) {
     } 
 
     getAll() : Observable<Users[]>   {
         let httpOptions = new HttpOptions();
-        return this.http.get<Users[]>(USERS_URL,httpOptions);
+        this.users = this.http.get<Users[]>(USERS_URL,httpOptions);
+        return this.users ;
     }
    /* getAllUsersBySearchTerm(searchTerm : string){
         return this.http.get<Users[]>()
     }*/
-
-
 }

@@ -33,13 +33,16 @@ export class LoginPageComponent implements OnInit {
 		return this.loginForm.controls;
 	}
 
+
+
 	submit() {
 		this.isSubmitted = true;
 		if (this.loginForm.invalid) return;
 
 		alert(`username : ${this.fc.username.value}`)
 		    this.userService.login({ username: this.fc.username.value, password: this.fc.password.value }).subscribe((result: any) => {
-			this.router.navigateByUrl(this.returnUrl);
+			window.location.reload();
+			this.router.navigateByUrl('/');
 		});
 	}
 }

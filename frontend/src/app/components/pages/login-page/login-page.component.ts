@@ -25,7 +25,7 @@ export class LoginPageComponent implements OnInit {
 			password: ['', [Validators.required]]
 		})
 
-		this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl
+		//this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl
 		// sanpshot means return the latest value of the activated route
 	}
 
@@ -41,8 +41,9 @@ export class LoginPageComponent implements OnInit {
 
 		alert(`username : ${this.fc.username.value}`)
 		    this.userService.login({ username: this.fc.username.value, password: this.fc.password.value }).subscribe((result: any) => {
-			window.location.reload();
-			this.router.navigateByUrl('/');
+			this.router.navigateByUrl(this.returnUrl).then(() => {
+                        window.location.reload();
+            });
 		});
 	}
 }

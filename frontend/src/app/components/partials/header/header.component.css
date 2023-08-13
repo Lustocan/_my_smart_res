@@ -23,14 +23,30 @@ a  {
 }
 
 
+#out{
+    text-decoration: none; 
+    color : #cdcdcd ;
+    font-size: 1rem;
+    margin-left: -64px;
+}
+
+
 a:hover {
     color : #063786;
 }
 
 i{
     text-decoration: none; 
-    color : #b7b5b5 ;
+    color : #686868 ;
     font-size: 2rem;
+}
+
+#out2 i {
+    text-decoration: none; 
+    color : #686868 ;
+    font-size: 2rem;
+    margin : -25px -16px;
+    position: absolute;
 }
 
 i:hover{
@@ -97,7 +113,7 @@ header{
     top : 60px;
     width : 120px ;
     height: -10px;
-    background: rgba(1, 63, 249, 0.1);
+    background: rgba(4, 63, 249, 0.1);
     backdrop-filter : blur(15px) ;
     overflow: hidden;
     transition:  height 0.2s cubic-bezier(0.175, 0.885, 1.275);

@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
   getUser(){
     const http = new HttpOptions();
     this.showLog = true ;
-    this.http.get<Users>(USER_URL, http).pipe(catchError((error)=>{
+    this.http.get<Users>(USER_URL, http).pipe(catchError(()=>{
         this.showLog = false ;
         return new Observable<Users>;
     })).subscribe()

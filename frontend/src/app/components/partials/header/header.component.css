@@ -49,6 +49,10 @@ i{
     position: absolute;
 }
 
+#out2 i:hover {
+    color  : white;
+}
+
 i:hover{
     color  : white;
 }
@@ -65,7 +69,6 @@ header{
     border-radius: 20px;
     border-bottom: 100px;
     margin : -16px -40px;
-
 }
 
 

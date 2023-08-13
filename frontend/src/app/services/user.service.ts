@@ -19,8 +19,9 @@ export class UserService {
 	private userSubject = new BehaviorSubject<Users>(this.getUserFromLocalStorage());
 	public userObservable: Observable<Users>; // readonly version of userSubject
 
-	constructor(private http: HttpClient, private toastrService: ToastrService) {
+	constructor(private http: HttpClient ,private toastrService : ToastrService) {
 		this.userObservable = this.userSubject.asObservable();
+
 	}
 
 
@@ -31,12 +32,12 @@ export class UserService {
 		return this.http.post<Users>(USERS_LOGIN_URL, userLogin, httpOptions).pipe(
 			tap({
 				next: (user) => {
+					this.toastrService.success('Login in Successful' );
 					this.setUserToLocalStorage(user);
 					this.userSubject.next(user);
-					this.toastrService.success(`Welcome to My smart restaurant ${user.username} !`, 'Login Successful');
 				},
 				error: (errorResponse) => {
-					this.toastrService.error(errorResponse.error, 'Login Failed');
+					this.toastrService.error('Login in Failed')			
 				}
 			})
 		);
@@ -46,9 +47,11 @@ export class UserService {
 		let httpOptions = new HttpOptions ;
 		return this.http.post<Users>(USERS_SIGN_IN_URL, userLogin, httpOptions).pipe(
 			tap({
-				next: (user) => { },
+				next: (user) => { 
+					this.toastrService.success('Sign in Successful')
+				},
 				error: (errorResponse) => {
-					this.toastrService.error(errorResponse.error, 'Sign in Failed')
+					this.toastrService.error('Sign in Failed')
 				}
 			})
 		);

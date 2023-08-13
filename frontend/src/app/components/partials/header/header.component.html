@@ -8,7 +8,6 @@
               crossorigin="anonymous"
               referrerpolicy="no-referrer" />
     </head>
-
     <body> 
         <header>
             <div class="navbar">
@@ -29,6 +28,20 @@
                         <li><a href="#" ><i class="fa fa-table"></i></a></li>
                         <li><a href="https://localhost:4200/login" *ngIf="!showLog"><i class="fa-solid fa-right-to-bracket"></i></a></li>
                         <li><a id="out2" href="#" ><i class="fa-solid fa-share" *ngIf="showLog" (click)="logout()"></i></a></li>
+                    </div>
+                    <div>
+                        <li *ngIf = "user">
+                            <a routerLink="/users/{{user._id}}">
+                                <div class="content">
+                                    <div class="username">
+                                        {{user.username}}
+                                    </div>
+                                    <div class="role">
+                                        {{user.role}}
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
                     </div>
                 </div>
             </div>

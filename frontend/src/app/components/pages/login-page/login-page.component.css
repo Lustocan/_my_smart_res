@@ -111,3 +111,8 @@ body{
     border: 1px solid #Ef9a9a;
     margin: 15px 15px;
 }
+
+.alert {
+    color : red ;
+    font-size: 20px;
+}

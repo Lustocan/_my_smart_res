@@ -13,6 +13,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SignInPageComponent } from './components/pages/sign-in-page/sign-in-page.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { NgToastModule } from 'ng-angular-popup';
+
 
 const config : SocketIoConfig = {
       url : "https://localhost:443" ,
@@ -32,16 +34,18 @@ const config : SocketIoConfig = {
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     SocketIoModule.forRoot(config),
     ReactiveFormsModule,
     ToastrModule.forRoot({
-        timeOut : 3000,
-        positionClass : 'toast-bottom-right',
+        timeOut : 2000,
+        positionClass : 'toast-top-left',
         newestOnTop: false
-    })
+    }),
+    NgToastModule,
+    ToastrModule
   ],
   providers: [],
   bootstrap: [AppComponent]

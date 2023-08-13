@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, catchError, throwError, retry } from 'rxjs';
+import { Observable, catchError, throwError, retry, Subject } from 'rxjs';
 import { HttpOptions } from 'src/app/shared/models/httpOptions';
 import { Users } from 'src/app/shared/models/users';
 import { USERS_URL, USER_URL } from 'src/app/shared/constants/urls';
@@ -14,6 +14,7 @@ import { UserService, } from 'src/app/services/user.service';
 })
 export class HeaderComponent implements OnInit {
       user      = new Users()  ;
+      subject : Subject<Users> = new Subject();
       el        : any  ;
       userData  : any  ;
 
@@ -26,14 +27,10 @@ export class HeaderComponent implements OnInit {
             userObservable = this.getIt()  ;
             
             userObservable.subscribe((serverUser) => {
-                  this.user = serverUser ;
-            })
+                  this.subject.next(serverUser);
+            });
 
-            setTimeout(() => 
-            {
-                  console.log(this.user.role)
-            },
-            1000);
+            this.subject.subscribe((user)=>console.log(user.role));
 
             
 

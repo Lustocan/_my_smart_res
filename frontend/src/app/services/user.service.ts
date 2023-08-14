@@ -86,4 +86,8 @@ export class UserService {
 	updateUser(id:String,username:String, name:String, surname: String, role: String) : Observable<Users> {
 		return this.http.patch<Users>(USERS_URL+'/'+id,{username:username,name:name,surname:surname,role:role},this.httpOptions);
 	}
+
+	deleteUser(id:string) : Observable<Users>{
+		return this.http.delete<Users>(USERS_URL+'/'+id,this.httpOptions);
+	}
 }

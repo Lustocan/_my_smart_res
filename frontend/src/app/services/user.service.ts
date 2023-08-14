@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Users } from '../shared/models/users';
 import { IUserLogin } from '../shared/interfaces/IUserLogin';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { USERS_LOGIN_URL, USERS_SIGN_IN_URL } from '../shared/constants/urls';
+import { USERS_LOGIN_URL, USERS_URL, USER_URL, USERS_SIGN_IN_URL } from '../shared/constants/urls';
 import { tap } from 'rxjs';
 import { Toast, ToastrService } from 'ngx-toastr';
 import { IUserSign_in } from '../shared/interfaces/IUserSign_in';
@@ -77,4 +77,10 @@ export class UserService {
 		if(localStorage.getItem(USER_KEY)) localStorage.removeItem(USER_KEY) ;
 		if(localStorage.getItem(TOKEN)) localStorage.removeItem(TOKEN) ;
 	}
+
+
+    getIt() : Observable<Users> {
+        let http = new HttpOptions();
+        return this.http.get<Users>(USER_URL, http) ;
+    }
 }

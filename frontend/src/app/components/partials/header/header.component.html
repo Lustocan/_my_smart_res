@@ -10,12 +10,10 @@
     </head>
     <body> 
         <header>
-            <div class="navbar">
+            <div class="navbar" *ngIf="nobody()">
                 <div class="items">
                     <ul class="links">
                         <li><a href="#">Home</a></li><br>
-                        <li><a href="#">Tables</a></li><br>
-                        <li><a href="#">MyProfile</a></li><br>
                         <li><a href="https://localhost:4200/login" *ngIf="!showLog">Login</a></li><br>
                         <li><a id="out" href="#" (click)="logout()" *ngIf="showLog">Logout</a></li><br>
                     </ul>
@@ -24,24 +22,92 @@
                     </div>
                     <div class="menu overlay" *ngIf="showBar">
                         <li><a href="#" ><i class="fa fa-home"></i></a></li>
-                        <li><a href="#" ><i class="fa fa-user"></i></a></li>
+                        <li><a href="https://localhost:4200/login" *ngIf="!showLog"><i class="fa-solid fa-right-to-bracket"></i></a></li>
+                    </div>
+                    <div class="menu overlay" *ngIf="waiter()">Diocaneeeee</div>
+                </div>
+            </div>
+            <div class="navbar" *ngIf="waiter()">
+                <div class="items">
+                    <ul class="links">
+                        <li><a href="#">Home</a></li><br>
+                        <li><a href="https://localhost:4200/profile">MyProfile</a></li><br>
+                        <li><a href="#">Tables</a></li><br>
+                        <li><a href="https://localhost:4200/login" *ngIf="!showLog">Login</a></li><br>
+                        <li><a id="out" href="#" (click)="logout()" *ngIf="showLog">Logout</a></li><br>
+                    </ul>
+                    <div class="toggle-btn" (click)="toogleTag()">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                    <div class="menu overlay" *ngIf="showBar">
+                        <li><a href="#" ><i class="fa fa-home"></i></a></li>
+                        <li><a href="https://localhost:4200/profile" ><i class="fa fa-user"></i></a></li>
                         <li><a href="#" ><i class="fa fa-table"></i></a></li>
                         <li><a href="https://localhost:4200/login" *ngIf="!showLog"><i class="fa-solid fa-right-to-bracket"></i></a></li>
                         <li><a id="out2" href="#" ><i class="fa-solid fa-share" *ngIf="showLog" (click)="logout()"></i></a></li>
                     </div>
-                    <div>
-                        <li *ngIf = "user">
-                            <a routerLink="/users/{{user._id}}">
-                                <div class="content">
-                                    <div class="username">
-                                        {{user.username}}
-                                    </div>
-                                    <div class="role">
-                                        {{user.role}}
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
+                </div>
+            </div>
+            <div class="navbar" *ngIf="casher()">
+                <div class="items">
+                    <ul class="links">
+                        <li><a href="#">Home</a></li><br>
+                        <li><a href="https://localhost:4200/profile">MyProfile</a></li><br>
+                        <li><a href="#">Kitchen</a></li><br>
+                        <li><a href="https://localhost:4200/login" *ngIf="!showLog">Login</a></li><br>
+                        <li><a id="out" href="#" (click)="logout()" *ngIf="showLog">Logout</a></li><br>
+                    </ul>
+                    <div class="toggle-btn" (click)="toogleTag()">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                    <div class="menu overlay" *ngIf="showBar">
+                        <li><a href="#" ><i class="fa fa-home"></i></a></li>
+                        <li><a href="https://localhost:4200/profile" ><i class="fa fa-user"></i></a></li>
+                        <li><a href="#" ><i class="fa fa-table"></i></a></li>
+                        <li><a href="https://localhost:4200/login" *ngIf="!showLog"><i class="fa-solid fa-right-to-bracket"></i></a></li>
+                        <li><a id="out2" href="#" ><i class="fa-solid fa-share" *ngIf="showLog" (click)="logout()"></i></a></li>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar" *ngIf="cook()">
+                <div class="items">
+                    <ul class="links">
+                        <li><a href="#">Home</a></li><br>
+                        <li><a href="https://localhost:4200/profile">MyProfile</a></li><br>
+                        <li><a href="#">Kitchen</a></li><br>
+                        <li><a href="https://localhost:4200/login" *ngIf="!showLog">Login</a></li><br>
+                        <li><a id="out" href="#" (click)="logout()" *ngIf="showLog">Logout</a></li><br>
+                    </ul>
+                    <div class="toggle-btn" (click)="toogleTag()">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                    <div class="menu overlay" *ngIf="showBar">
+                        <li><a href="#" ><i class="fa fa-home"></i></a></li>
+                        <li><a href="https://localhost:4200/profile" ><i class="fa fa-user"></i></a></li>
+                        <li><a href="#" ><i class="fa-solid fa-kitchen-set"></i></a></li>
+                        <li><a href="https://localhost:4200/login" *ngIf="!showLog"><i class="fa-solid fa-right-to-bracket"></i></a></li>
+                        <li><a id="out2" href="#" ><i class="fa-solid fa-share" *ngIf="showLog" (click)="logout()"></i></a></li>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar" *ngIf="bartender()">
+                <div class="items">
+                    <ul class="links">
+                        <li><a href="#">Home</a></li><br>
+                        <li><a href="https://localhost:4200/profile">MyProfile</a></li><br>
+                        <li><a href="#">Bar</a></li><br>
+                        <li><a href="https://localhost:4200/login" *ngIf="!showLog">Login</a></li><br>
+                        <li><a id="out" href="#" (click)="logout()" *ngIf="showLog">Logout</a></li><br>
+                    </ul>
+                    <div class="toggle-btn" (click)="toogleTag()">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                    <div class="menu overlay" *ngIf="showBar">
+                        <li><a href="#" ><i class="fa fa-home"></i></a></li>
+                        <li><a href="https://localhost:4200/profile" ><i class="fa fa-user"></i></a></li>
+                        <li><a href="#" ><i class="fa-solid fa-martini-glass"></i></a></li>
+                        <li><a href="https://localhost:4200/login" *ngIf="!showLog"><i class="fa-solid fa-right-to-bracket"></i></a></li>
+                        <li><a id="out2" href="#" ><i class="fa-solid fa-share" *ngIf="showLog" (click)="logout()"></i></a></li>
                     </div>
                 </div>
             </div>

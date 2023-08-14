@@ -4,7 +4,7 @@ import { HttpOptions } from 'src/app/shared/models/httpOptions';
 import { Users } from 'src/app/shared/models/users';
 import { USERS_URL, USER_URL } from 'src/app/shared/constants/urls';
 import { HttpClient } from '@angular/common/http';
-import { UserService, } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { UserService, } from 'src/app/services/user.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-      user      = new Users()  ;
+      user = new Users() ;
       subject : Subject<Users> = new Subject();
       el        : any  ;
       userData  : any  ;
@@ -24,21 +24,36 @@ export class HeaderComponent implements OnInit {
       constructor(private http : HttpClient, private userService : UserService) {
             let userObservable: Observable<Users>;
 
-            userObservable = this.getIt()  ;
+            userObservable = userService.getIt()  ;
             
             userObservable.subscribe((serverUser) => {
                   this.subject.next(serverUser);
             });
-
-            this.subject.subscribe((user)=>console.log(user.role));
-
-            
-
+            this.subject.subscribe((user)=>this.user = user);
       }
       
       ngOnInit(): void { 
             this.getUser();
+      }
 
+      waiter(){
+            return this.user.role === 'waiter' ?  true : false ;
+      }
+
+      casher(){
+            return this.user.role === 'casher' ?  true : false ;
+      }
+
+      cook(){
+            return this.user.role === 'cook' ?  true : false ;
+      }
+
+      bartender(){
+            return this.user.role === 'bartenderw' ?  true : false ;
+      }
+
+      nobody(){
+            return !this.user.role ?  true : false ;
       }
 
       logout(){
@@ -49,10 +64,6 @@ export class HeaderComponent implements OnInit {
             this.showBar= (!this.showBar) ;
       }
 
-      getIt() : Observable<Users> {
-            let http = new HttpOptions();
-            return this.http.get<Users>(USER_URL, http) ;
-      }
 
       getUser(){
             const http = new HttpOptions();

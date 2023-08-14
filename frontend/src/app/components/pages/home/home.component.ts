@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Users } from 'src/app/shared/models/users'
-import { usersService } from 'src/app/services/users.service'
+import { UserService } from 'src/app/services/user.service'
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Table } from 'src/app/shared/models/table';
@@ -14,7 +14,7 @@ import { TableService } from 'src/app/services/table.service';
 export class HomeComponent implements OnInit {
 	users: Users[] = [];
 	tables: Table[] = [];
-	constructor(private usersService: usersService, activatedRoute: ActivatedRoute, private tableService: TableService) {
+	constructor(private userService: UserService, activatedRoute: ActivatedRoute, private tableService: TableService) {
 		/*let usersObservable: Observable<Users[]>;
 		let tablvesObservable: Observable<Table[]>;
 		activatedRoute.params.subscribe(params => {

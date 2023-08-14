@@ -13,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SignInPageComponent } from './components/pages/sign-in-page/sign-in-page.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { NgToastModule } from 'ng-angular-popup';
+import { UserProfileComponent } from './components/pages/user-profile/user-profile.component';
 
 
 const config : SocketIoConfig = {
@@ -30,7 +30,8 @@ const config : SocketIoConfig = {
     HomeComponent,
     SearchComponent,
     LoginPageComponent,
-    SignInPageComponent
+    SignInPageComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -44,8 +45,6 @@ const config : SocketIoConfig = {
         positionClass : 'toast-top-left',
         newestOnTop: false
     }),
-    NgToastModule,
-    ToastrModule
   ],
   providers: [],
   bootstrap: [AppComponent]

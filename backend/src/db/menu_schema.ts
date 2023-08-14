@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 const MenuSchema = new mongoose.Schema({
     _id         : { type: String},
     name        : { type: String,  required:true, unique : true},
-    kind        : { type: String,  required:true, enum : ['drinks', 'dishes', 'coffe bar', 'dessert']},
+    kind        : { type: String,  required:true, enum : ['drinks', 'dishes', 'coffe_bar', 'dessert']},
     price       : { type: String,  required:true  }
 });
 
@@ -13,6 +13,8 @@ export const MenuModel = mongoose.model('Menu', MenuSchema) ;
 export const getMenu = () => MenuModel.find() ;
 
 export const getElementsByKind = (kind : string) => MenuModel.findOne({"kind" : kind});
+
+export const getAllElementsByKind = (kind : string) => MenuModel.find({"kind" : {$regex : new RegExp(kind, "i")}});
 
 export const getElementById = (id : string) => MenuModel.findById(id);
 

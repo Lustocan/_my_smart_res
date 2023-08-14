@@ -1,11 +1,28 @@
 import express from 'express' ;
-import { getMenu, createElement, getElementById, deleteElementById, updateElementById } from '../db/menu_schema'; 
+import { getMenu, createElement, getElementById, deleteElementById, updateElementById, getAllElementsByKind } from '../db/menu_schema'; 
 
 export const getAllElements = async (req : express.Request, res : express.Response ) => {
     try{
         const allEl = await getMenu();
 
         return res.status(200).json(allEl) ;
+    }
+    catch(error){
+        console.log(error) ;
+        return res.sendStatus(400);
+    }
+}
+
+export const getAllByKind = async (req : express.Request, res : express.Response ) => {
+    try{
+        const {kind} = req.params;
+        
+        if(!kind){
+            return res.sendStatus(400) ;
+        }
+        
+        const allKindEl = await getAllElementsByKind(kind);
+        return res.status(200).json(allKindEl);
     }
     catch(error){
         console.log(error) ;

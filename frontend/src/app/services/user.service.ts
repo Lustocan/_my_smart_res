@@ -16,6 +16,7 @@ import { TOKEN, USER_KEY } from '../shared/constants/Storage_name';
 })
 export class UserService {
 
+	httpOptions = new HttpOptions();
 	private userSubject = new BehaviorSubject<Users>(this.getUserFromLocalStorage());
 	public userObservable: Observable<Users>; // readonly version of userSubject
 
@@ -28,8 +29,7 @@ export class UserService {
 	
 	//TODO da cambiare: eliminare 'User' dal localstorage e mantenere solo 'Token'
 	login(userLogin: IUserLogin): Observable<Users> {
-		let httpOptions = new HttpOptions();
-		return this.http.post<Users>(USERS_LOGIN_URL, userLogin, httpOptions).pipe(
+		return this.http.post<Users>(USERS_LOGIN_URL, userLogin, this.httpOptions).pipe(
 			tap({
 				next: (user) => {
 					this.toastrService.success('Login in Successful' );
@@ -44,8 +44,7 @@ export class UserService {
 	}
 
 	sign_in(userLogin: IUserSign_in): Observable<Users> {
-		let httpOptions = new HttpOptions ;
-		return this.http.post<Users>(USERS_SIGN_IN_URL, userLogin, httpOptions).pipe(
+		return this.http.post<Users>(USERS_SIGN_IN_URL, userLogin, this.httpOptions).pipe(
 			tap({
 				next: (user) => { 
 					this.toastrService.success('Sign in Successful')
@@ -83,4 +82,8 @@ export class UserService {
         let http = new HttpOptions();
         return this.http.get<Users>(USER_URL, http) ;
     }
+
+	updateUser(id:String,username:String, name:String, surname: String, role: String) : Observable<Users> {
+		return this.http.patch<Users>(USERS_URL+'/'+id,{username:username,name:name,surname:surname,role:role},this.httpOptions);
+	}
 }

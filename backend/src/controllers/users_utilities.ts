@@ -113,7 +113,7 @@ export const sign_in = async ( req : express.Request, res : express.Response) =>
 export const updateUser = async (req : express.Request, res : express.Response) => {
     try{
         const { id } = req.params ;
-        const { username, name, surname } = req.body ;
+        const { username, name, surname, role } = req.body ;
         if(!username&&!name&&!surname){
            return res.sendStatus(400) ;
         }
@@ -123,6 +123,8 @@ export const updateUser = async (req : express.Request, res : express.Response) 
         if(name) await updateUserById(id, {name});
 
         if(surname) await updateUserById(id, {surname});
+
+        if(role) await updateUserById(id, {role});
         
         const user = await getUserById(id);
 

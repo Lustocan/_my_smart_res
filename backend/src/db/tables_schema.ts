@@ -12,7 +12,7 @@ const TableSchema = new mongoose.Schema({
 
 export const TableModel = mongoose.model('Table', TableSchema) ;
 
-export const getTables = () => TableModel.find()               ;
+export const getTables = () => TableModel.find().sort({number : 'asc'})               ;
 
 export const getTablesByWaiter = (waiter : string ) => 
 TableModel.findOne({"waiter" : {$regex : new RegExp(waiter, "i")}});

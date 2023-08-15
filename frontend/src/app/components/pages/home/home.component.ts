@@ -14,7 +14,7 @@ import { TableService } from 'src/app/services/table.service';
 export class HomeComponent implements OnInit {
 	users: Users[] = [];
 	tables: Table[] = [];
-	constructor(private userService: UserService, activatedRoute: ActivatedRoute, private tableService: TableService) {
+	constructor(private userService: UserService, activatedRoute: ActivatedRoute) {
 		/*let usersObservable: Observable<Users[]>;
 		let tablvesObservable: Observable<Table[]>;
 		activatedRoute.params.subscribe(params => {

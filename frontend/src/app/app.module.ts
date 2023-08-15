@@ -14,6 +14,8 @@ import { SignInPageComponent } from './components/pages/sign-in-page/sign-in-pag
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { UserProfileComponent } from './components/pages/user-profile/user-profile.component';
+import { UpdateProfileComponent } from './components/pages/update-profile/update-profile.component';
+import { TablesComponent } from './components/pages/tables/tables.component';
 
 
 const config : SocketIoConfig = {
@@ -31,7 +33,9 @@ const config : SocketIoConfig = {
     SearchComponent,
     LoginPageComponent,
     SignInPageComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    UpdateProfileComponent,
+    TablesComponent
   ],
   imports: [
     BrowserModule,

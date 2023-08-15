@@ -1,0 +1,16 @@
+<body>
+<ul>
+    <li *ngFor="let table of tables">
+        <a href="">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRatVYiIfJ2RAKeJXGBO5r37IU0b4sMQiuHpg&usqp=CAU" [alt]="table.number">
+            <div class="content">
+                <div class="seats">
+                    <h3>Table Number : {{table.number}}</h3>
+                    <h3>Seats : {{table.customers}}/{{table.seats}}</h3>
+                </div>
+            </div>
+        </a>
+    </li>
+    <button><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDkz69u6LBM4AtDc3DepLMuR7mct6uudxcXQ&usqp=CAU"></button>
+</ul>
+</body>

@@ -8,7 +8,6 @@ export class Table {
         this.free = free === undefined ? true : free;
         this.seats = seats ;
         this.customers = customers ;
-
     }
     _id?: String;
     number!: String;

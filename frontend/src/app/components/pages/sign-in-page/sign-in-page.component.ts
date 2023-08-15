@@ -35,7 +35,6 @@ export class SignInPageComponent implements OnInit{
     if(this.signInForm.invalid){
       return ;
     }
-    alert(`username : ${this.fc.username.value}`)
     
     this.userService.sign_in({username:this.fc.username.value,
                               name : this.fc.name.value, surname: this.fc.surname.value, 

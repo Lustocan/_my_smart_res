@@ -4,8 +4,8 @@ import { build_tab, delete_tab, update_tab, getAllTables, _getTableByNumber_ } f
 
 export default (router : express.Router) => {
     router.get("/tables", isAuthenticated , getAllTables) ;
-    router.post("/tables/add", isAuthenticated, isAdmin, build_tab) ;
-    router.delete("/tables/:number/delete", isAuthenticated, isAdmin, delete_tab) ;
+    router.post("/tables/add", isAuthenticated, isWaiterOrAdmin, build_tab) ;
+    router.delete("/tables/:number/delete", isAuthenticated, isWaiterOrAdmin, delete_tab) ;
     router.patch("/tables/:number/update", isAuthenticated , isWaiterOrAdmin, update_tab) ;
     router.get("/tables/:number", isAuthenticated, isWaiterOrAdmin, _getTableByNumber_ ) ;
 }

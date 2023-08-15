@@ -6,6 +6,7 @@ import { SignInPageComponent } from './components/pages/sign-in-page/sign-in-pag
 import { UserProfileComponent } from './components/pages/user-profile/user-profile.component';
 import { UpdateProfileComponent } from './components/pages/update-profile/update-profile.component';
 import { TablesComponent } from './components/pages/tables/tables.component';
+import { AddTComponent } from './components/pages/tables/add-t/add-t.component';
 
 const routes: Routes = [
     {path : 'search/:searchTerm', component : HomeComponent},
@@ -14,7 +15,8 @@ const routes: Routes = [
     {path : 'sign_in', component : SignInPageComponent},
     {path : 'profile', component : UserProfileComponent},
     {path : 'profile/update', component : UpdateProfileComponent},
-    {path : 'tables', component : TablesComponent}
+    {path : 'tables', component : TablesComponent},
+    {path : 'add_table', component : AddTComponent}
 ];
 
 @NgModule({

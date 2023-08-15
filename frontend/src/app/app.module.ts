@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { UserProfileComponent } from './components/pages/user-profile/user-profile.component';
 import { UpdateProfileComponent } from './components/pages/update-profile/update-profile.component';
 import { TablesComponent } from './components/pages/tables/tables.component';
+import { AddTComponent } from './components/pages/tables/add-t/add-t.component';
 
 
 const config : SocketIoConfig = {
@@ -35,7 +36,8 @@ const config : SocketIoConfig = {
     SignInPageComponent,
     UserProfileComponent,
     UpdateProfileComponent,
-    TablesComponent
+    TablesComponent,
+    AddTComponent
   ],
   imports: [
     BrowserModule,

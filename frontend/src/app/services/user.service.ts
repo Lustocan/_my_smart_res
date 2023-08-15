@@ -22,7 +22,6 @@ export class UserService {
 
 	constructor(private http: HttpClient ,private toastrService : ToastrService) {
 		this.userObservable = this.userSubject.asObservable();
-
 	}
 
 

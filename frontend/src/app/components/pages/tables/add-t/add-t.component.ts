@@ -4,6 +4,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Table } from 'src/app/shared/models/table';
 
+
+// TODO , dopo l'add table non fa il redirect
+
 @Component({
   selector: 'app-add-t',
   templateUrl: './add-t.component.html',
@@ -19,15 +22,15 @@ export class AddTComponent implements OnInit {
               private activatedRoute: ActivatedRoute, private router: Router){ }
 
   submit() {
-    this.isSubmitted = true ;
-    if(this.tableForm.invalid){
-       return ;
-    }
-    
-    this.tableService.buildTable({number :this.fc.number.value,
-                                  seats : this.fc.seats.value}).subscribe(()=> {
-                                          this.router.navigateByUrl(this.returnUrl)
-     });
+      this.isSubmitted = true ;
+      if(this.tableForm.invalid){
+        return ;
+      }
+      
+      this.tableService.buildTable({number :this.fc.number.value,
+                                    seats : this.fc.seats.value}).subscribe(()=> {
+                                            this.router.navigateByUrl(this.returnUrl)
+      });
 	}
 
   get fc() {

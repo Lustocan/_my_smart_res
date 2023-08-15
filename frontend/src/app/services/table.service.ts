@@ -26,20 +26,25 @@ export class TableService {
 		return this.http.get<Table>(TABLES_URL+'/'+number,this.httpOptions);
 	}
 
-	deleteTable(number: string): Observable<Table>{
-		return this.http.delete<Table>(TABLES_URL+'/'+number+'/delete',this.httpOptions)
-			.pipe(catchError(()=>{  
-				alert("Table doesn't exist");
-				return new Observable<Table>;
-			}));
-	}
-
 	updateTable(number:string, costumers: Number): Observable<Table>{
 		return this.http.patch<Table>(TABLES_URL+'/'+number+'/update',{customers: costumers},this.httpOptions)
 			.pipe(catchError(()=>{  
 				alert("Table doesn't exist or more costumers then seats");
 				return new Observable<Table>;
 			}));
+	}
+
+	deleteTable(number: String): Observable<Table>{
+		return this.http.delete<Table>(TABLES_URL+'/'+number+'/delete',this.httpOptions).pipe(
+				tap({
+					next: (table) => { 
+						this.toastrService.success('Table successfully deleted')
+					},
+					error: (errorResponse) => {
+						this.toastrService.error('Delete table failed')
+					}
+			})
+		);
 	}
 
 	buildTable(newTable : ITable) {

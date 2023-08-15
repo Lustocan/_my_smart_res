@@ -68,3 +68,11 @@ button img{
     position: relative;
     height: 7rem;
 }
+
+.delete-icon {
+    width : 25px ;
+    right: 40px;
+    top :40px;
+    border-radius: 20px;
+    padding: 1px;
+}

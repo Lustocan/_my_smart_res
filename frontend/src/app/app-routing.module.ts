@@ -16,7 +16,8 @@ const routes: Routes = [
     {path : 'profile', component : UserProfileComponent},
     {path : 'profile/update', component : UpdateProfileComponent},
     {path : 'tables', component : TablesComponent},
-    {path : 'add_table', component : AddTComponent}
+    {path : 'add_table', component : AddTComponent},
+    {path : 'tables/:id/update'}
 ];
 
 @NgModule({

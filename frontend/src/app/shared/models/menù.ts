@@ -11,7 +11,7 @@ export class Menù{
         this._id = _id === undefined ? "" : _id;;
         this.name = name === undefined ? "" : name;
         this.kind = kind;
-        this.price = name === undefined ? "" : name;;
+        this.price = price === undefined ? "" : price;;
     }
     _id ?: String;
     name : String;

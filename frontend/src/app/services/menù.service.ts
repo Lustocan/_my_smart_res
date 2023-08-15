@@ -17,17 +17,16 @@ export class MenùService {
 		return this.http.get<Menù[]>(MENU_URL+'/'+kind,this.httpOptions);
 	}
 
-	addNewElement(name:String, kind: Kind, price: string) : Observable<Menù>{
-		return this.http.post<Menù>(ADD_MENU_URL,{name:name,kind:kind,price:price},this.httpOptions);
+	addNewElement(menù: Menù) : Observable<Menù>{
+		return this.http.post<Menù>(ADD_MENU_URL,menù,this.httpOptions);
 	}
 
-	updateElement(id:String, name:String, kind: Kind, price:String) : Observable<Menù>{
-		return this.http.patch<Menù>(MENU_URL+'/'+id+'/update',{name:name,kind:kind,price:price},this.httpOptions);
+	updateElement(id:string,menù: Menù) : Observable<Menù>{
+		return this.http.patch<Menù>(MENU_URL+'/'+id+'/update',menù,this.httpOptions);
 	}
 
 
-	
-	deleteElement(id:String){
-		return this.http.delete<Menù>(MENU_URL+'/'+id+'/delete',this.httpOptions);	
+	deleteElement(menù: Menù){
+		return this.http.delete<Menù>(MENU_URL+'/'+menù._id+'/delete',this.httpOptions);	
 	}
 }

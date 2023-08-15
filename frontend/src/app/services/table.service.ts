@@ -46,10 +46,10 @@ export class TableService {
 		return this.http.post<Table>(ADD_TABLES_URL, newTable, this.httpOptions).pipe(
 			tap({
 				next: (table) => { 
-					this.toastrService.success('Table successfully added')
+					this.toastrService.success('Table successfully added');
 				},
 				error: (errorResponse) => {
-					this.toastrService.error('Add table failed')
+					this.toastrService.error('Add table failed');
 				}
 			})
 		);

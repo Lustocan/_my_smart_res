@@ -1,7 +1,9 @@
 // definition of table object
 
+import { ITable } from "../interfaces/ITable_add";
 
-export class Table {
+
+export class Table implements ITable {
     constructor(number: String, seats: Number, customers?: Number, id?: String, free?: boolean){
         this._id = id === undefined ? undefined : id;
         this.number = number;

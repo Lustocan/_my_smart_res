@@ -1,7 +1,5 @@
 
-* {
-    font-family: "Poppins", sans-serif;;
-}
+
 
 body{
     display: flex;
@@ -24,7 +22,7 @@ ul{
 li a{
     height : 22.5rem ;
     width : 14rem ;
-    border: 1px solid #011638;;
+    border: 1px solid #011638;
     border-radius: 1rem;
     margin: 0.5rem;
     display: flex;
@@ -56,7 +54,7 @@ button{
     overflow: hidden;
 }
 
-button img{
+button img {
     object-fit: cover ;
     height: 6rem   ;
 }
@@ -74,5 +72,11 @@ button img{
     right: 40px;
     top :40px;
     border-radius: 20px;
-    padding: 1px;
+    padding: 2px;
 }
+
+.delete-icon:hover {
+    background-color: red;
+}
+
+

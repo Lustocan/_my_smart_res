@@ -17,7 +17,6 @@ export class UserProfileComponent implements OnInit{
         userObservable = userService.getIt()  ;
         
         userObservable.subscribe((serverUser)=> this.user = serverUser);
-
     }
 
 	  ngOnInit(): void {

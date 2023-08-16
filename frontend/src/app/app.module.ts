@@ -18,6 +18,7 @@ import { UpdateProfileComponent } from './components/pages/update-profile/update
 import { TablesComponent } from './components/pages/tables/tables.component';
 import { AddTComponent } from './components/pages/tables/add-t/add-t.component';
 import { UpdTComponent } from './components/pages/tables/upd-t/upd-t.component';
+import { SingleTComponent } from './components/pages/tables/single-t/single-t.component';
 
 
 const config : SocketIoConfig = {
@@ -39,7 +40,8 @@ const config : SocketIoConfig = {
     UpdateProfileComponent,
     TablesComponent,
     AddTComponent,
-    UpdTComponent
+    UpdTComponent,
+    SingleTComponent
   ],
   imports: [
     BrowserModule,

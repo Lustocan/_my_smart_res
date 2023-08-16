@@ -8,6 +8,7 @@ import { UpdateProfileComponent } from './components/pages/update-profile/update
 import { TablesComponent } from './components/pages/tables/tables.component';
 import { AddTComponent } from './components/pages/tables/add-t/add-t.component';
 import { UpdTComponent } from './components/pages/tables/upd-t/upd-t.component';
+import { SingleTComponent } from './components/pages/tables/single-t/single-t.component';
 
 const routes: Routes = [
     {path : 'search/:searchTerm', component : HomeComponent},
@@ -18,7 +19,7 @@ const routes: Routes = [
     {path : 'profile/update', component : UpdateProfileComponent},
     {path : 'tables', component : TablesComponent},
     {path : 'add_table', component : AddTComponent},
-    {path : 'tables/:id/update', component : UpdTComponent}
+    {path : 'tables/:id', component : SingleTComponent},
 ];
 
 @NgModule({

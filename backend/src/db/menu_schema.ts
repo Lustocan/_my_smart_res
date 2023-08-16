@@ -2,10 +2,11 @@ import mongoose from 'mongoose'
 
 // Here we create our userSchema
 const MenuSchema = new mongoose.Schema({
-    _id         : { type: String},
-    name        : { type: String,  required:true, unique : true},
-    kind        : { type: String,  required:true, enum : ['drinks', 'dishes', 'coffe_bar', 'dessert']},
-    price       : { type: String,  required:true  }
+    _id          : { type: String},
+    name         : { type: String,  required:true, unique : true},
+    kind         : { type: String,  required:true, enum : ['drinks', 'dishes', 'coffe_bar', 'dessert']},
+    price        : { type: String,  required:true  },
+    prepare_time : { type: String,  required:true  }
 });
 
 export const MenuModel = mongoose.model('Menu', MenuSchema) ;

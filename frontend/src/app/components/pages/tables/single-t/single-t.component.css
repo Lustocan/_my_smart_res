@@ -1,0 +1,130 @@
+
+
+.upside{
+    height: 100%;
+    background-image: url("https://images.squarespace-cdn.com/content/v1/5e1b73fb6eeb973ee1becfc4/1592675000454-J3PX30T4VNJIPWH3CT7P/custom-restaurant-tables-david-stine+3.jpg") ;
+    background-size: cover ;
+    background-position: 100%;
+}
+
+.bottomside{
+    height: 50%;
+    width: 50%;
+    background: linear-gradient(to bottom left,#c0c0c0,#50808f); 
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+}
+
+
+.flex-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row ;
+    flex-wrap : wrap;
+}
+
+.flex-box{
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(#011638,#0344ac);
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    line-height: center;
+    border: black;
+    box-shadow: 3px 3px black;
+    border-radius: 20px;
+    margin: 10px;
+}
+
+.flex-box:hover{
+    box-shadow: none;
+    cursor: pointer;
+}
+
+
+ul{
+    border-top: 200px;
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+}
+
+li div{
+    height : 22.5rem ;
+    width : 18rem ;
+    border: 1px solid #011638;
+    border-radius: 1rem;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    text-decoration: none ;
+    color : black;
+    background-color: #cdcdcd;
+}
+
+
+li div:hover{
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+li div img{
+    object-fit: cover ;
+    height: 14.5rem   ;
+}
+
+li div .white{
+    height: 14.5rem   ;
+    background-color: white;
+    margin-left: -12.5px;
+}
+
+h3{
+    height: 0px;
+}
+
+li div div{
+    margin-top: 0.3rem ;
+    padding: -0rem 1.2rem 0.4rem 0.4rem;
+    position: relative;
+    margin-bottom: -2px;
+    height: 7rem;
+    border : 20px
+}
+
+ul li div div .seats {
+    margin-top : -90px 
+}
+
+
+#delete-icon {
+    width: 12px;
+    padding: 5px 0px 5px 7px;
+}
+
+#delete-icon:hover {
+    color: red;
+}
+
+.scrollbox {
+    overflow: auto;
+}
+
+.scrollbox-inner p{
+    font-size: 16px   ;
+}
+
+::-webkit-scrollbar {
+    width : 5px ;
+}
+
+::-webkit-scrollbar-thumb{
+    background: blue ;
+}

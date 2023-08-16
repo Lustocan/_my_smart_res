@@ -32,9 +32,9 @@ export const getAllByKind = async (req : express.Request, res : express.Response
 
 export const addNewElement = async (req : express.Request, res : express.Response ) => {
     try{
-        const { name, kind, price } = req.body ;
+        const { name, kind, price, preparation_time } = req.body ;
 
-        if(!name||!kind||!price){
+        if(!name||!kind||!price||!preparation_time){
             return res.sendStatus(400) ;
         }
 
@@ -44,7 +44,8 @@ export const addNewElement = async (req : express.Request, res : express.Respons
             _id,
             name,
             kind,
-            price
+            price,
+            preparation_time
         })
 
         return res.status(200).json(el);

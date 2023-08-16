@@ -20,9 +20,13 @@ export class TablesComponent implements OnInit{
 
     ngOnInit() : void { }
 
-    submitDelete(number : String){
+    submitDelete(number : Number){
         this.tableService.deleteTable(number).subscribe(()=> {
-                  this.router.navigateByUrl('/tables');
+                  this.router.navigateByUrl('/tables').then(() => {
+                    setTimeout(function(){
+                      location.reload();
+                    }, 1500
+        )})
       });
     }
 }

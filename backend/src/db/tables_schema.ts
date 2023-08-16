@@ -2,8 +2,8 @@ import mongoose from 'mongoose'
 
 
 const TableSchema = new mongoose.Schema({
-    _id       : {type: String},
-    number    : { type: String , required : true , unique : true },
+    _id       :  {type: String},
+    number    : { type: Number , required : true , unique : true },
     free      : { type: Boolean , default : true },
     seats     : { type: Number, required : true },
     customers : { type: Number, default : 0 },

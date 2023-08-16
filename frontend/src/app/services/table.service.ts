@@ -34,7 +34,7 @@ export class TableService {
 			}));
 	}
 
-	deleteTable(number: String): Observable<Table>{
+	deleteTable(number: Number): Observable<Table>{
 		return this.http.delete<Table>(TABLES_URL+'/'+number+'/delete',this.httpOptions).pipe(
 				tap({
 					next: (table) => { 

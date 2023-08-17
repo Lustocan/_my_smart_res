@@ -3,6 +3,6 @@ import { isAuthenticated, isAdmin, isWaiter , isWaiterOrAdmin} from '../middlewa
 import { getAllOrdersInThisTable, new_Order } from "../controllers/orders_utilities";
 
 export default (router : express.Router) => {
-    router.get("/tables/:n_table", isAuthenticated ,isWaiterOrAdmin, getAllOrdersInThisTable) ;
+    router.get("/orders/:n_table", isAuthenticated ,isWaiterOrAdmin, getAllOrdersInThisTable) ;
     router.post("/tables/:n_table/add_order", isAuthenticated, isWaiterOrAdmin, new_Order) ;
 }

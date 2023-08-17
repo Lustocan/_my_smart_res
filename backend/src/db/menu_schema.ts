@@ -5,8 +5,8 @@ const MenuSchema = new mongoose.Schema({
     _id          : { type: String},
     name         : { type: String,  required:true, unique : true},
     kind         : { type: String,  required:true, enum : ['drinks', 'dishes', 'coffe_bar', 'dessert']},
-    price        : { type: String,  required:true  },
-    preparation_time : { type: String,  required:true  }
+    price        : { type: Number,  required:true  },
+    preparation_time : {type: Number,  required:true  }
 });
 
 export const MenuModel = mongoose.model('Menu', MenuSchema) ;

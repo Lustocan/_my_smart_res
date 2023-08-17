@@ -18,6 +18,9 @@ export class SingleTComponent implements OnInit{
   cart   : Menù[] = []  ;
   n_cart : Number[] = []  ;
 
+  total_price = 0 ;
+  total_time  = new Number() ;
+
   constructor(tableService : TableService , menuService : MenùService, private route : ActivatedRoute) {
 
       let num = this.route.snapshot.paramMap.get('number') ;
@@ -33,6 +36,8 @@ export class SingleTComponent implements OnInit{
   }
 
   putInCart(menu : Menù){
+    console.log(this.total_price)
+    this.total_price = +(this.total_price) * +(menu.price)
     for(var i=0 ; ((i<this.cart.length)&&(i<this.n_cart.length)); i++){
         if(menu.name===this.cart[i].name) {
           this.n_cart[i] = +this.n_cart[i] + +1  ;
@@ -41,6 +46,7 @@ export class SingleTComponent implements OnInit{
     }
     this.cart.push(menu) ;
     this.n_cart.push(1) ;
+    
   }
   
   ngOnInit() : void {}

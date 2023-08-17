@@ -19,15 +19,11 @@ export const getAllOrdersInThisTable = async(req : express.Request, res : expres
 
 export const new_Order = async(req : express.Request, res : express.Response ) => {
     try{
-        const { waiter_username, to_prepare} = req.body ;
-        console.log(waiter_username);
+        const { waiter, total_time, to_prepare, total_price } = req.body ;
 
         const { n_table } = req.params         ;
-        console.log(n_table);
 
-        console.log(to_prepare);
-
-        if(!n_table||!waiter_username||!to_prepare){
+        if(!n_table||!waiter||!to_prepare||!total_price||!total_time){
             return res.sendStatus(400) ;
         }
 
@@ -36,8 +32,10 @@ export const new_Order = async(req : express.Request, res : express.Response ) =
         const order = await createOrder({
              _id,
              n_table,
-             waiter_username,
-             to_prepare
+             waiter,
+             to_prepare,
+             total_price,
+             total_time
         })
 
         return res.status(200).json(order) ;

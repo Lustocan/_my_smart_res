@@ -7,16 +7,16 @@ export enum Kind{
 
 export class Menù{
 
-    constructor(kind : Kind, name?: String, price ?: String, _id?: String, prepare_time ?: String){
+    constructor(kind : Kind, name?: String, price ?: Number, _id?: String, prepare_time ?: Number){
         this._id = _id === undefined ? "" : _id;;
         this.name = name === undefined ? "" : name;
         this.kind = kind;
-        this.price = price === undefined ? "" : price;
-        this.prepare_time = prepare_time === undefined ? "" : prepare_time;
+        this.price = price === undefined ? 0 : price;
+        this.prepare_time = prepare_time === undefined ? 0 : prepare_time;
     }
     _id ?: String;
     name : String;
     kind : Kind;
-    price : String;
-    prepare_time ?: String;
+    price : Number;
+    prepare_time : Number;
 }

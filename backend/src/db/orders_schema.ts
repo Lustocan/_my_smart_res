@@ -5,11 +5,12 @@ import mongoose from 'mongoose'
 
 const orderSchema = new mongoose.Schema({
     _id : {type : String},
-    n_table    : {type : Number, required : true},
-    waiter     : {type : String, required : true},
-    cook       : {type : String},
-    to_prepare : [{element : String , amount : Number }]
-})
+    n_table   : {type : Number, required : true},
+    waiter_username     : {type : String, required : true},
+    cook_username      : {type : String},
+    to_prepare : [{element_name : String, amount : Number, prepare_time: Number}],
+    total_price : {type : Number}
+});
 
 // we turn this schema into a model (a collection)
 export const OrderModel = mongoose.model('Order', orderSchema) ;
@@ -20,7 +21,7 @@ export const getOrders = () => OrderModel.find() ;
 export const getOrderByWaiter = (waiter : string) => OrderModel.findOne(({ "waiter" : {
     $regex : new RegExp(waiter, "i") }}));
 
-export const getOrderByTable = (n_table : string) => OrderModel.findOne({'n_table' : n_table});
+export const getOrderByTable = (n_table : string) => OrderModel.find({'n_table' : n_table});
 
 // Functions to create/delete/update an order
 export const createOrder = (values : Record<string, any>) => 

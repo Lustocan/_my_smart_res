@@ -59,7 +59,7 @@ button{
     overflow: hidden;
 }
 
-button img {
+button img{
     object-fit: cover ;
     height: 6rem   ;
 }
@@ -73,11 +73,19 @@ button img {
 }
 
 .delete-icon {
-    width : 25px ;
+    width: 20px;
     right: 40px;
     top :40px;
     border-radius: 20px;
-    padding: 2px;
+}
+
+.flex-container {
+    width: 40%;
+    height: 20px;
+    display: flex;
+    flex-direction: row ;
+    flex-wrap : wrap;
+    justify-content: space-between;
 }
 
 .delete-icon:hover {

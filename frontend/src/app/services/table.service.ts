@@ -21,7 +21,7 @@ export class TableService {
 		return this.http.get<Table[]>(TABLES_URL,this.httpOptions);
 	}
 
-	getTableByNumber(number : Number) : Observable<Table> {
+	getTableByNumber(number : String) : Observable<Table> {
 		return this.http.get<Table>(TABLES_URL+'/'+number,this.httpOptions);
 	}
 

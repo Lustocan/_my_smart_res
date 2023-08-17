@@ -73,10 +73,20 @@ button img{
 }
 
 .delete-icon {
+    position: relative;
     width: 20px;
-    right: 40px;
-    top :40px;
-    border-radius: 20px;
+    height: 20px !important;
+    padding: 1px;
+    border-radius: 20px !important;
+    margin: 3px;
+}
+
+#setting-botton{
+    left: 135px;
+}
+
+#update-botton{
+    left: 170px;
 }
 
 .flex-container {
@@ -89,7 +99,15 @@ button img{
 }
 
 .delete-icon:hover {
-    background-color: red;
+    background-color: red ;
 }
 
-
+.table-box{
+    position: relative;
+    top: 10spx;
+}
+.flex-box{
+    position: relative;
+    width: 100px;
+    height: 30px;
+} 

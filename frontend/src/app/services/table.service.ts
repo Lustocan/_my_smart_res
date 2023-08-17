@@ -13,7 +13,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class TableService {
 	httpOptions = new HttpOptions();
-	//tables : Table[] = [];
 	subject : Subject<Table[]> = new Subject();
 
 	constructor(private http: HttpClient, private toastrService : ToastrService) {}

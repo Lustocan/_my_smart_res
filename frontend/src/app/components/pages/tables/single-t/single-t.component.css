@@ -1,19 +1,55 @@
+* {
+    margin : 0 ;
+    padding : 0 ;
+    box-sizing: border-box;
+    font-family:'Comic Sans MS' ;
+}
+/*
+body {
+    background-image: url("https://images.squarespace-cdn.com/content/v1/5e1b73fb6eeb973ee1becfc4/1592675000454-J3PX30T4VNJIPWH3CT7P/custom-restaurant-tables-david-stine+3.jpg") ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.upside{
+    height: 50vh; 
+    background-size: cover ;
+    background-position: 100%;
+    z-index: 9;
+    margin: 30px;
+}
+
+
+.bottomside{
+    background: linear-gradient(to bottom left,#c0c0c0,#50808f); 
+    display: flex;
+    position: absolute;
+    bottom : 0 ;
+  
+}
+/*
 
 
 .upside{
-    height: 100%;
-    background-image: url("https://images.squarespace-cdn.com/content/v1/5e1b73fb6eeb973ee1becfc4/1592675000454-J3PX30T4VNJIPWH3CT7P/custom-restaurant-tables-david-stine+3.jpg") ;
+    height: 50vh; 
     background-size: cover ;
     background-position: 100%;
+    z-index: 9;
+    margin: 30px;
 }
 
 .bottomside{
-    height: 50%;
-    width: 50%;
+    height: 45vh;
+    width:   335px;
     background: linear-gradient(to bottom left,#c0c0c0,#50808f); 
     display: flex;
-    flex-direction: column;
-    position: fixed;
+    position: absolute;
+    left : 0 ;
+    bottom : 0 ;
+    border-radius: 10px;
+    box-shadow: 5px  black;
 }
 
 
@@ -22,7 +58,7 @@
     height: auto;
     display: flex;
     flex-direction: row ;
-    flex-wrap : wrap;
+    flex-wrap : wrap;;
 }
 
 .flex-box{
@@ -46,20 +82,23 @@
 
 
 ul{
-    border-top: 200px;
+    border-top: 100px;
     display: flex;
     justify-content: left;
     align-items: left;
     flex-wrap: wrap;
     list-style-type: none;
-    padding: 0;
+    z-index: 9;
+    margin: 30px;
+    margin: -55px;
 }
 
 li div{
-    height : 22.5rem ;
-    width : 18rem ;
+
+    height :45vh ;
+    width : 41vh ;
     border: 1px solid #011638;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     margin: 0.5rem;
     display: flex;
     flex-direction: column;
@@ -67,6 +106,8 @@ li div{
     text-decoration: none ;
     color : black;
     background-color: #cdcdcd;
+    margin-top: 36px;
+    margin-left : 6px
 }
 
 
@@ -80,10 +121,11 @@ li div img{
     height: 14.5rem   ;
 }
 
-li div .white{
+li div .screen{
     height: 14.5rem   ;
     background-color: white;
     margin-left: -12.5px;
+    overflow: auto;
 }
 
 h3{
@@ -101,6 +143,12 @@ li div div{
 
 ul li div div .seats {
     margin-top : -90px 
+}
+
+label{
+    margin-left : 20px ;
+    font-family: bold  ;
+    display: flex;
 }
 
 
@@ -126,5 +174,186 @@ ul li div div .seats {
 }
 
 ::-webkit-scrollbar-thumb{
-    background: blue ;
+    background: black ;
+    border-radius: 20px;
+}
+
+*/
+
+*{
+    margin : 0 ;
+    padding : 0 ;
+    box-sizing: border-box; 
+    font-family: 'poppins', sans-serif ;
+    font-size: 18px ;
+}
+
+body{
+    display: flex ;
+    align-items: center ;
+    justify-content: center ;
+    flex-direction: column ;
+}
+
+.header{
+    height: 80px ;
+    width: 100% ;
+    background-color: #011638;
+    border-radius: 3px ;
+    margin : 30px 0px ;
+    display: flex ;
+    align-items: center ;
+    justify-content: space-between;
+    padding : 15px ;
+}
+
+.header .logo{
+    font-size :30px ;
+    font-weight: bold ;
+    color : white ;
+}
+
+.cart{
+    display: flex;
+    background-color: white ;
+    justify-content: space-between;
+    align-items: center;
+    padding : 7px 10px ;
+    border-radius: 3px ;
+    width : 80px       ;
+}
+
+.fa-solid{
+    color : #011638 ;
+}
+
+.cart p{
+    height : 22px  ;
+    width : 22px ;
+    display: flex ;
+    align-items: center ;
+    justify-content: center ;
+    border-radius: 22px ;
+    background-color: #011638;
+    color : white ;
+}
+
+.container{
+    display: flex ;
+    width  : 100%  ;
+    margin-bottom: 30px ; 
+    float :right ;
+}
+
+#root{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap : 20px ;
+}
+
+.sidebar{
+    width: 50% ;
+    border-radius: 5px ;
+    background-color: #eee;
+    padding: 15px;
+    text-align: center;
+}
+
+.icons img{
+    width : 20 px;
+}
+
+.head{
+    background-color: #011638;
+    border-radius: 3px;
+    height: 40px;
+    padding : 10px ;
+    margin-bottom: 20px;
+    color : white ;
+    display: flex ;
+    align-items: center ;
+    justify-content: center;
+}
+
+.foot{
+    display: flex;
+    justify-content: space-between;
+    margin : 20px 0px ;
+    padding : 10px 0px ;
+    border-top: 1px solid #333;
+}
+
+.flex-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row ;
+    flex-wrap : wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.box {
+    display: flex ;
+    flex-direction: column ;
+    align-items: center ;
+    justify-content: space-between ;
+    border : 1px solid #011638 ;
+    border-radius: 5px ;
+    padding: 20px ;
+    display: flex ;
+}
+
+
+.img-box{
+    width: 100% ;
+    height : 180px  ;
+    display: flex ;
+    align-items: center;
+    justify-content: center;
+}
+
+.images{
+    max-width: 90%  ;
+    max-height: 90% ;
+    object-fit : cover ;
+    object-position: center ;
+}
+
+.bottom{
+    margin-top :20px ;
+    width: 100% ;
+    text-align: center ;
+    display: flex ;
+    flex-direction: column ;
+    align-items: center ;
+    justify-content: space-between ;
+    height: 110px ;
+}
+
+h2{
+    font-size: 20px ;
+    color : red ;
+}
+
+button {
+    width: 100%;
+    position: relative;
+    border : none ;
+    border-radius: 5px ;
+    background-color: #011638;
+    padding: 7px 25px ;
+    cursor: pointer;
+    color : white ;
+}
+
+button:hover{
+    background-color: #333;
+}
+
+#send{
+    width: 100px;
+    border-radius: 20px;
+    font-size: -10px; 
 }

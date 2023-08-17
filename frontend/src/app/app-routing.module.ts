@@ -19,7 +19,7 @@ const routes: Routes = [
     {path : 'profile/update', component : UpdateProfileComponent},
     {path : 'tables', component : TablesComponent},
     {path : 'add_table', component : AddTComponent},
-    {path : 'tables/:id', component : SingleTComponent},
+    {path : 'tables/:number', component : SingleTComponent},
 ];
 
 @NgModule({

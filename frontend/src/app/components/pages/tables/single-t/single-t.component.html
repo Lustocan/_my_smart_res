@@ -1,39 +1,67 @@
+<!--
 <body>
-    <div class="upside">
-        <ul>
-            <li>
-                <div>
-                    <i id="delete-icon" class="fa-solid fa-trash"></i>
-                    <div class="white"></div>
-                    <div class="content">
-                        <h3>Table Number : </h3>
-                        <h3>Seats : </h3>
+        <div class="upside">
+            <ul>
+                <li>
+                    <div>
+                        <i id="delete-icon" class="fa-solid fa-trash"></i>
+                        <div class="screen">
+                            <label *ngFor="let c of cart; let i = index;">{{n_cart[i]}} x {{c.name}} </label>
+                        </div>
+                        <div class="content" *ngIf="table">
+                            <h3>Table Number : {{table.number}}</h3>
+                            <h3>Seats : {{table.seats}}</h3>
+                        </div>
                     </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="bottomside">
-        <header>
-
-        </header>
-        <div class="scrollbox">
-            <div class="scrollbox-inner">
-                <div class="flex-container">
-                    <button class="flex-box">
-                        Box1
-                    </button>
-                    <button class="flex-box">
-                        Box2
-                    </button>
-                    <button class="flex-box">
-                        Box3
-                    </button>
-                    <button class="flex-box">
-                        Box4
-                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="bottomside">
+            <div class="scrollbox">
+                <div class="scrollbox-inner">
+                    <div class="flex-container">
+                        <button class="flex-box" *ngFor="let el of menu" (click)="putInCart(el)">   
+                            {{el.name}}
+                            {{el.price}}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</body>
+</body>-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="single-t.component.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
+              integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+              crossorigin="anonymous"
+              referrerpolicy="no-referrer"/>
+    </head>
+    <body>
+        <div class="container">
+            <div class="sidebar">
+                <div class="head"><p *ngIf="table">Table #{{table.number}}</p></div>
+                <div class="cartItem" *ngFor="let c of cart; let i = index;">{{n_cart[i]}} x {{c.name}}   {{c.price}} </div>
+                <div class="foot">
+                    <h3>Total</h3>
+                    <h2 id="total">$ 0.00</h2>
+                    <button id="send">Order now</button>
+                </div>
+            </div>
+        </div>
+        <div class="flex-container">
+            <div class="box" *ngFor="let m of menu">
+                <div class="img-box">
+                    <img class="images" src="https://thumb.ac-illust.com/c4/c4cefafc48961d7d2a03b6b0ac901435_t.jpeg">
+                </div>
+                <div class="bottom">
+                     <p>{{m.name}}</p>
+                     <h2>{{m.price}}</h2>
+                     <button (click)="putInCart(m)">Add to table</button>  
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

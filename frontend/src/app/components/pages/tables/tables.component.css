@@ -81,11 +81,15 @@ button img{
     margin: 3px;
 }
 
-#setting-botton{
+#delete-button{
+    left: 5px;
+}
+
+#setting-button{
     left: 135px;
 }
 
-#update-botton{
+#update-button{
     left: 170px;
 }
 

@@ -1,5 +1,5 @@
 import express from 'express' ;
-import { getOrderByTable, createOrder } from '../db/orders_schema';
+import { getOrderByTable, createOrder, getOrders } from '../db/orders_schema';
 
 export const getAllOrdersInThisTable = async(req : express.Request, res : express.Response ) => {
     try{
@@ -14,6 +14,19 @@ export const getAllOrdersInThisTable = async(req : express.Request, res : expres
         console.log(error);
         return res.sendStatus(400) ;
     }
+}
+
+export const  getAllOrders = async (req : express.Request, res : express.Response) => {
+    try{
+        const orders = await getOrders();
+
+        return res.status(200).json(orders);
+    }
+    catch(error){
+        console.log(error);
+        return res.sendStatus(400);
+    }
+    
 }
 
 

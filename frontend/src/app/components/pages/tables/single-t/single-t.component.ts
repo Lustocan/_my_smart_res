@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { TableService } from 'src/app/services/table.service';
 import { Table } from 'src/app/shared/models/table';
-import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MenùService } from 'src/app/services/menù.service';
 import { Kind, Menù } from 'src/app/shared/models/menù';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OrdersService } from 'src/app/services/orders.service';
 import { Router } from '@angular/router';
+import { Users } from 'src/app/shared/models/users';
+import { UserService } from 'src/app/services/user.service';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-single-t',
@@ -15,22 +16,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./single-t.component.css']
 })
 export class SingleTComponent implements OnInit{
-  OrderForm !: FormGroup  ;
+  user = new Users() ;
+  subject : Subject<Users> = new Subject();
 
   table  = new Table(); 
   menu : Menù[] = []  ;
 
-  cart   : Menù[] = []  ;
-  n_cart : Number[] = []  ;
-
-
   total_price = 0. ;
   total_time  = 0. ;
 
+  ca : Array<{element : String , amount : Number, kind : String}> = [] ;
+
 
   constructor(private tableService : TableService , private menuService : MenùService, 
-              private route : ActivatedRoute , private formBuilder : FormBuilder,
-              private ordersService : OrdersService, private router : Router ) {
+              private route : ActivatedRoute , private userService : UserService,
+              private ordersService : OrdersService ) {
 
       let num = this.route.snapshot.paramMap.get('number') ;
 
@@ -39,19 +39,27 @@ export class SingleTComponent implements OnInit{
 
           tableObservable.subscribe((serverTable)=> this.table = serverTable); 
       }    
+
+      let userObservable: Observable<Users>;
+
+            userObservable = userService.getIt()  ;
+            
+            userObservable.subscribe((serverUser) => {
+                  this.subject.next(serverUser);
+            });
+            this.subject.subscribe((user)=>this.user = user);
   }
 
   putInCart(menu : Menù){
       this.total_price = +(this.total_price) + +(menu.price)
-      this.total_time = +(this.total_time) + +(menu.prepare_time)
-      for(var i=0 ; i<this.cart.length; i++){
-          if(menu.name===this.cart[i].name) {
-            this.n_cart[i] = +this.n_cart[i] + +1  ;
+      this.total_time = +(this.total_time) + +(menu.preparation_time)
+      for(var i=0 ; i<this.ca.length; i++){
+          if(menu.name===this.ca[i].element) {
+            this.ca[i].amount = + this.ca[i].amount + + 1 ;
             return ;
           }
       }
-      this.cart.push(menu) ;
-      this.n_cart.push(1) ;
+      this.ca.push({element : menu.name, amount : 1, kind : menu.kind})
   }
 
   drinks(){
@@ -90,15 +98,14 @@ export class SingleTComponent implements OnInit{
                                   this.router.navigateByUrl("/login")
      });*/
 
- /* order() {
-    for(var i=0 ; i<this.cart.length; i++){
-        this.ca.push({element : this.cart[i].name, amount : this.n_cart[i]})
+ order() {
+    let num = this.route.snapshot.paramMap.get('number') ;
+    if(num){
+      let numero = parseInt(num);
+      this.ordersService.newOrder({ waiter : this.user.username,
+      to_prepare : this.ca , total_price : this.total_price , total_time : this.total_time}, numero ).subscribe() ;
     }
-    this.ordersService.newOrder({ waiter : "Lustocan",
-      to_prepare : this.ca , total_price : this.total_price , total_time : this.total_time},  this.route.snapshot.paramMap.get('number') ).subscribe(()=> {
-          this.router.navigateByUrl("/login")
-    });
-  }*/
+  }
 
 
   

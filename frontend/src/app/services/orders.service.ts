@@ -24,7 +24,7 @@ export class OrdersService {
 					this.toastrService.success('Order sended' );
 				},
 				error: (errorResponse) => {
-					this.toastrService.error('Login in Failed')			
+					this.toastrService.error('Order Failed')			
 				}
 			})
 		);

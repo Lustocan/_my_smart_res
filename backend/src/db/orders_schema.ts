@@ -9,7 +9,7 @@ const orderSchema = new mongoose.Schema({
     waiter      : {type : String, required : true},
     operator      : {type : String},
     total_time: {type : Number, required : true},
-    to_prepare : [{element : String , amount : Number }], 
+    to_prepare : [{element : String , amount : Number, kind : String }], 
     total_price : {type : Number}
 });
 

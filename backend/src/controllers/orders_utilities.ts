@@ -24,6 +24,7 @@ export const new_Order = async(req : express.Request, res : express.Response ) =
         const { n_table } = req.params         ;
 
         if(!n_table||!waiter||!to_prepare||!total_price||!total_time){
+
             return res.sendStatus(400) ;
         }
 

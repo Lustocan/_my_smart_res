@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <ul class="list">
+            <li *ngFor="let order of orders">
+                <a href="https://localhost:4200/Kitchen/{{order._id}}" *ngIf = nDrinksOrCoffeOrders(order)>
+                    <div class="content">
+                        <div>
+                            <h3>Table Number : {{order.n_table}}</h3>
+                            <h3>Waiter : {{order.waiter}}</h3>
+                        </div>
+                            <div *ngFor="let elem of order.to_prepare">
+                                <ul *ngIf ="isDrinksOrCoffe(elem.kind)" class="center_list" style="list-style-type:disc;">
+                                    <li> Name: {{elem.element}}</li>
+                                    <li> Amount: {{elem.amount}}</li>
+                                    <li> Kind: {{elem.kind}}</li>
+                                </ul>
+                            </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </body>
+</html>

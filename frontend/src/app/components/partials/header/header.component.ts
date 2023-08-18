@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit {
       }
 
       bartender(){
-            return this.user.role === 'bartenderw' ?  true : false ;
+            return this.user.role === 'bartender' ?  true : false ;
       }
 
       nobody(){

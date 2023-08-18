@@ -81,6 +81,15 @@ button img{
     margin: 3px;
 }
 
+.green-btn {
+    position: relative;
+    width: 20px;
+    height: 20px !important;
+    padding: 1px;
+    border-radius: 20px !important;
+    margin: 3px;
+}
+
 #delete-button{
     left: 5px;
 }
@@ -101,11 +110,15 @@ button img{
     flex-wrap : wrap;
     justify-content: space-between;
     margin-top: 20px;
+    z-index: 9;
+    margin: 30px;
 }
 
 .delete-icon:hover {
     background-color: red ;
 }
+
+
 
 .table-box{
     position: relative;

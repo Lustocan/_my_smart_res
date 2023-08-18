@@ -13,7 +13,9 @@
         <div class="wrapper">
             <form action="">
                 <form [formGroup]="tableForm" (ngSubmit)='submit()'>
+                
                     <h1>Add a table</h1>
+
 
                     <div class="input-box">
                         <input type="text" placeholder="Table Number" formControlName="number" required>
@@ -23,9 +25,7 @@
                         <input type="text" placeholder="Seats" formControlName="seats" required>
                     </div>
 
-                    <div class="input-box">
-                        <button type="submit" class="btn">Add</button>
-                    </div>
+                    <button type="submit" class="btn">Add</button>
                 </form>
             </form>
         </div>

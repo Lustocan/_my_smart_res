@@ -29,7 +29,7 @@ export class AddTComponent implements OnInit {
       
       this.tableService.buildTable({number :this.fc.number.value,
                                     seats : this.fc.seats.value}).subscribe(()=> {
-                                            this.router.navigateByUrl(this.returnUrl)
+                                            this.router.navigateByUrl('/tables')
       });
 	}
 

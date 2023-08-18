@@ -9,6 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./tables.component.css']
 })
 
+// TODO -> sistemare il placeholder di customers, quando lo schermo si rimpicciolisce i 4 bottoni si sminchiano
+//         fare in modo che per sendare un ordine bisogna aver fillato i customers
+
 export class TablesComponent implements OnInit{
     tables : Table[] = [] ;
 

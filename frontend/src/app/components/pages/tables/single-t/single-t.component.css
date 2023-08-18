@@ -276,6 +276,18 @@ body{
     justify-content: center;
 }
 
+.button-container{
+    height: 40px;
+    display: flex ;
+    margin-right: 715px;
+}
+
+.button-container button{
+    width: 140px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
 .foot{
     display: flex;
     justify-content: space-between;

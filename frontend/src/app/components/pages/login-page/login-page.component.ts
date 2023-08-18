@@ -39,8 +39,8 @@ export class LoginPageComponent implements OnInit {
 		this.isSubmitted = true;
 		if (this.loginForm.invalid) return;
 
-		    this.userService.login({ username: this.fc.username.value, password: this.fc.password.value }).subscribe((result: any) => {
-			this.router.navigateByUrl(this.returnUrl).then(() => {
+		this.userService.login({ username: this.fc.username.value, password: this.fc.password.value }).subscribe((result: any) => {
+		    this.router.navigateByUrl(this.returnUrl).then(() => {
 				setTimeout(function(){
 					location.reload();
 				}, 1500

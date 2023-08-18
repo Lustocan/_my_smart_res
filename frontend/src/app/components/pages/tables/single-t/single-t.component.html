@@ -43,23 +43,34 @@
         <div class="container">
             <div class="sidebar">
                 <div class="head"><p *ngIf="table">Table #{{table.number}}</p>
-                    <div class="input-box">
-                        <input type="text" placeholder="Customers">
-                    </div>
                 </div>
-                <div class="cartItem" *ngFor="let c of ca; let i = index;">{{ca[i].amount}} x {{ca[i].element}} </div>
+                <div class="cartItem" *ngFor="let c of cart; let i = index;">{{cart[i].amount}} x {{cart[i].element}} </div>
                 <div class="foot">
                     <h3>Total</h3>
                     <h2 id="total">{{total_price}}.00 €</h2>
                     <button id="send" (click)="order()">Order now</button>
+                    <form [formGroup]="ordersForm" (ngSubmit)='submit()'>
+                        <div class="input-box">
+                            <input type="text" placeholder="Customers" formControlName="customers">
+                        </div>
+                        <div class="input-box">
+                            <button type="submit" class="btn">Change</button>
+                       </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="button-container">
-            <button (click)="drinks()">Drinks</button>
-            <button (click)="dishes()">Dishes</button>
-            <button (click)="coffe()">Coffe-bar</button>
-            <button (click)="dessert()">Desserts</button>
+        <div class="container">
+            <div class="sidebar">
+                <div class="footer">
+                </div>
+                <div class="button-container">
+                    <button (click)="drinks()">Drinks</button>
+                    <button (click)="dishes()">Dishes</button>
+                    <button (click)="coffe()">Coffe-bar</button>
+                    <button (click)="dessert()">Desserts</button>
+                </div>
+            </div>
         </div>
         <div class="flex-container">
             <div class="box" *ngFor="let m of menu">

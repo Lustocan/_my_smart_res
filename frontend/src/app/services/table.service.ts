@@ -27,9 +27,14 @@ export class TableService {
 
 	updateTable(number:string, costumers: Number): Observable<Table>{
 		return this.http.patch<Table>(TABLES_URL+'/'+number+'/update',{customers: costumers},this.httpOptions)
-			.pipe(catchError(()=>{  
-				alert("Table doesn't exist or more costumers then seats");
-				return new Observable<Table>;
+		.pipe(
+			tap({
+				next: (menu) => { 
+					this.toastrService.success('Table customers changhed');
+				},
+				error: (errorResponse) => {
+					this.toastrService.error('The numbers of customers must be less than the avaible seats');
+				}
 			}));
 	}
 

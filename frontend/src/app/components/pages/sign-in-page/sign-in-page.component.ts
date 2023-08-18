@@ -29,7 +29,6 @@ export class SignInPageComponent implements OnInit{
 
       this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl ;
     } 
-
   submit() : void {
     this.isSubmitted = true ;
     if(this.signInForm.invalid){

@@ -10,6 +10,8 @@ import { AddTComponent } from './components/pages/tables/add-t/add-t.component';
 import { SingleTComponent } from './components/pages/tables/single-t/single-t.component';
 import { KitchenComponent } from './components/pages/kitchen/kitchen.component';
 import { BarComponent } from './components/pages/bar/bar.component';
+import { UsersComponent } from './components/pages/users/users.component';
+import { CheckOutComponent } from './components/pages/check-out/check-out.component';
 
 const routes: Routes = [
     {path : 'search/:searchTerm', component : HomeComponent},
@@ -22,7 +24,9 @@ const routes: Routes = [
     {path : 'add_table', component : AddTComponent},
     {path : 'tables/:number', component : SingleTComponent},
     {path : 'Kitchen', component: KitchenComponent},
-    {path : 'bar', component: BarComponent}
+    {path : 'bar', component: BarComponent},
+    {path : 'users', component: UsersComponent},
+    {path : 'check-out', component: CheckOutComponent}
 ];
 
 @NgModule({

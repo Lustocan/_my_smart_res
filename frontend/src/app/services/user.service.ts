@@ -77,6 +77,10 @@ export class UserService {
 	}
 
 
+	getAll(): Observable<Users[]>{
+		return this.http.get<Users[]>(USERS_URL,this.httpOptions);
+	}
+
     getIt() : Observable<Users> {
         let http = new HttpOptions();
         return this.http.get<Users>(USER_URL, http) ;
@@ -95,6 +99,14 @@ export class UserService {
 	}
 
 	deleteUser(id:string) : Observable<Users>{
-		return this.http.delete<Users>(USERS_URL+'/'+id,this.httpOptions);
+		return this.http.delete<Users>(USERS_URL+'/'+id,this.httpOptions).pipe(
+			tap({
+				next: (user) => { 
+					this.toastrService.success('Deleted Successfully');
+				},
+				error: (errorResponse) => {
+					this.toastrService.error('Delete Failed');
+				}
+			}));
 	}
 }

@@ -38,4 +38,19 @@ export class OrdersService {
 		return this.http.get<Orders[]>(ORDERS_URL,this.httpOptions);
 	}
 
+	deleteOrderById(id: string):Observable<Orders>{
+		return this.http.delete<Orders>(ORDERS_URL+'/'+id+'/delete', this.httpOptions).pipe(
+			tap({
+				next: () => {
+					this.toastrService.success('Order settled');
+				},
+				error: (errorResponse) => {
+					this.toastrService.error('Order Failed');			
+				}
+			})
+		);
+
+	}
+		
+
 }

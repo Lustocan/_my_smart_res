@@ -179,8 +179,6 @@ export const getUser = async(req : express.Request, res: express.Response) => {
 
         const user = await getUserById(_id) ;
 
-        console.log(user);
-
         if(!user){
             return res.sendStatus(401);
         }

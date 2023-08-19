@@ -10,16 +10,20 @@ import { Observable } from 'rxjs';
 })
 export class UserProfileComponent implements OnInit{
     user = new Users() ;
+	users : Users[] = [];
 
+    isCasher : boolean = false;
     constructor(userService : UserService){
         let userObservable: Observable<Users>;
 
         userObservable = userService.getIt()  ;
         
-        userObservable.subscribe((serverUser)=> this.user = serverUser);
+        userObservable.subscribe((serverUser)=> {
+			this.user = serverUser
+		});
+	}
 
-    }
 
-	  ngOnInit(): void {
-	  }
+	ngOnInit(): void {
+	}
 }

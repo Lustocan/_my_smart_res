@@ -20,6 +20,8 @@ import { AddTComponent } from './components/pages/tables/add-t/add-t.component';
 import { SingleTComponent } from './components/pages/tables/single-t/single-t.component';
 import { KitchenComponent } from './components/pages/kitchen/kitchen.component';
 import { BarComponent } from './components/pages/bar/bar.component';
+import { UsersComponent } from './components/pages/users/users.component';
+import { CheckOutComponent } from './components/pages/check-out/check-out.component';
 
 
 const config : SocketIoConfig = {
@@ -44,6 +46,8 @@ const config : SocketIoConfig = {
     SingleTComponent,
     KitchenComponent,
     BarComponent,
+    UsersComponent,
+    CheckOutComponent,
   ],
   imports: [
     BrowserModule,

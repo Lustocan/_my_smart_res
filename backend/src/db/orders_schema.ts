@@ -4,14 +4,17 @@ import mongoose from 'mongoose'
 
 
 const orderSchema = new mongoose.Schema({
-    _id : {type : String},
+    _id : { type : String, required : true},
     n_table   : {type : Number, required : true},
     waiter      : {type : String, required : true},
     operator      : {type : String},
     total_time: {type : Number, required : true},
     to_prepare : [{element : String , amount : Number, kind : String }], 
-    total_price : {type : Number}
+    total_price : {type : Number},
+    prep_status : {type : Boolean, default : false}
 });
+
+
 
 // we turn this schema into a model (a collection)
 export const OrderModel = mongoose.model('Order', orderSchema) ;

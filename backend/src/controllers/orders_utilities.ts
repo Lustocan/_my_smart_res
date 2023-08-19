@@ -1,13 +1,15 @@
 import express from 'express' ;
 import { getOrderByTable, createOrder, getOrders, deleteOrderById } from '../db/orders_schema';
 
+
 export const getAllOrdersInThisTable = async(req : express.Request, res : express.Response ) => {
     try{
         const { n_table } = req.params ;
 
-        const orders = await getOrderByTable(n_table) ;
+        //const orders = await getOrderByTable(n_table) ;
 
-        return res.status(200).json(orders) ;
+       // return res.status(200).json(orders) ;
+       return res.status(200);
 
     }
     catch(error){
@@ -32,16 +34,13 @@ export const  getAllOrders = async (req : express.Request, res : express.Respons
 
 export const new_Order = async(req : express.Request, res : express.Response ) => {
     try{
-        const { waiter, total_time, to_prepare, total_price } = req.body ;
+        const {_id ,waiter, total_time, to_prepare, total_price } = req.body ;
 
         const { n_table } = req.params         ;
 
         if(!n_table||!waiter||!to_prepare||!total_price||!total_time){
-
             return res.sendStatus(400) ;
         }
-
-        const _id = require('uuid').v4() ;
 
         const order = await createOrder({
              _id,

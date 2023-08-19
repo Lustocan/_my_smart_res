@@ -16,17 +16,8 @@ export class HomeComponent implements OnInit {
 	users: Users[] = [];
 	tables: Table[] = [];
 	constructor(private userService: UserService, activatedRoute: ActivatedRoute,
-		        private socketService : SocketIoService) {
-/*
-		socket.on("hello from server", ({ data }) => {
-			const packet = JSON.parse(data) ;
-			console.log(packet);
-		})*/
-
+		        private socketIoService : SocketIoService) {
 	}
 
-
-	ngOnInit(): void {
-        this.socketService.fetchMovies();
-	}
+	ngOnInit(): void { }
 }

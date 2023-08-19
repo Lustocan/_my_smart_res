@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';  
+import { Socket } from 'ngx-socket-io';
+import { Observable, Observer } from 'rxjs';
 
 @Injectable({
-	providedIn: 'root'
+    providedIn: 'root'
 })
 export class SocketIoService {
-	constructor(private socket: Socket) { }
+	el : any ;
+    constructor(private socket: Socket) { }
 
-	// emit event
-	fetchMovies() {
-		this.socket.emit('hello', 'world');
-	} 
+    // emit event
+    fetch(elem : Number) {
+        this.socket.emit('cook', elem);
+    } 
 
-	// listen event
-	onFetchMovies() {
-		return this.socket.fromEvent('fetchMovies');
-	}
+    // listen event
+    onFetch() {
+		return this.el= new Observable((observer: Observer<any>) => {
+			this.socket.on('cook', (message:any) => {
+				observer.next(message)});
+		});
+    }
 }

@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Socket } from 'socket.io-client';
 import { OrdersService } from 'src/app/services/orders.service';
+import { SocketIoService } from 'src/app/services/socket.io.service';
 import { Kind } from 'src/app/shared/models/menù';
 import { Orders } from 'src/app/shared/models/orders';
+import { Subject } from 'rxjs';
+
+
+const elem : String[] = [] ;
 
 @Component({
   selector: 'app-kitchen',
@@ -10,11 +16,22 @@ import { Orders } from 'src/app/shared/models/orders';
 })
 export class KitchenComponent implements OnInit {
 	orders : Orders[] = [];
-	constructor(private ordersService :OrdersService){
+
+
+	user = new Orders()       ;
+	subject : Subject<any> = new Subject();
+
+	constructor(private ordersService :OrdersService, private socketIoService : SocketIoService){
 	}
 
 	ngOnInit(): void {
+		this.socketIoService.onFetch().subscribe((el : any) => {
+			this.subject.next(el);
+		})
+	    this.subject.subscribe((el)=>elem.push(el));
+		
 		this.ordersService.getAllOrders().subscribe((serverOrder) => this.orders = serverOrder);
+
 	}
 
 
@@ -31,4 +48,10 @@ export class KitchenComponent implements OnInit {
 	public isDishes(kind: any) : boolean{
 		return kind === 'dishes' || kind === 'dessert';
 	}
+
+
+	clik(){
+		console.log(elem);
+	}
+
 }

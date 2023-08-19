@@ -29,7 +29,7 @@ export const login = async (req : express.Request , res : express.Response ) => 
 
         await user.save();
 
-        var user = await getUserByUsername(username).select('-authentication.password -authentication.salt -authenticatio.sessionToken') ;
+        var user = await getUserByUsername(username).select('-authentication.password -authentication.salt -authentication.sessionToken') ;
 
         dtn.config() ;
         const token = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET, { expiresIn : "10h"});
@@ -179,7 +179,6 @@ export const getUser = async(req : express.Request, res: express.Response) => {
 
         const user = await getUserById(_id) ;
 
-        console.log(user);
 
         if(!user){
             return res.sendStatus(401);

@@ -1,8 +1,6 @@
 import express from 'express';
 import https from 'https';
-import http from 'http';
 import {readFileSync} from 'fs' ;
-import * as util from 'util' ;
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
@@ -10,7 +8,6 @@ import cors from 'cors';
 import mongoose, { connection } from 'mongoose';
 import router from './router/ret_rout';
 import {Server} from "socket.io"
-import { createServer } from "https"
 
 
 
@@ -19,9 +16,6 @@ import { createServer } from "https"
     and methods to specify what template ("view") engine is used, where template files are located, 
     and what template to use to render a response. */
 const app = express()                 ;
-
-
-
 
 /* Cross-origin resource sharing (CORS) is a browser mechanism which enables
    controlled access to resources located outside of a given domain.        
@@ -55,15 +49,8 @@ app.use(bodyParser.json());
 
 /* A Node.js Promise is a placeholder for a value that will be available in the future, 
    allowing us to handle the result of an asynchronous task once it has completed or encountered an error. */
-/*async function startServer(){
-      const [key, cert]  = await Promise.all([readFile('key.pem'), readFile('certificate.pem')]);
-         https.createServer({key, cert}, app).listen(443);
-         console.log("Server running on https://localhost:443/")
-}*/
 
 // Create a sever that use the https protocol and put it listening on port 443
-
-//const [key, cert] = await Promise.all([readFile('key.pem'), readFile('certificate.pem')]);
 
 
 const httpsServer = https.createServer({key : readFileSync('key.pem'), cert : readFileSync('certificate.pem')}, app);
@@ -71,35 +58,19 @@ const httpsServer = https.createServer({key : readFileSync('key.pem'), cert : re
 
 const io = new Server(httpsServer);
 
-io.on('connection', (socket) => {
-      socket.on("hello", (arg) => {
-        console.log(arg); // world
-      });
-})
 
+io.on('connection', socket => {
+   socket.on('cook', (arg) => {
+       console.log(arg);
+       socket.broadcast.emit('cook', arg)
+   })
+})
 
 
 
 if(httpsServer.listen(443)){
    console.log("Server running on https://localhost:443/");
 }
-
-
-
-/*const server = http.createServer(app) ;
-
-const io = new Server(server) ;
-
-
-io.on('connection', (socket) => {
-   console.log("A user connected")
-})
-
-
-server.listen(5000, () => {
-  console.log("Server running on http://localhost:5000") ;
-})*/
-
 
 // Our mongodb url 
 const MONGO_URL = "mongodb+srv://lustocan:lustocan@cluster0.moozrf8.mongodb.net/?retryWrites=true&w=majority"

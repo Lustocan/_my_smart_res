@@ -1,6 +1,8 @@
 export class Orders{
     constructor(_id?: String, n_table?: Number, waiter?: String, operator ?: String, 
-        to_prepare?: Array<{element: String, amount : Number, kind : String }>, total_price?: Number, total_time? : Number){
+        to_prepare?: Array<{element: String, amount : Number, kind : String }>,
+        total_price?: Number, total_time? : Number){
+            
             this._id= _id;
             this.n_table = n_table;
             this.waiter = waiter;

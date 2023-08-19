@@ -10,6 +10,12 @@ import { UserService } from 'src/app/services/user.service';
 import { Observable, Subject } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Orders } from 'src/app/shared/models/orders';
+import { QueueService } from 'src/app/services/queue.service';
+import { Queue } from 'src/app/shared/models/queue';
+import { v4 as uuid} from 'uuid';
+import { SocketIoService } from 'src/app/services/socket.io.service';
+
 
 
 @Component({
@@ -18,25 +24,32 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./single-t.component.css']
 })
 export class SingleTComponent implements OnInit{
-  ordersForm !: FormGroup  ;
+  ordersForm !: FormGroup                          ;
 
-  user = new Users() ;
-  subject : Subject<Users> = new Subject();
-  num = this.route.snapshot.paramMap.get('number') ;
+  ord  = new Orders() ; user = new Users()         ;
+  que  : Queue[] = [] ;
+  
+  subjectU : Subject<Users> = new Subject()        ;
 
-  table  = new Table(); 
-  menu : Menù[] = []  ;
+  table  = new Table();   menu : Menù[] = []       ;
+  total_price = 0.    ;   total_time  = 0.         ;
+  drink = false       ;   eat = false              ;
 
-  total_price = 0. ;
-  total_time  = 0. ;
+
 
   cart : Array<{element : String , amount : Number, kind : String}> = [] ;
+  num = this.route.snapshot.paramMap.get('number') ;
 
 
   constructor(private tableService : TableService , private menuService : MenùService, 
               private route : ActivatedRoute , private userService : UserService,
               private ordersService : OrdersService, private formBuilder : FormBuilder ,
-              private toastrService : ToastrService) {
+              private toastrService : ToastrService, private socketIoService : SocketIoService,
+              private queueService  : QueueService) {
+
+      let queueObservable = queueService.getAllQueues() ;
+
+      queueObservable.subscribe((serverQueue)=> this.que = serverQueue); 
 
       let num = this.route.snapshot.paramMap.get('number') ;
 
@@ -48,17 +61,21 @@ export class SingleTComponent implements OnInit{
 
       let userObservable: Observable<Users>;
 
-            userObservable = userService.getIt()  ;
+      userObservable = userService.getIt()  ;
             
-            userObservable.subscribe((serverUser) => {
-                  this.subject.next(serverUser);
-            });
-            this.subject.subscribe((user)=>this.user = user);
+      userObservable.subscribe((serverUser) => {
+               this.subjectU.next(serverUser);
+      });
+      this.subjectU.subscribe((user)=>this.user = user);
   }
 
   putInCart(menu : Menù){  
       this.total_price = +(this.total_price) + +(menu.price)
       this.total_time = +(this.total_time) + +(menu.preparation_time)
+      
+      if(menu.kind===Kind.coffe_bar||menu.kind===Kind.drinks) this.drink = true ;
+      if(menu.kind===Kind.dishes||menu.kind===Kind.dessert) this.eat = true ;
+
       for(var i=0 ; i<this.cart.length; i++){
           if(menu.name===this.cart[i].element) {
              this.cart[i].amount = + this.cart[i].amount + + 1 ;
@@ -66,6 +83,53 @@ export class SingleTComponent implements OnInit{
           }
       }
       this.cart.push({element : menu.name, amount : 1, kind : menu.kind})
+  }
+
+
+  order() {
+    if(this.table.customers===0){
+        this.toastrService.error('Customers must be major than zero.')	
+    }
+    else if(!this.cart){
+        this.toastrService.error('Cart empty.')	
+    }
+    else{
+          if(this.num){
+              let numero = parseInt(this.num) ;
+
+              let _id = uuid()  ;
+
+              this.ordersService.newOrder({_id : _id, waiter : this.user.username,
+                  to_prepare : this.cart , total_price : this.total_price , total_time : this.total_time}, numero ).subscribe();
+
+              if(this.que.length>0){
+                 console.log("ramo if")
+                 for(let i=0; i<this.que.length; i++){
+                    if(this.que[i].for_bar&&this.drink){
+                        this.que[i].queue?.push({_id_order :_id})
+                    }
+                    else if((!this.que[i].for_bar)&&(this.eat)){
+                        this.que[i].queue?.push({_id_order :_id})
+                    }
+                 }
+              }
+              else{
+                 console.log("ramo else")
+                if(this.drink){
+                    let arr = [];
+                    arr.push({_id_order : _id}) ;
+                    this.queueService.newQueue({ queue : arr, for_bar : true  }).subscribe()
+                }
+                else if(this.eat){
+                    let arr = [];
+                    arr.push({_id_order : _id}) ;
+                    this.queueService.newQueue({ queue : arr, for_bar : false  }).subscribe()
+                }
+              }
+
+              this.socketIoService.fetch(666);
+          }
+    }
   }
 
   drinks(){
@@ -92,35 +156,9 @@ export class SingleTComponent implements OnInit{
       menuObservable.subscribe((serverMenu)=> this.menu = serverMenu); 
   }
 
-  /*submit() : void {
-    this.isSubmitted = true ;
-    if(this.signInForm.invalid) return ;
-    
-    this.userService.sign_in({username:this.fc.username.value,
-                              name : this.fc.name.value, surname: this.fc.surname.value, 
-                              role: this.fc.role.value , password:this.fc.password.value}).subscribe(()=> {
-                                  this.router.navigateByUrl("/login")
-     });*/
-
   submit() : void {
-     if(this.ordersForm.invalid) return ;
-     if(this.num) this.tableService.updateTable(this.num, this.ordersForm.controls.customers.value).subscribe()
-  }
-
- order() {
-  if(this.table.customers===0){
-    this.toastrService.error('Customers must be major than zero.')	
-  }
-  else if(!this.cart){
-    this.toastrService.error('Cart empty.')	
-  }
-  else{
-        if(this.num){
-          let numero = parseInt(this.num);
-          this.ordersService.newOrder({ waiter : this.user.username,
-          to_prepare : this.cart , total_price : this.total_price , total_time : this.total_time}, numero ).subscribe() ;
-        }
-    }
+      if(this.ordersForm.invalid) return ;
+      if(this.num) this.tableService.updateTable(this.num, this.ordersForm.controls.customers.value).subscribe()
   }
   
   ngOnInit() : void {

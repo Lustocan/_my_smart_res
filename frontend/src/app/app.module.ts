@@ -17,7 +17,6 @@ import { UserProfileComponent } from './components/pages/user-profile/user-profi
 import { UpdateProfileComponent } from './components/pages/update-profile/update-profile.component';
 import { TablesComponent } from './components/pages/tables/tables.component';
 import { AddTComponent } from './components/pages/tables/add-t/add-t.component';
-import { UpdTComponent } from './components/pages/tables/upd-t/upd-t.component';
 import { SingleTComponent } from './components/pages/tables/single-t/single-t.component';
 import { KitchenComponent } from './components/pages/kitchen/kitchen.component';
 import { BarComponent } from './components/pages/bar/bar.component';
@@ -42,7 +41,6 @@ const config : SocketIoConfig = {
     UpdateProfileComponent,
     TablesComponent,
     AddTComponent,
-    UpdTComponent,
     SingleTComponent,
     KitchenComponent,
     BarComponent,

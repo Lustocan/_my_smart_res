@@ -167,9 +167,6 @@ export const getAllUsers = async(req : express.Request, res: express.Response) =
 
 export const getUser = async(req : express.Request, res: express.Response) => {
     try{
-
-        const sessionCookie = req.cookies['SessionCookie'];
-
         const { authorization } = req.headers;
 
         if(!authorization){

@@ -83,7 +83,15 @@ export class UserService {
     }
 
 	updateUser(id:String,username:String, name:String, surname: String, role: String) : Observable<Users> {
-		return this.http.patch<Users>(USERS_URL+'/'+id,{username:username,name:name,surname:surname,role:role},this.httpOptions);
+		return this.http.patch<Users>(USERS_URL+'/'+id,{username:username,name:name,surname:surname,role:role},this.httpOptions).pipe(
+			tap({
+				next: (user) => { 
+					this.toastrService.success('Update Successful')
+				},
+				error: (errorResponse) => {
+					this.toastrService.error(' Failed')
+				}
+			}));
 	}
 
 	deleteUser(id:string) : Observable<Users>{

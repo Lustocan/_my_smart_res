@@ -4,7 +4,8 @@ import { UserService } from 'src/app/services/user.service'
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Table } from 'src/app/shared/models/table';
-import { TableService } from 'src/app/services/table.service';
+import { Socket } from 'socket.io-client';
+import { SocketIoService } from 'src/app/services/socket.io.service';
 
 @Component({
 	selector: 'app-home',
@@ -14,24 +15,18 @@ import { TableService } from 'src/app/services/table.service';
 export class HomeComponent implements OnInit {
 	users: Users[] = [];
 	tables: Table[] = [];
-	constructor(private userService: UserService, activatedRoute: ActivatedRoute) {
-		/*let usersObservable: Observable<Users[]>;
-		let tablvesObservable: Observable<Table[]>;
-		activatedRoute.params.subscribe(params => {
-			if (params.searchTerm) {
-				//usersObservable = this.usersService.getAllUsersBySearchTerm(params.searchTerm) ;
-			}
-			else {
-                usersObservable = usersService.getAll();
-				//tablesObservable = tableService.getAll();
-			}
-			    usersObservable.subscribe((serverUsers) => {
-				this.users = serverUsers;
-			});
-			//tablesObservable.subscribe((serverTables)=> this.tables = serverTables);
+	constructor(private userService: UserService, activatedRoute: ActivatedRoute,
+		        private socketService : SocketIoService) {
+/*
+		socket.on("hello from server", ({ data }) => {
+			const packet = JSON.parse(data) ;
+			console.log(packet);
 		})*/
+
 	}
 
+
 	ngOnInit(): void {
+        this.socketService.fetchMovies();
 	}
 }

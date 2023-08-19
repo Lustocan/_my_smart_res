@@ -72,7 +72,7 @@ export const delete_tab = async (req : express.Request, res : express.Response) 
 
 export const update_tab = async (req : express.Request, res : express.Response) => {
     try{
-        const { number } = req.params ;
+        const { number, free  } = req.params ;
         const { customers } = req.body ;
 
         let updatedTable = await getTableByNumber(number)
@@ -84,7 +84,7 @@ export const update_tab = async (req : express.Request, res : express.Response) 
             return res.sendStatus(400) ;
         }
 
-        if(customers===0){
+        if(customers==0){
             await updateTableById(updatedTable._id, {
                  free : true ,
                  customers 

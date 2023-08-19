@@ -42,8 +42,7 @@
     <body>
         <div class="container">
             <div class="sidebar">
-                <div class="head"><p *ngIf="table">Table #{{table.number}}</p>
-                </div>
+                <div class="head"><p *ngIf="table">Table #{{table.number}}</p></div>
                 <div class="cartItem" *ngFor="let c of cart; let i = index;">{{cart[i].amount}} x {{cart[i].element}} </div>
                 <div class="foot">
                     <h3>Total</h3>
@@ -62,7 +61,7 @@
         </div>
         <div class="container">
             <div class="sidebar">
-                <div class="footer">
+                <div class="foot">
                 </div>
                 <div class="button-container">
                     <button (click)="drinks()">Drinks</button>

@@ -10,8 +10,8 @@ import cors from 'cors';
 import mongoose, { connection } from 'mongoose';
 import router from './router/ret_rout';
 import {Server} from "socket.io"
-import { getAllUsers } from 'controllers/users_utilities';
-import { getUsers } from './db/users_schema';
+import { createServer } from "https"
+
 
 
 /*  Express provides methods to specify what function is called for a particular 
@@ -65,7 +65,19 @@ app.use(bodyParser.json());
 
 //const [key, cert] = await Promise.all([readFile('key.pem'), readFile('certificate.pem')]);
 
+
 const httpsServer = https.createServer({key : readFileSync('key.pem'), cert : readFileSync('certificate.pem')}, app);
+
+
+const io = new Server(httpsServer);
+
+io.on('connection', (socket) => {
+      socket.on("hello", (arg) => {
+        console.log(arg); // world
+      });
+})
+
+
 
 
 if(httpsServer.listen(443)){
@@ -78,14 +90,11 @@ if(httpsServer.listen(443)){
 
 const io = new Server(server) ;
 
-const users =  getUsers();
 
 io.on('connection', (socket) => {
-  socket.on("getUsers", () => {
-      console.log("ciao");
-      socket.emit("allUsers", {_id : 6, username : "gino", name : "gino", surname : "gino", role: "waiter" });
-  })
+   console.log("A user connected")
 })
+
 
 server.listen(5000, () => {
   console.log("Server running on http://localhost:5000") ;

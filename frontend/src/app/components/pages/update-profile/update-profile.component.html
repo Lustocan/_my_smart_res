@@ -12,32 +12,30 @@
 <body>
     <div class="wrapper">
         <form action="">
+            <form [formGroup]="updateForm" (ngSubmit)='update()'>
                 <h1>Update your profile</h1>
 
                 <div class="input-box">
-                    <input type="text" placeholder="Username*" formControlName="username" required>
+                    <input type="text" placeholder="Username" formControlName="username" required>
                 </div>
     
                 <div class="input-box">
-                    <input type="text" placeholder="Name*" formControlName="name" required>
+                    <input type="text" placeholder="Name" formControlName="name" required>
                 </div>
 
                 <div class="input-box">
-                    <input type="text" placeholder="Surname*" formControlName="surname" required>
+                    <input type="text" placeholder="Surname" formControlName="surname" required>
                 </div>
 
                 <div class="input-box">
-                    <input type="text" placeholder="Role*" formControlName="role" required>
+                    <input type="text" placeholder="Role" formControlName="role" required>
                 </div>
 
-                <div class="input-box">
-                    <input type="password" placeholder="Password*" formControlName="password" required>
-                </div>
                 <div class="input-box">
                      <button type="submit" class="btn">Update</button>
                 </div>
-
             </form>
+        </form>
     </div>
 </body>
 </html>

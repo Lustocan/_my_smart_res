@@ -2,6 +2,22 @@
 <html>
     <body>
         <ul class="list">
+            <li *ngIf="wip">
+                <a href="https://localhost:4200/Kitchen/{{wip._id}}" *ngIf = nDishesOrDessert(wip) class="green-cmp">
+                    <div class="content">
+                        <div>
+                            <h3>Table Number : {{wip.n_table}}</h3>
+                            <h3>Waiter : {{wip.waiter}}</h3>
+                        </div>
+                        <div *ngFor="let elem of wip.to_prepare">
+                            <ul *ngIf ="isDishes(elem.kind, wip.ready_k)" class="center_list" style="list-style-type:disc;">
+                                <li> Name: {{elem.element}}</li>
+                                <li> Amount: {{elem.amount}}</li>
+                                <li> Kind: {{elem.kind}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </a>
             <li *ngFor="let order of orders">
                 <a href="https://localhost:4200/Kitchen/{{order._id}}" *ngIf = nDishesOrDessert(order)>
                     <div class="content">
@@ -10,7 +26,7 @@
                             <h3>Waiter : {{order.waiter}}</h3>
                         </div>
                         <div *ngFor="let elem of order.to_prepare">
-                            <ul *ngIf ="isDishes(elem.kind)" class="center_list" style="list-style-type:disc;">
+                            <ul *ngIf ="isDishes(elem.kind, order.ready_k)" class="center_list" style="list-style-type:disc;">
                                 <li> Name: {{elem.element}}</li>
                                 <li> Amount: {{elem.amount}}</li>
                                 <li> Kind: {{elem.kind}}</li>
@@ -19,6 +35,10 @@
                     </div>
                 </a>
             </li>
+            <button (click)='startTimer()'>Start Timer</button>
+<button (click)='pauseTimer()'>Pause</button>
+
+<p>{{timeLeft}} Seconds Left....</p>
         </ul>
         <div>
         </div>

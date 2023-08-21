@@ -49,8 +49,5 @@ export class OrdersService {
 				}
 			})
 		);
-
 	}
-		
-
 }

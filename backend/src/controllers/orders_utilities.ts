@@ -34,7 +34,7 @@ export const  getAllOrders = async (req : express.Request, res : express.Respons
 
 export const new_Order = async(req : express.Request, res : express.Response ) => {
     try{
-        const {_id ,waiter,  to_prepare, total_price, date } = req.body ;
+        const {_id ,waiter,  to_prepare, total_price, kitchen_time, bar_time, date } = req.body ;
 
         const { n_table } = req.params         ;
 
@@ -48,6 +48,8 @@ export const new_Order = async(req : express.Request, res : express.Response ) =
              waiter,
              to_prepare,
              total_price,
+             kitchen_time,
+             bar_time,
              date
         })
 

@@ -1,7 +1,7 @@
 export class Orders{
     constructor(_id?: String, n_table?: Number, waiter?: String, operator ?: String, 
-        to_prepare?: Array<{element: String, amount : Number, kind : String }>,
-        total_price?: Number, total_time? : Number){
+        to_prepare?: Array<{_id : String, element: String, amount : Number, kind : String, time : Number }>,
+        total_price?: Number, ready_k ?:Boolean, ready_b ?:Boolean, date ?: Date){
             
             this._id= _id;
             this.n_table = n_table;
@@ -9,14 +9,19 @@ export class Orders{
             this.operator = operator;
             this.to_prepare = to_prepare;
             this.total_price = total_price;
-            this.total_time = total_time ;
+            this.ready_k = ready_k ;
+            this.ready_b = ready_b ;
+            this.date = date ;
+
         }
 
     _id ?: String;
     n_table ?: Number;
     waiter ?: String;
     operator ?: String;
-    to_prepare ?: Array<{element: String, amount : Number, kind : String}> ;
+    to_prepare ?: Array<{_id : String ,element: String, amount : Number, kind : String, time : Number}> ;
     total_price ?: Number;
-    total_time ?: Number ;
+    ready_k ?: Boolean ;
+    ready_b ?: Boolean ;
+    date ?: Date ;
 }

@@ -60,10 +60,12 @@ const io = new Server(httpsServer);
 
 
 io.on('connection', socket => {
-   socket.on('cook', (arg) => {
-       console.log(arg);
-       socket.broadcast.emit('cook', arg)
+   socket.on('kitchen', (arg) => {
+       socket.broadcast.emit('kitchen', arg)
    })
+   socket.on('bar', (arg) => {
+      socket.broadcast.emit('bar', arg)
+  })
 })
 
 

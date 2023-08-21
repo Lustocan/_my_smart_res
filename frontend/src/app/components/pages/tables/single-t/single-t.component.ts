@@ -11,8 +11,6 @@ import { Observable, Subject } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Orders } from 'src/app/shared/models/orders';
-import { QueueService } from 'src/app/services/queue.service';
-import { Queue } from 'src/app/shared/models/queue';
 import { v4 as uuid} from 'uuid';
 import { SocketIoService } from 'src/app/services/socket.io.service';
 
@@ -27,62 +25,57 @@ export class SingleTComponent implements OnInit{
   ordersForm !: FormGroup                          ;
 
   ord  = new Orders() ; user = new Users()         ;
-  que  : Queue[] = [] ;
   
   subjectU : Subject<Users> = new Subject()        ;
 
   table  = new Table();   menu : Menù[] = []       ;
   total_price = 0.    ;   total_time  = 0.         ;
-  drink = false       ;   eat = false              ;
+
+  kitchen = false     ; bar = false                ;
 
 
 
-  cart : Array<{element : String , amount : Number, kind : String}> = [] ;
+  cart : Array<{_id : String ,element : String , amount : Number, kind : String, time : Number}> = [] ;
   num = this.route.snapshot.paramMap.get('number') ;
 
 
   constructor(private tableService : TableService , private menuService : MenùService, 
               private route : ActivatedRoute , private userService : UserService,
               private ordersService : OrdersService, private formBuilder : FormBuilder ,
-              private toastrService : ToastrService, private socketIoService : SocketIoService,
-              private queueService  : QueueService) {
+              private toastrService : ToastrService, private socketIoService : SocketIoService) {
 
-      let queueObservable = queueService.getAllQueues() ;
+              let num = this.route.snapshot.paramMap.get('number') ;
 
-      queueObservable.subscribe((serverQueue)=> this.que = serverQueue); 
+              if(num){  
+                  let tableObservable = tableService.getTableByNumber(num) ;
 
-      let num = this.route.snapshot.paramMap.get('number') ;
+                  tableObservable.subscribe((serverTable)=> this.table = serverTable); 
+              }    
 
-      if(num){  
-          let tableObservable = tableService.getTableByNumber(num) ;
+              let userObservable: Observable<Users>;
 
-          tableObservable.subscribe((serverTable)=> this.table = serverTable); 
-      }    
-
-      let userObservable: Observable<Users>;
-
-      userObservable = userService.getIt()  ;
-            
-      userObservable.subscribe((serverUser) => {
-               this.subjectU.next(serverUser);
-      });
-      this.subjectU.subscribe((user)=>this.user = user);
+              userObservable = userService.getIt()  ;
+                    
+              userObservable.subscribe((serverUser) => {
+                      this.subjectU.next(serverUser);
+              });
+              this.subjectU.subscribe((user)=>this.user = user);
   }
 
   putInCart(menu : Menù){  
       this.total_price = +(this.total_price) + +(menu.price)
       this.total_time = +(this.total_time) + +(menu.preparation_time)
-      
-      if(menu.kind===Kind.coffe_bar||menu.kind===Kind.drinks) this.drink = true ;
-      if(menu.kind===Kind.dishes||menu.kind===Kind.dessert) this.eat = true ;
-
+      if(menu.kind===Kind.coffe_bar||menu.kind===Kind.drinks) this.bar = true ;
+      if(menu.kind===Kind.dishes||menu.kind===Kind.dessert) this.kitchen = true ;
       for(var i=0 ; i<this.cart.length; i++){
           if(menu.name===this.cart[i].element) {
              this.cart[i].amount = + this.cart[i].amount + + 1 ;
              return ;
           }
       }
-      this.cart.push({element : menu.name, amount : 1, kind : menu.kind})
+
+      // quando implementi la insert nel menu devi ricordarti di autogenerarti l'id lato client
+      this.cart.push({ _id : menu._id ,element : menu.name, amount : 1, kind : menu.kind, time : menu.preparation_time})
   }
 
 
@@ -100,34 +93,12 @@ export class SingleTComponent implements OnInit{
               let _id = uuid()  ;
 
               this.ordersService.newOrder({_id : _id, waiter : this.user.username,
-                  to_prepare : this.cart , total_price : this.total_price , total_time : this.total_time}, numero ).subscribe();
+                  to_prepare : this.cart , total_price : this.total_price, date : new Date() }, numero ).subscribe();
 
-              if(this.que.length>0){
-                 console.log("ramo if")
-                 for(let i=0; i<this.que.length; i++){
-                    if(this.que[i].for_bar&&this.drink){
-                        this.que[i].queue?.push({_id_order :_id})
-                    }
-                    else if((!this.que[i].for_bar)&&(this.eat)){
-                        this.que[i].queue?.push({_id_order :_id})
-                    }
-                 }
-              }
-              else{
-                 console.log("ramo else")
-                if(this.drink){
-                    let arr = [];
-                    arr.push({_id_order : _id}) ;
-                    this.queueService.newQueue({ queue : arr, for_bar : true  }).subscribe()
-                }
-                else if(this.eat){
-                    let arr = [];
-                    arr.push({_id_order : _id}) ;
-                    this.queueService.newQueue({ queue : arr, for_bar : false  }).subscribe()
-                }
-              }
+              if(this.kitchen) this.socketIoService.send_k("spedito");
 
-              this.socketIoService.fetch(666);
+              this.kitchen = false ;
+              this.bar     = false ;
           }
     }
   }

@@ -14,7 +14,7 @@ export class Menù{
         this.price = price === undefined ? 0 : price;
         this.preparation_time = preparation_time === undefined ? 0 : preparation_time;
     }
-    _id ?: String;
+    _id : String;
     name : String;
     kind : Kind;
     price : Number;

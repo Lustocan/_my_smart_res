@@ -4,7 +4,6 @@ import users from './users'
 import tables from './tables'
 import menu from './menu'
 import orders from './orders'
-import queues from './queues';
 
 // This function return a new router object
 const router = express.Router();
@@ -15,6 +14,5 @@ export default () : express.Router => {
     tables(router)          ;
     menu(router)            ;
     orders(router)          ;
-    queues(router)          ;
     return router           ;
 };

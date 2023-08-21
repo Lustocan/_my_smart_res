@@ -25,10 +25,10 @@ export class KitchenComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.socketIoService.onFetch().subscribe((el : any) => {
-			this.subject.next(el);
-		})
-	    this.subject.subscribe((el)=>elem.push(el));
+		this.socketIoService.recive_k(); //.subscribe((el : any) => {
+			//this.subject.next(el);
+		//})
+	    //this.subject.subscribe((el)=>elem.push(el));
 		
 		this.ordersService.getAllOrders().subscribe((serverOrder) => this.orders = serverOrder);
 

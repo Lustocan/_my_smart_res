@@ -4,14 +4,14 @@ import mongoose from 'mongoose'
 
 
 const orderSchema = new mongoose.Schema({
-    _id : { type : String, required : true},
-    n_table   : {type : Number, required : true},
-    waiter      : {type : String, required : true},
-    operator      : {type : String},
-    total_time: {type : Number, required : true},
-    to_prepare : [{element : String , amount : Number, kind : String }], 
-    total_price : {type : Number},
-    prep_status : {type : Boolean, default : false}
+    _id          : { type : String, required : true},
+    n_table      : {type : Number, required : true},
+    waiter       : {type : String, required : true},
+    to_prepare   : [{_id : String ,element : String ,amount : Number ,kind : String, time : Number }], 
+    total_price  : {type : Number},
+    ready_k      : {type : Boolean, default : false},
+    ready_b      : {type : Boolean, default : false},
+    date         : {type : Date, required : true }
 });
 
 

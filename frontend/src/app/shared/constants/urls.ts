@@ -11,3 +11,4 @@ export const USERS_LOGIN_URL = BASE_URL +'/auth/login';
 export const USERS_SIGN_IN_URL = BASE_URL +'/auth/sign_in';
 export const ORDERS_URL = BASE_URL + '/orders';
 export const QUEUE_URL = BASE_URL + '/orders/queue';
+export const GET_QUEUES_URL = QUEUE_URL + '/all';

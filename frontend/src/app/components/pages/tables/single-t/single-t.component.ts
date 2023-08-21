@@ -11,130 +11,132 @@ import { Observable, Subject } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Orders } from 'src/app/shared/models/orders';
-import { v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { SocketIoService } from 'src/app/services/socket.io.service';
 
 
 
 @Component({
-  selector: 'app-single-t',
-  templateUrl: './single-t.component.html',
-  styleUrls: ['./single-t.component.css']
+    selector: 'app-single-t',
+    templateUrl: './single-t.component.html',
+    styleUrls: ['./single-t.component.css']
 })
-export class SingleTComponent implements OnInit{
-  ordersForm !: FormGroup                          ;
+export class SingleTComponent implements OnInit {
+    ordersForm !: FormGroup;
 
-  ord  = new Orders() ; user = new Users()         ;
-  
-  subjectU : Subject<Users> = new Subject()        ;
+    ord = new Orders(); user = new Users();
 
-  table  = new Table();   menu : Menù[] = []       ;
-  total_price = 0.    ;   total_time  = 0.         ;
+    subjectU: Subject<Users> = new Subject();
 
-  kitchen = false     ; bar = false                ;
+    table = new Table(); menu: Menù[] = [];
+    total_price = 0.; total_time = 0.;
 
-
-
-  cart : Array<{_id : String ,element : String , amount : Number, kind : String, time : Number}> = [] ;
-  num = this.route.snapshot.paramMap.get('number') ;
+    kitchen = false; bar = false;
 
 
-  constructor(private tableService : TableService , private menuService : MenùService, 
-              private route : ActivatedRoute , private userService : UserService,
-              private ordersService : OrdersService, private formBuilder : FormBuilder ,
-              private toastrService : ToastrService, private socketIoService : SocketIoService) {
 
-              let num = this.route.snapshot.paramMap.get('number') ;
-
-              if(num){  
-                  let tableObservable = tableService.getTableByNumber(num) ;
-
-                  tableObservable.subscribe((serverTable)=> this.table = serverTable); 
-              }    
-
-              let userObservable: Observable<Users>;
-
-              userObservable = userService.getIt()  ;
-                    
-              userObservable.subscribe((serverUser) => {
-                      this.subjectU.next(serverUser);
-              });
-              this.subjectU.subscribe((user)=>this.user = user);
-  }
-
-  putInCart(menu : Menù){  
-      this.total_price = +(this.total_price) + +(menu.price)
-      this.total_time = +(this.total_time) + +(menu.preparation_time)
-      if(menu.kind===Kind.coffe_bar||menu.kind===Kind.drinks) this.bar = true ;
-      if(menu.kind===Kind.dishes||menu.kind===Kind.dessert) this.kitchen = true ;
-      for(var i=0 ; i<this.cart.length; i++){
-          if(menu.name===this.cart[i].element) {
-             this.cart[i].amount = + this.cart[i].amount + + 1 ;
-             return ;
-          }
-      }
-
-      // quando implementi la insert nel menu devi ricordarti di autogenerarti l'id lato client
-      this.cart.push({ _id : menu._id ,element : menu.name, amount : 1, kind : menu.kind, time : menu.preparation_time})
-  }
+    cart: Array<{ _id: String, element: String, amount: Number, kind: String, time: Number }> = [];
+    num = this.route.snapshot.paramMap.get('number');
 
 
-  order() {
-    if(this.table.customers===0){
-        this.toastrService.error('Customers must be major than zero.')	
+    constructor(private tableService: TableService, private menuService: MenùService,
+        private route: ActivatedRoute, private userService: UserService,
+        private ordersService: OrdersService, private formBuilder: FormBuilder,
+        private toastrService: ToastrService, private socketIoService: SocketIoService) {
+
+        let num = this.route.snapshot.paramMap.get('number');
+
+        if (num) {
+            let tableObservable = tableService.getTableByNumber(num);
+
+            tableObservable.subscribe((serverTable) => this.table = serverTable);
+        }
+
+        let userObservable: Observable<Users>;
+
+        userObservable = userService.getIt();
+
+        userObservable.subscribe((serverUser) => {
+            this.subjectU.next(serverUser);
+        });
+        this.subjectU.subscribe((user) => this.user = user);
     }
-    else if(!this.cart){
-        this.toastrService.error('Cart empty.')	
+
+    putInCart(menu: Menù) {
+        this.total_price = +(this.total_price) + +(menu.price)
+        this.total_time = +(this.total_time) + +(menu.preparation_time)
+        if (menu.kind === Kind.coffe_bar || menu.kind === Kind.drinks) this.bar = true;
+        if (menu.kind === Kind.dishes || menu.kind === Kind.dessert) this.kitchen = true;
+        for (var i = 0; i < this.cart.length; i++) {
+            if (menu.name === this.cart[i].element) {
+                this.cart[i].amount = + this.cart[i].amount + + 1;
+                return;
+            }
+        }
+
+        // quando implementi la insert nel menu devi ricordarti di autogenerarti l'id lato client
+        this.cart.push({ _id: menu._id, element: menu.name, amount: 1, kind: menu.kind, time: menu.preparation_time })
     }
-    else{
-          if(this.num){
-              let numero = parseInt(this.num) ;
 
-              let _id = uuid()  ;
 
-              this.ordersService.newOrder({_id : _id, waiter : this.user.username,
-                  to_prepare : this.cart , total_price : this.total_price, date : new Date() }, numero ).subscribe();
+    order() {
+        if (this.table.customers === 0) {
+            this.toastrService.error('Customers must be major than zero.')
+        }
+        else if (!this.cart) {
+            this.toastrService.error('Cart empty.')
+        }
+        else {
+            if (this.num) {
+                let numero = parseInt(this.num);
 
-              if(this.kitchen) this.socketIoService.send_k("spedito");
+                let _id = uuid();
 
-              this.kitchen = false ;
-              this.bar     = false ;
-          }
+                this.ordersService.newOrder({
+                    _id: _id, waiter: this.user.username,
+                    to_prepare: this.cart, total_price: this.total_price, date: new Date()
+                }, numero).subscribe();
+
+                if (this.kitchen) this.socketIoService.send_k("spedito");
+
+                this.kitchen = false;
+                this.bar = false;
+            }
+        }
     }
-  }
 
-  drinks(){
-      let menuObservable = this.menuService.GetMenuByKind(Kind.drinks) ;   
-      
-      menuObservable.subscribe((serverMenu)=> this.menu = serverMenu); 
-  }
+    drinks() {
+        let menuObservable = this.menuService.GetMenuByKind(Kind.drinks);
 
-  dishes(){
-      let menuObservable = this.menuService.GetMenuByKind(Kind.dishes) ;   
-      
-      menuObservable.subscribe((serverMenu)=> this.menu = serverMenu); 
-  }
+        menuObservable.subscribe((serverMenu) => this.menu = serverMenu);
+    }
 
-  dessert(){
-      let menuObservable = this.menuService.GetMenuByKind(Kind.dessert) ;   
-      
-      menuObservable.subscribe((serverMenu)=> this.menu = serverMenu); 
-  }
+    dishes() {
+        let menuObservable = this.menuService.GetMenuByKind(Kind.dishes);
 
-  coffe(){
-      let menuObservable = this.menuService.GetMenuByKind(Kind.coffe_bar) ;   
-      
-      menuObservable.subscribe((serverMenu)=> this.menu = serverMenu); 
-  }
+        menuObservable.subscribe((serverMenu) => this.menu = serverMenu);
+    }
 
-  submit() : void {
-      if(this.ordersForm.invalid) return ;
-      if(this.num) this.tableService.updateTable(this.num, this.ordersForm.controls.customers.value).subscribe()
-  }
-  
-  ngOnInit() : void {
-      this.ordersForm = this.formBuilder.group({
-         customers : ['', [Validators.required]]
-      })
-  }
+    dessert() {
+        let menuObservable = this.menuService.GetMenuByKind(Kind.dessert);
+
+        menuObservable.subscribe((serverMenu) => this.menu = serverMenu);
+    }
+
+    coffe() {
+        let menuObservable = this.menuService.GetMenuByKind(Kind.coffe_bar);
+
+        menuObservable.subscribe((serverMenu) => this.menu = serverMenu);
+    }
+
+    submit(): void {
+        if (this.ordersForm.invalid) return;
+        if (this.num) this.tableService.updateTable(this.num, this.ordersForm.controls.customers.value).subscribe(() => location.reload());
+    }
+
+    ngOnInit(): void {
+        this.ordersForm = this.formBuilder.group({
+            customers: ['', [Validators.required]]
+        })
+    }
 }

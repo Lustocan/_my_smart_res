@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <ul class="list">
-            <li *ngFor="let order of orders">
-                <a href="https://localhost:4200/Kitchen/{{order._id}}" *ngIf = nDrinksOrCoffeOrders(order)>
-                    <div class="content">
-                        <div>
-                            <h3>Table Number : {{order.n_table}}</h3>
-                            <h3>Waiter : {{order.waiter}}</h3>
-                        </div>
-                            <div *ngFor="let elem of order.to_prepare">
-                                <ul *ngIf ="isDrinksOrCoffe(elem.kind)" class="center_list" style="list-style-type:disc;">
-                                    <li> Name: {{elem.element}}</li>
-                                    <li> Amount: {{elem.amount}}</li>
-                                    <li> Kind: {{elem.kind}}</li>
-                                </ul>
-                            </div>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </body>
+
+<body>
+    <ul class="list">
+        <li *ngFor="let order of orders">
+            <a *ngIf = nDrinksOrCoffeOrders(order)>
+                <table class="invoice-table">
+                    <thead>
+                    <tr>
+                        <td colspan="3">
+                            <p>Table Number : {{order.n_table}}</p>
+                            <p>Waiter : {{order.waiter}}</p>
+                        </td>
+                    </tr>
+                    
+                    <tr class="thead-exception">
+                        <td>Name</td>
+                        <td>Amount</td>
+                        <td>Time</td>
+                    </tr>
+                    </thead>
+                    <tbody *ngFor="let elem of order.to_prepare">
+                    <tr *ngIf ="isDrinksOrCoffe(elem.kind)">
+                        <td>{{elem.element}}</td>
+                        <td> {{elem.amount}}</td>
+                        <td> {{elem.time}} Min</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </a>
+        </li>
+    </ul>
+</body>
+
 </html>

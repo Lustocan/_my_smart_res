@@ -4,7 +4,6 @@
     box-sizing: border-box;
     font-family: 'poppins', sans-serif;
     font-style: oblique;
-    font-weight: bold;
 }
 
 
@@ -74,6 +73,7 @@ li a img{
 
 .invoice-table thead tr{
     border-bottom: 1px dashed grey;
+    font-weight: bold;
 }
 
 .invoice-table tfoot tr{

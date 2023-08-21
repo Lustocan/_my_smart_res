@@ -8,7 +8,7 @@ import { tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { IUserSign_in } from '../shared/interfaces/IUserSign_in';
 import { HttpOptions } from '../shared/models/httpOptions';
-import { TOKEN, USER_KEY } from '../shared/constants/Storage_name';
+import { TOKEN } from '../shared/constants/Storage_name';
 
 
 @Injectable({
@@ -17,11 +17,7 @@ import { TOKEN, USER_KEY } from '../shared/constants/Storage_name';
 export class UserService {
 
 	httpOptions = new HttpOptions();
-	private userSubject = new BehaviorSubject<Users>(this.getUserFromLocalStorage());
-	public userObservable: Observable<Users>; // readonly version of userSubject
-
 	constructor(private http: HttpClient ,private toastrService : ToastrService) {
-		this.userObservable = this.userSubject.asObservable();
 	}
 
 
@@ -33,10 +29,9 @@ export class UserService {
 				next: (user) => {
 					this.toastrService.success('Login in Successful' );
 					this.setUserToLocalStorage(user);
-					this.userSubject.next(user);
 				},
 				error: (errorResponse) => {
-					this.toastrService.error('Login in Failed')			
+					this.toastrService.error('Login in Failed');			
 				}
 			})
 		);
@@ -46,10 +41,10 @@ export class UserService {
 		return this.http.post<Users>(USERS_SIGN_IN_URL, userLogin, this.httpOptions).pipe(
 			tap({
 				next: (user) => { 
-					this.toastrService.success('Sign in Successful')
+					this.toastrService.success('Sign in Successful');
 				},
 				error: (errorResponse) => {
-					this.toastrService.error('Sign in Failed')
+					this.toastrService.error('Sign in Failed');
 				}
 			})
 		);
@@ -61,18 +56,10 @@ export class UserService {
 	}
 
 	private setUserToLocalStorage(user: Users) {
-		localStorage.setItem(USER_KEY, JSON.stringify(user));
 		localStorage.setItem(TOKEN, user.toString());
 	}
 
-	private getUserFromLocalStorage(): Users {
-		const userJson = localStorage.getItem(USER_KEY);
-		if (userJson) return JSON.parse(userJson) as Users;
-		return new Users;
-	}
-
 	private deleteUserFromLocalStorage() {
-		if(localStorage.getItem(USER_KEY)) localStorage.removeItem(USER_KEY) ;
 		if(localStorage.getItem(TOKEN)) localStorage.removeItem(TOKEN) ;
 	}
 
@@ -90,10 +77,10 @@ export class UserService {
 		return this.http.patch<Users>(USERS_URL+'/'+id,{username:username,name:name,surname:surname,role:role},this.httpOptions).pipe(
 			tap({
 				next: (user) => { 
-					this.toastrService.success('Update Successful')
+					this.toastrService.success('Update Successful');
 				},
 				error: (errorResponse) => {
-					this.toastrService.error(' Failed')
+					this.toastrService.error(' Failed');
 				}
 			}));
 	}

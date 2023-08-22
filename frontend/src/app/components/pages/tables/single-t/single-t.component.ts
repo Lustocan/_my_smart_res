@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { TableService } from 'src/app/services/table.service';
 import { Table } from 'src/app/shared/models/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenùService } from 'src/app/services/menù.service';
 import { Kind, Menù } from 'src/app/shared/models/menù';
 import { OrdersService } from 'src/app/services/orders.service';
 import { Users } from 'src/app/shared/models/users';
 import { UserService } from 'src/app/services/user.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, catchError } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Orders } from 'src/app/shared/models/orders';
 import { v4 as uuid } from 'uuid';
 import { SocketIoService } from 'src/app/services/socket.io.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 
@@ -44,12 +45,21 @@ export class SingleTComponent implements OnInit {
     constructor(private tableService: TableService, private menuService: MenùService,
         private route: ActivatedRoute, private userService: UserService,
         private ordersService: OrdersService, private formBuilder: FormBuilder,
-        private toastrService: ToastrService, private socketIoService: SocketIoService) {
+        private toastrService: ToastrService, private socketIoService: SocketIoService,
+        private router : Router) {
 
         let num = this.route.snapshot.paramMap.get('number');
 
         if (num) {
-            let tableObservable = tableService.getTableByNumber(num);
+            let tableObservable = tableService.getTableByNumber(num).pipe(
+                catchError((error)=>{
+                    if(error instanceof HttpErrorResponse){
+                        this.toastrService.error('You must log first');
+                        this.router.navigateByUrl('/login');
+                    }
+                    return new Observable<Table>();
+                
+                }));
 
             tableObservable.subscribe((serverTable) => this.table = serverTable);
         }

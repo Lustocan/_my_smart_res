@@ -3,45 +3,63 @@ import { TableService } from 'src/app/services/table.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Table } from 'src/app/shared/models/table';
+import { UserService } from 'src/app/services/user.service';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/internal/Observable';
+import { ToastrService } from 'ngx-toastr';
 
 
 // TODO , dopo l'add table non fa il redirect
 
 @Component({
-  selector: 'app-add-t',
-  templateUrl: './add-t.component.html',
-  styleUrls: ['./add-t.component.css']
+	selector: 'app-add-t',
+	templateUrl: './add-t.component.html',
+	styleUrls: ['./add-t.component.css']
 })
 export class AddTComponent implements OnInit {
 
-  tableForm !: FormGroup;
+	tableForm !: FormGroup;
 	isSubmitted = false;
 	returnUrl = '';
 
-  constructor(private formBuilder: FormBuilder, private tableService: TableService,
-              private activatedRoute: ActivatedRoute, private router: Router){ }
-
-  submit() {
-      this.isSubmitted = true ;
-      if(this.tableForm.invalid){
-        return ;
-      }
-      
-      this.tableService.buildTable({number :this.fc.number.value,
-                                    seats : this.fc.seats.value}).subscribe(()=> {
-                                            this.router.navigateByUrl('/tables')
-      });
+	constructor(private formBuilder: FormBuilder, private tableService: TableService,
+		private activatedRoute: ActivatedRoute, private router: Router, private userService : UserService, 
+		private toastrService: ToastrService) {
+			this.userService.getIt().pipe(
+                catchError((error)=>{
+                    if(error instanceof HttpErrorResponse){
+                        this.toastrService.error('You must log first');
+                        this.router.navigateByUrl('/login');
+                    }
+                    return new Observable<Table>();
+                
+                })).subscribe();
 	}
 
-  get fc() {
+	submit() {
+		this.isSubmitted = true;
+		if (this.tableForm.invalid) {
+			return;
+		}
+
+		this.tableService.buildTable({
+			number: this.fc.number.value,
+			seats: this.fc.seats.value
+		}).subscribe(() => {
+			this.router.navigateByUrl('/tables');
+		});
+	}
+
+	get fc() {
 		return this.tableForm.controls;
 	}
 
-  ngOnInit(): void {
-    this.tableForm = this.formBuilder.group({
+	ngOnInit(): void {
+		this.tableForm = this.formBuilder.group({
 			number: ['', [Validators.required]],
 			seats: ['', [Validators.required]]
 		})
-  }
+	}
 
 }

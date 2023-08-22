@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Users } from 'src/app/shared/models/users';
-import { Subject , Observable} from 'rxjs';
+import { Subject , Observable, catchError} from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-update-profile',
@@ -18,10 +20,20 @@ export class UpdateProfileComponent implements OnInit {
 
 
   constructor(private http : HttpClient, private userService : UserService,
-              private formBuilder : FormBuilder ) {
+              private formBuilder : FormBuilder, private toastrService : ToastrService, private router : Router ) {
         let userObservable: Observable<Users>;
 
-        userObservable = userService.getIt()  ;
+        userObservable = userService.getIt().pipe(
+          catchError((error) => {
+            if (error instanceof HttpErrorResponse) {
+              this.toastrService.error('You must log first');
+              this.router.navigateByUrl('/login');
+            }
+            return new Observable<Users>();
+    
+          })
+    
+        );
         
         userObservable.subscribe((serverUser) => {
               this.subject.next(serverUser);

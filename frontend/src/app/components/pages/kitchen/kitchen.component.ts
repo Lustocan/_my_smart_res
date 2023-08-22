@@ -70,7 +70,7 @@ export class KitchenComponent implements OnInit {
 		  else{
 			 window.sessionStorage.removeItem('my-counter');
 			 this.ordersService.updateOrder(this.wip._id,  true , false).subscribe();
-			 this.socketIoService.send_w('ready');
+			 this.socketIoService.send_w(this.wip.waiter);
 			 setTimeout(function(){
 				location.reload();
 			}, 1500 )
@@ -86,7 +86,7 @@ export class KitchenComponent implements OnInit {
 	ready(){
 		window.sessionStorage.removeItem('my-counter');
 		this.ordersService.updateOrder(this.wip._id,  true , false).subscribe();
-		this.socketIoService.send_w('ready');
+		this.socketIoService.send_w(this.wip.waiter);
 		setTimeout(function(){
 			location.reload();
 		}, 1500 )

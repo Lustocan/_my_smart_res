@@ -17,14 +17,13 @@ export class SocketIoService {
 
     // listen event
     receive_k() {
-		/*return this.el= new Observable((observer: Observer<any>) => {
-			this.socket.on('kitchen', (message:any) => {
-				observer.next(message)})
-		});*/
         this.socket.on('kitchen', (message:any) => {
             if(message){
                 this.toastrService.warning('New order received');
             }
+            setTimeout(function(){
+                location.reload();
+              }, 1500)
         })
     }
 

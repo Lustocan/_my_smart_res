@@ -101,7 +101,7 @@ export class SingleTComponent implements OnInit {
                     to_prepare : this.cart , total_price : this.total_price, bar_time : this.bar_time,
                     kitchen_time : this.kitchen_time ,date : new Date() }, numero ).subscribe();
   
-                if(this.kitchen) this.socketIoService.send_k("spedito");
+                if(this.kitchen) this.socketIoService.send_k(this.user.username);
                 if(this.bar)     this.socketIoService.send_b("spedito");
             }
         }

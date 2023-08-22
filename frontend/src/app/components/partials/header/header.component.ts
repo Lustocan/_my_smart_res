@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
                   this.socketIoService.receive_k();    
             }
             else if(sessionStorage.getItem("my-role")==="waiter"){
-                  this.socketIoService.receive_k();   
+                  this.socketIoService.receive_w();   
             }
             else if(sessionStorage.getItem("my-role")==="bartender"){
                   this.socketIoService.receive_b();   

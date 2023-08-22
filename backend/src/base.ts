@@ -58,18 +58,40 @@ const httpsServer = https.createServer({key : readFileSync('key.pem'), cert : re
 
 const io = new Server(httpsServer);
 
+let users = [{id : String(), username : String() }] ;
+
+
 
 io.on('connection', socket => {
+
    socket.on('kitchen', (arg) => {
-       socket.broadcast.emit('kitchen', arg)
+       let bool = true ;
+       for(let i=0; i<users.length; i++){
+           if(users[i].username===arg) bool = false ;
+       }
+       if(bool) users.push({id : socket.id, username : arg})
+       socket.broadcast.emit('kitchen', users)
    })
+
    socket.on('bar', (arg) => {
-      socket.broadcast.emit('bar', arg)
+      let bool = true ;
+      for(let i=0; i<users.length; i++){
+          if(users[i].username===arg) bool = false ;
+      }
+      if(bool) users.push({id : socket.id, username : arg})
+      socket.broadcast.emit('bar', users)
    })
+
    socket.on('tables', (arg) => {
-      socket.broadcast.emit('tables', arg)
+      console.log(users)
+      for(let i =0 ; i<users.length; i++){
+         if(users[i].username===arg){
+           socket.broadcast.to(users[i].id).emit('tables', arg);
+         }
+      }
    })
 })
+
 
 
 

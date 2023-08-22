@@ -8,5 +8,5 @@ export default (router : express.Router) => {
     router.get('/users' , isAuthenticated, getAllUsers);
     router.delete('/users/:id', isAuthenticated, isAdmin , deleteUser);
     router.patch('/users/:id', isAuthenticated, isAdmin , updateUser);
-    router.get('/user' , getUser);
+    router.get('/user' , isAuthenticated ,getUser);
 }

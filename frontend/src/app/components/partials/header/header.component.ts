@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
       }
       
       ngOnInit(): void { 
-            //this.getUser();
+            this.getUser();
             if(sessionStorage.getItem("my-role")==="cook"){
                   this.socketIoService.receive_k();    
             }

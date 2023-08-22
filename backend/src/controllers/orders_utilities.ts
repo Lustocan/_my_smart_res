@@ -1,5 +1,5 @@
 import express from 'express' ;
-import { getOrderByTable, createOrder, getOrders, deleteOrderById } from '../db/orders_schema';
+import { updateById, createOrder, getOrders, deleteOrderById } from '../db/orders_schema';
 
 
 export const getAllOrdersInThisTable = async(req : express.Request, res : express.Response ) => {
@@ -58,6 +58,27 @@ export const new_Order = async(req : express.Request, res : express.Response ) =
     catch(error){
         console.log(error) ;
         return res.sendStatus(400) ;
+    }
+}
+
+export const updateOrder = async (req : express.Request, res : express.Response) => {
+    try{
+        const { ready_k, ready_b  } = req.body ;
+        const { _id } = req.params    ;
+       
+        if(!_id||(!ready_k&&!ready_b)){
+           return res.sendStatus(400) ;
+        }
+
+        if(ready_k) await updateById(_id, {ready_k : ready_k});
+
+        if(ready_b) await updateById(_id, {ready_b : ready_b});
+
+        return res.status(200).end()  ;
+    }
+    catch(error){
+        console.log(error) ;
+        res.sendStatus(400);
     }
 }
 

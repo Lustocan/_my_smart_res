@@ -16,14 +16,14 @@ export class SocketIoService {
     } 
 
     // listen event
-    recive_k() {
+    receive_k() {
 		/*return this.el= new Observable((observer: Observer<any>) => {
 			this.socket.on('kitchen', (message:any) => {
 				observer.next(message)})
 		});*/
         this.socket.on('kitchen', (message:any) => {
             if(message){
-                this.toastrService.warning('New order received' );
+                this.toastrService.warning('New order received');
             }
         })
     }
@@ -33,7 +33,7 @@ export class SocketIoService {
     } 
 
     // listen event
-    recive_b() {
+    receive_b() {
 		/*return this.el= new Observable((observer: Observer<any>) => {
 			this.socket.on('kitchen', (message:any) => {
 				observer.next(message)})
@@ -41,6 +41,19 @@ export class SocketIoService {
         this.socket.on('bar', (message:any) => {
             if(message){
                 this.toastrService.warning('New order received' );
+            }
+        })
+    }
+
+    send_w(elem : String) {
+        this.socket.emit('tables', elem);
+    } 
+
+    // listen event
+    receive_w() {
+        this.socket.on('tables', (message:any) => {
+            if(message){
+                this.toastrService.warning('There is some dishes ready in the kitchen.' );
             }
         })
     }

@@ -50,4 +50,8 @@ export class OrdersService {
 			})
 		);
 	}
+
+	updateOrder(_id : String, ready_k : Boolean, ready_b : Boolean) : Observable<Orders> {
+		return this.http.patch<Orders>(ORDERS_URL+'/'+ _id + '/update', { ready_k : ready_k, ready_b : ready_b}, this.httpOptions) 
+	}
 }

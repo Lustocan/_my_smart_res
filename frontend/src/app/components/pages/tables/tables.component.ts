@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TableService } from 'src/app/services/table.service';
 import { Table } from 'src/app/shared/models/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SocketIoService } from 'src/app/services/socket.io.service';
 
 @Component({
   selector: 'app-tables',

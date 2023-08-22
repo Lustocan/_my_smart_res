@@ -65,7 +65,10 @@ io.on('connection', socket => {
    })
    socket.on('bar', (arg) => {
       socket.broadcast.emit('bar', arg)
-  })
+   })
+   socket.on('tables', (arg) => {
+      socket.broadcast.emit('tables', arg)
+   })
 })
 
 

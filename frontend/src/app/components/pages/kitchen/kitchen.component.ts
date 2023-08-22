@@ -1,17 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Socket } from 'socket.io-client';
 import { OrdersService } from 'src/app/services/orders.service';
 import { SocketIoService } from 'src/app/services/socket.io.service';
-import { Kind } from 'src/app/shared/models/menù';
 import { Orders } from 'src/app/shared/models/orders';
-import { Subject, Subscription } from 'rxjs';
-import { Router } from '@angular/router';
-import { NavigationStart } from '@angular/router';
+import { Subject } from 'rxjs';
 
 
-
-
-const elem : String[] = [] ;
 
 @Component({
   selector: 'app-kitchen',
@@ -22,35 +15,35 @@ export class KitchenComponent implements OnInit {
 	orders : Orders[] = [] ;
 	wip    : any           ;
 	browserRefresh = false;
+	session : string = "" ;
 
 	timeLeft: number = 0;
     interval : any ;
-
-
 
 	subject : Subject<any> = new Subject();
 
 	constructor(private ordersService :OrdersService, private socketIoService : SocketIoService){}
 
 	ngOnInit(): void {
-
-		this.socketIoService.recive_k(); 
 		
 		this.ordersService.getAllOrders().subscribe((serverOrder) => {
 			let i = 0;
 			while(!this.wip&&i<serverOrder.length){
 				if(!serverOrder[i].ready_k){ 
-					this.wip = serverOrder.shift();
+					this.wip = serverOrder[i];
+					serverOrder.splice(i,1);
 				}
 				i++ ;
 			}
-			this.timeLeft = this.wip.kitchen_time*60 ;
+			if(window.sessionStorage.getItem('my-counter')){
+				this.session = window.sessionStorage.getItem('my-counter')||""
+				this.timeLeft = parseInt(this.session)
+			}else{
+                this.timeLeft = this.wip.kitchen_time*60 ;
+			}
 			this.orders = serverOrder;
 	    });
 
-		window.onbeforeunload = function () {
-			console.log("Ciao")
-		 };
 	}
 
 
@@ -65,24 +58,37 @@ export class KitchenComponent implements OnInit {
 	}
 
 	startTimer() {
+		if(window.sessionStorage.getItem('my-counter')){
+			this.session = window.sessionStorage.getItem('my-counter')||""
+			this.timeLeft = parseInt(this.session)
+		}
 		this.interval = setInterval(() => {
 		  if(this.timeLeft > 0) {
 			 this.timeLeft--;
+			 window.sessionStorage.setItem('my-counter', this.timeLeft.toString());
 		  }
 		  else{
-			 this.timeLeft = 60 ;
+			 window.sessionStorage.removeItem('my-counter');
+			 this.ordersService.updateOrder(this.wip._id,  true , false).subscribe();
+			 this.socketIoService.send_w('ready');
+			 setTimeout(function(){
+				location.reload();
+			}, 1500 )
 		  }
 		  
 		},1000)
-	  }
+	}
 	
-	  pauseTimer() {
+	pauseTimer() {
 		clearInterval(this.interval);
-	  }
-
-
-	clik(){
-		console.log(elem);
 	}
 
+	ready(){
+		window.sessionStorage.removeItem('my-counter');
+		this.ordersService.updateOrder(this.wip._id,  true , false).subscribe();
+		this.socketIoService.send_w('ready');
+		setTimeout(function(){
+			location.reload();
+		}, 1500 )
+	}
 }

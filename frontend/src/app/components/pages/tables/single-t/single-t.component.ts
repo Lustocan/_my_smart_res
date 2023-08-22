@@ -103,9 +103,6 @@ export class SingleTComponent implements OnInit {
   
                 if(this.kitchen) this.socketIoService.send_k("spedito");
                 if(this.bar)     this.socketIoService.send_b("spedito");
-
-                this.kitchen = false;
-                this.bar = false;
             }
         }
     }

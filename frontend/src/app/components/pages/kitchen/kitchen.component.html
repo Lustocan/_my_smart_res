@@ -1,46 +1,75 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <ul class="list">
-            <li *ngIf="wip">
-                <a href="https://localhost:4200/Kitchen/{{wip._id}}" *ngIf = nDishesOrDessert(wip) class="green-cmp">
-                    <div class="content">
-                        <div>
-                            <h3>Table Number : {{wip.n_table}}</h3>
-                            <h3>Waiter : {{wip.waiter}}</h3>
-                        </div>
-                        <div *ngFor="let elem of wip.to_prepare">
-                            <ul *ngIf ="isDishes(elem.kind, wip.ready_k)" class="center_list" style="list-style-type:disc;">
-                                <li> Name: {{elem.element}}</li>
-                                <li> Amount: {{elem.amount}}</li>
-                                <li> Kind: {{elem.kind}}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </a>
-            <li *ngFor="let order of orders">
-                <a href="https://localhost:4200/Kitchen/{{order._id}}" *ngIf = nDishesOrDessert(order)>
-                    <div class="content">
-                        <div>
-                            <h3>Table Number : {{order.n_table}}</h3>
-                            <h3>Waiter : </h3>
-                        </div>
-                        <div *ngFor="let elem of order.to_prepare">
-                            <ul *ngIf ="isDishes(elem.kind, order.ready_k)" class="center_list" style="list-style-type:disc;">
-                                <li> Name: {{elem.element}}</li>
-                                <li> Amount: {{elem.amount}}</li>
-                                <li> Kind: {{elem.kind}}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <button (click)='startTimer()'>Start Timer</button>
-            <button (click)='pauseTimer()'>Pause</button>
-            <button (click)='ready()'>Ready</button>
-            <p>{{timeLeft}} Seconds Left....</p>
-        </ul>
-        <div>
-        </div>
-    </body>
+
+<body>
+    <ul>
+        <li *ngIf="wip">
+            <div *ngIf=nDishesOrDessert(wip)>
+                <main class="table">
+                    <section class="table-header">
+                        <h1>Table Number : {{wip.n_table}}</h1>
+                        <h1>Waiter : {{wip.waiter}}</h1>
+                    </section>
+                    <section class="table-body">
+                        <table class="special-table">
+                            <thead>
+                                <!-- <tr>
+                                <td colspan="3">
+                                    <p>Table Number : {{wip.n_table}}</p>
+                                    <p>Waiter : {{wip.waiter}}</p>
+                                </td>
+                            </tr> -->
+
+                                <tr class="thead-exception">
+                                    <td>Name</td>
+                                    <td>Amount</td>
+                                    <td>Time</td>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let elem of wip.to_prepare">
+                                <tr *ngIf="isDishes(elem.kind, wip.ready_k)">
+                                    <td>{{elem.element}}</td>
+                                    <td> {{elem.amount}}</td>
+                                    <td> {{wip.kitchen_time}} Min</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </main>
+            </div>
+        <li *ngFor="let order of orders">
+            <div class="profile-box" *ngIf=nDishesOrDessert(order)>
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <td colspan="3">
+                                <p>Table Number : {{order.n_table}}</p>
+                                <p>Waiter : {{order.waiter}}</p>
+                            </td>
+                        </tr>
+                        <tr class="thead-exception">
+                            <td>Name</td>
+                            <td>Amount</td>
+                            <td>Time</td>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let elem of order.to_prepare">
+                        <tr *ngIf="isDishes(elem.kind, order.ready_k)">
+                            <td>{{elem.element}}</td>
+                            <td> {{elem.amount}}</td>
+                            <td> {{order.kitchen_time}} Min</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+        <button (click)='startTimer()'>Start Timer</button>
+        <button (click)='pauseTimer()'>Pause</button>
+        <button (click)='ready()'>Ready</button>
+        <p>{{timeLeft}} Seconds Left....</p>
+    </ul>
+    <div>
+    </div>
+</body>
+
 </html>

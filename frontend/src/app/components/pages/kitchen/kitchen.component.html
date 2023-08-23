@@ -8,7 +8,7 @@
                 <main class="table">
                     <section class="table-header">
                         <h1>Table Number : {{wip.n_table}}</h1>
-                        <h1>Waiter : {{wip.waiter}}</h1>
+                        <h1>Waiter : {{get_current()}}</h1>
                     </section>
                     <section class="table-body">
                         <table class="special-table">
@@ -44,7 +44,7 @@
                         <tr>
                             <td colspan="3">
                                 <p>Table Number : {{order.n_table}}</p>
-                                <p>Waiter : {{order.waiter}}</p>
+                                <p>Waiter :{{get_waiter(order)}} </p>
                             </td>
                         </tr>
                         <tr class="thead-exception">

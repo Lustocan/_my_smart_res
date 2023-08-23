@@ -32,7 +32,7 @@ export class KitchenComponent implements OnInit {
 		let orderObservable = this.ordersService.getAllOrders().pipe(
 			catchError((error) => {
 				if (error instanceof HttpErrorResponse) {
-					this.toastrService.error('You must log first');
+					this.toastrService.error('Login required.');
 					this.router.navigateByUrl('/login');
 				}
 				return new Observable<Orders[]>();
@@ -59,7 +59,6 @@ export class KitchenComponent implements OnInit {
 			}
 			this.orders = serverOrder;
 		});
-
 	}
 
 
@@ -106,5 +105,19 @@ export class KitchenComponent implements OnInit {
 		setTimeout(function(){
 			location.reload();
 		}, 1500)
+	}
+
+	get_current(){
+		if(this.wip.staff){
+			return this.wip.staff[0].username ;
+		}
+		return null ;
+	}
+
+	get_waiter(order : Orders){
+		if(order.staff){
+			return order.staff[0].username ;
+		}
+		return null ;
 	}
 }

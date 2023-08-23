@@ -23,7 +23,7 @@ const routes: Routes = [
     {path : 'tables', component : TablesComponent},
     {path : 'add_table', component : AddTComponent},
     {path : 'tables/:number', component : SingleTComponent},
-    {path : 'Kitchen', component: KitchenComponent},
+    {path : 'kitchen', component: KitchenComponent},
     {path : 'bar', component: BarComponent},
     {path : 'users', component: UsersComponent},
     {path : 'tables/:number/check-out', component: CheckOutComponent}

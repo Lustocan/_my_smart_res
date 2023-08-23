@@ -45,4 +45,11 @@ export class BarComponent {
 	public isDrinksOrCoffe(kind: any): boolean {
 		return kind === 'drinks' || kind === 'coffe_bar';
 	}
+
+	get_waiter(order : Orders){
+		if(order.staff){
+			return order.staff[0].username ;
+		}
+		return null ;
+	}
 }

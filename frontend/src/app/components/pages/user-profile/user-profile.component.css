@@ -1,19 +1,19 @@
+
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'poppins', sans-serif;
 }
-
 body{
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url("https://images.squarespace-cdn.com/content/v1/5e1b73fb6eeb973ee1becfc4/1592675000454-J3PX30T4VNJIPWH3CT7P/custom-restaurant-tables-david-stine+3.jpg") ;
-    background-size: cover;
-}
+    background-image: linear-gradient(to bottom left,#c0c0c0,#50808f);
 
+}
 
 
 .profile-box{
@@ -40,6 +40,7 @@ body{
     top :40px;
     border-radius : 9px ;
 }
+
 
 .profile-pic{
     width : 150px ;
@@ -78,7 +79,7 @@ body{
     border-radius: 30px;
     margin-bottom: -50px;
     font-weight: 600px;
-    font-size: 16px;
+    font-size: 16px;;
 }
 
 .profile-box h3{

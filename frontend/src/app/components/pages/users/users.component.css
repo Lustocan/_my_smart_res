@@ -1,6 +1,5 @@
 *{
     margin: 0;
-    padding: 3px;
     box-sizing: border-box;
     font-family: 'poppins', sans-serif;
 }
@@ -15,13 +14,14 @@ body{
 
 
 .profile-box{
-    margin: 18px;
+    margin: 28px;
     background: #011638;;
     text-align: center;
     color: #fff;
     position: relative;
     border-radius : 20px;
     height : 70%;
+    padding: 8px;
 }
 
 .menu-icon{

@@ -1,14 +1,14 @@
 import express from 'express' ;
-import { updateById, createOrder, getOrders, deleteOrderById } from '../db/orders_schema';
+import { updateById, createOrder, getOrders, deleteOrderById, getOrderByTable } from '../db/orders_schema';
 
 
 export const getAllOrdersInThisTable = async(req : express.Request, res : express.Response ) => {
     try{
         const { n_table } = req.params ;
 
-        //const orders = await getOrderByTable(n_table) ;
+        const orders = await getOrderByTable(n_table) ;
 
-       // return res.status(200).json(orders) ;
+        return res.status(200).json(orders) ;
        return res.status(200);
 
     }

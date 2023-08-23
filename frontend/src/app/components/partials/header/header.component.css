@@ -73,6 +73,7 @@ header{
     align-items: center;
     box-shadow: 10px 5px 14px 2px;
     background-image: linear-gradient(to bottom left,#011638,black);
+    padding : 10px 20px 0 0 
 }
 
 .navbar .items .links{

@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { TOKEN } from '../constants/Storage_name';
+import { TOKEN } from '../constants/storage_name';
 
 //options for http request
 

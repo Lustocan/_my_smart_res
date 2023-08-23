@@ -38,7 +38,7 @@ export class TablesComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-         this.role = window.sessionStorage.getItem('my-role') || "" ;
+        this.role = window.sessionStorage.getItem('my-role') || "" ;
 	}
 
 	is_waiter(){

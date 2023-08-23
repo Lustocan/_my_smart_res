@@ -31,7 +31,7 @@ export class OrdersService {
 	}
 
 	getAllOrdersInThisTable(n_table: Number) : Observable<Orders[]>{
-		return this.http.get<Orders[]>(TABLES_URL+'/'+n_table, this.httpOptions);
+		return this.http.get<Orders[]>(ORDERS_URL+'/'+n_table, this.httpOptions);
 	}
 
 	getAllOrders() : Observable<Orders[]>{

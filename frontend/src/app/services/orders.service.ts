@@ -42,10 +42,10 @@ export class OrdersService {
 		return this.http.delete<Orders>(ORDERS_URL+'/'+id+'/delete', this.httpOptions).pipe(
 			tap({
 				next: () => {
-					this.toastrService.success('Order settled');
+					this.toastrService.success('Order deleted');
 				},
 				error: (errorResponse) => {
-					this.toastrService.error('Order Failed');			
+					this.toastrService.error('Delete Failed');			
 				}
 			})
 		);

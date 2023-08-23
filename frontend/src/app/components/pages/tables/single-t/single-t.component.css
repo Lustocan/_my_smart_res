@@ -1,185 +1,3 @@
-* {
-    margin : 0 ;
-    padding : 0 ;
-    box-sizing: border-box;
-    font-family:'Comic Sans MS' ;
-}
-/*
-body {
-    background-image: url("https://images.squarespace-cdn.com/content/v1/5e1b73fb6eeb973ee1becfc4/1592675000454-J3PX30T4VNJIPWH3CT7P/custom-restaurant-tables-david-stine+3.jpg") ;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-.upside{
-    height: 50vh; 
-    background-size: cover ;
-    background-position: 100%;
-    z-index: 9;
-    margin: 30px;
-}
-
-
-.bottomside{
-    background: linear-gradient(to bottom left,#c0c0c0,#50808f); 
-    display: flex;
-    position: absolute;
-    bottom : 0 ;
-  
-}
-/*
-
-
-.upside{
-    height: 50vh; 
-    background-size: cover ;
-    background-position: 100%;
-    z-index: 9;
-    margin: 30px;
-}
-
-.bottomside{
-    height: 45vh;
-    width:   335px;
-    background: linear-gradient(to bottom left,#c0c0c0,#50808f); 
-    display: flex;
-    position: absolute;
-    left : 0 ;
-    bottom : 0 ;
-    border-radius: 10px;
-    box-shadow: 5px  black;
-}
-
-
-.flex-container {
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: row ;
-    flex-wrap : wrap;;
-}
-
-.flex-box{
-    width: 90px;
-    height: 90px;
-    background: linear-gradient(#011638,#0344ac);
-    color: white;
-    font-size: 18px;
-    text-align: center;
-    line-height: center;
-    border: black;
-    box-shadow: 3px 3px black;
-    border-radius: 20px;
-    margin: 10px;
-}
-
-.flex-box:hover{
-    box-shadow: none;
-    cursor: pointer;
-}
-
-
-ul{
-    border-top: 100px;
-    display: flex;
-    justify-content: left;
-    align-items: left;
-    flex-wrap: wrap;
-    list-style-type: none;
-    z-index: 9;
-    margin: 30px;
-    margin: -55px;
-}
-
-li div{
-
-    height :45vh ;
-    width : 41vh ;
-    border: 1px solid #011638;
-    border-radius: 0.5rem;
-    margin: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    text-decoration: none ;
-    color : black;
-    background-color: #cdcdcd;
-    margin-top: 36px;
-    margin-left : 6px
-}
-
-
-li div:hover{
-    opacity: 0.9;
-    cursor: pointer;
-}
-
-li div img{
-    object-fit: cover ;
-    height: 14.5rem   ;
-}
-
-li div .screen{
-    height: 14.5rem   ;
-    background-color: white;
-    margin-left: -12.5px;
-    overflow: auto;
-}
-
-h3{
-    height: 0px;
-}
-
-li div div{
-    margin-top: 0.3rem ;
-    padding: -0rem 1.2rem 0.4rem 0.4rem;
-    position: relative;
-    margin-bottom: -2px;
-    height: 7rem;
-    border : 20px
-}
-
-ul li div div .seats {
-    margin-top : -90px 
-}
-
-label{
-    margin-left : 20px ;
-    font-family: bold  ;
-    display: flex;
-}
-
-
-#delete-icon {
-    width: 12px;
-    padding: 5px 0px 5px 7px;
-}
-
-#delete-icon:hover {
-    color: red;
-}
-
-.scrollbox {
-    overflow: auto;
-}
-
-.scrollbox-inner p{
-    font-size: 16px   ;
-}
-
-::-webkit-scrollbar {
-    width : 5px ;
-}
-
-::-webkit-scrollbar-thumb{
-    background: black ;
-    border-radius: 20px;
-}
-
-*/
-
 *{
     margin : 0 ;
     padding : 0 ;
@@ -195,6 +13,9 @@ body{
     align-items: center ;
     justify-content: center ;
     flex-direction: column ;
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom left,#c0c0c0,#50808f);
+    background-size: cover;
 }
 
 
@@ -213,8 +34,9 @@ body{
 .container{
     display: flex ;
     width  : 100%  ;
-    margin-bottom: 30px ; 
     float :right ;
+    justify-content: center;
+    margin-top : 30px;
 }
 
 #root{
@@ -227,7 +49,7 @@ body{
 .sidebar{
     width: 50% ;
     border-radius: 5px ;
-    background-color: #eee;
+    background-color: #c7c7c7;
     padding: 15px;
     text-align: center;
 }
@@ -250,20 +72,21 @@ body{
 
 .button-container{
     width: 100%;
-    height: 40px;
+    height: 22px;
     display: flex ;
-    margin-bottom: 30px ; 
+    margin-bottom: 20px ; 
     float :left ;
 }
 
 .button-container button{
     width: 30% ;
-    height: 50px;
+    height: 40px;
     border-radius: 5px ;
     background-color: #011638;
-    padding: 15px;
+    padding: 1px;
     text-align: center;
     margin-right: 10px;
+    font-size: 16px;
 }
 
 .foot{
@@ -272,6 +95,7 @@ body{
     margin : 20px 0px ;
     padding : 10px 0px ;
     border-top: 1px solid #333;
+    margin-bottom: -10px;
 }
 
 .footer{
@@ -280,14 +104,44 @@ body{
     margin : 20px 0px ;
 }
 
-.flex-container {
+.dish-container {
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: row ;
     flex-wrap : wrap;
-    justify-content: space-between;
     margin-top: 20px;
+    margin-bottom: 9px;
+}
+
+.coffe-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row ;
+    flex-wrap : wrap;
+    margin-top: 20px;
+    margin-bottom: 9px;
+}
+
+.dessert-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row ;
+    flex-wrap : wrap;
+    margin-top: 20px;
+    margin-bottom: 9px;
+}
+
+.drink-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row ;
+    flex-wrap : wrap;
+    margin-top: 20px;
+    margin-bottom: 9px;
 }
 
 .box {
@@ -299,6 +153,9 @@ body{
     border-radius: 5px ;
     padding: 20px ;
     display: flex ;
+    margin-left : 3px ;
+    margin-right : 3px ;
+    background-color: #c7c7c7;
 }
 
 
@@ -315,6 +172,7 @@ body{
     max-height: 90% ;
     object-fit : cover ;
     object-position: center ;
+    border-radius: 5px;
 }
 
 .bottom{
@@ -344,12 +202,77 @@ button {
     color : white ;
 }
 
+
+
 button:hover{
     background-color: #333;
 }
 
 #send{
-    width: 100px;
-    border-radius: 20px;
-    font-size: -10px; 
+    width: 121px;
+    border-radius: 3px;
+    font-size: 15px; 
+    height: 33px;
 }
+
+@media(max-width: 960px){
+    .sidebar {
+        width: 100% ;
+        border-radius: 5px ;
+        background-color: #c7c7c7;
+        padding: 15px;
+        text-align: center;
+    }
+}
+
+.customers{
+    display: flex;
+    color: white;
+    text-align: center;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+
+.minus:hover, .plus:hover{
+    cursor: pointer;
+    color: #333;
+}
+
+.kind:hover{
+    cursor: pointer;
+    background-color: #333 !important;
+}
+
+.custom{
+    border-radius: 5px;
+    background-color: #011638;
+    padding: 8px 8px ;
+    margin-right: 80px;
+}
+
+.wrapper{
+    height: 40px;
+    min-width: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    color: black;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2) ;
+}
+
+.wrapper span{
+    width: 100%;
+    text-align: center;
+    font-size: 35px;
+    font-weight: 600;
+}
+
+.wrapper span.num{
+    font-size : 30px;
+    border-right: 2px solid rgba(0,0,0,0.2);
+    border-left: 2px solid rgba(0,0,0,0.2);
+}
+
+

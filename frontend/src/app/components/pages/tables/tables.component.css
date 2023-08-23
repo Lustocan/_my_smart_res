@@ -38,33 +38,6 @@ li .sup-box{
     background-color: #cdcdcd
 }
 
-/*
-
-ul{
-    border-top: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    list-style-type: none;
-    padding: 0;
-}
-
-li a{
-    height : 22.5rem ;
-    width : 14rem ;
-    border: 1px solid #011638;
-    border-radius: 1rem;
-    margin: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    text-decoration: none ;
-    color : black;
-    background-color: #cdcdcd
-}
-
-*/
 li a:hover{
     opacity: 0.9;
     cursor: pointer;
@@ -111,6 +84,10 @@ button img{
     padding: 1px;
     border-radius: 20px !important;
     margin: 3px;
+}
+
+.green-btn:hover{
+    cursor: pointer;
 }
 
 #delete-button{

@@ -23,30 +23,25 @@ import { HttpErrorResponse } from '@angular/common/http';
     styleUrls: ['./single-t.component.css']
 })
 export class SingleTComponent implements OnInit {
-    ordersForm !: FormGroup;
 
     user = new Users()      ;
     
     subjectU : Subject<Users> = new Subject()        ;
 
     table  = new Table();   menu : Menù[] = []       ;
-    total_price = 0     ;  
-    bar_time = 0        ; kitchen_time = 0           ;
-
-
-    kitchen = false; bar = false;
-
-
+    total_price = 0     ;   counter = 0              ;
+    bar_time = 0        ;   kitchen_time = 0         ;
+    kitchen  = false    ;   bar = false              ;
 
     cart: Array<{ _id: String, element: String, amount: Number, kind: String, time: Number }> = [];
     num = this.route.snapshot.paramMap.get('number');
 
 
     constructor(private tableService: TableService, private menuService: MenùService,
-        private route: ActivatedRoute, private userService: UserService,
-        private ordersService: OrdersService, private formBuilder: FormBuilder,
-        private toastrService: ToastrService, private socketIoService: SocketIoService,
-        private router : Router) {
+                private route: ActivatedRoute, private userService: UserService,
+                private ordersService: OrdersService, private formBuilder: FormBuilder,
+                private toastrService: ToastrService, private socketIoService: SocketIoService,
+                private router : Router) {
 
         let num = this.route.snapshot.paramMap.get('number');
 
@@ -54,7 +49,7 @@ export class SingleTComponent implements OnInit {
             let tableObservable = tableService.getTableByNumber(num).pipe(
                 catchError((error)=>{
                     if(error instanceof HttpErrorResponse){
-                        this.toastrService.error('You must log first');
+                        this.toastrService.error('Login required');
                         this.router.navigateByUrl('/login');
                     }
                     return new Observable<Table>();
@@ -95,60 +90,78 @@ export class SingleTComponent implements OnInit {
     }
 
     order() {
-        if (this.table.customers === 0) {
-            this.toastrService.error('Customers must be major than zero.')
-        }
-        else if (!this.cart) {
+        if (!this.cart) {
             this.toastrService.error('Cart empty.')
         }
-        else {
-            if (this.num) {
-                let numero = parseInt(this.num);
+        else if(this.counter===0&&this.table.customers===0){
+            this.toastrService.error('Customers must be major than zero.')
+        }
+        else if(this.num) {
 
-                let _id = uuid();
+            let numero = parseInt(this.num);
 
-                this.ordersService.newOrder({_id : _id, waiter : this.user.username,
-                    to_prepare : this.cart , total_price : this.total_price, bar_time : this.bar_time,
-                    kitchen_time : this.kitchen_time ,date : new Date() }, numero ).subscribe();
+            if(this.table.customers===0) this.tableService.updateTable(this.num , this.counter).subscribe();
+
+            let _id = uuid();
+
+            this.ordersService.newOrder({_id : _id, waiter : this.user.username,
+                to_prepare : this.cart , total_price : this.total_price, bar_time : this.bar_time,
+                kitchen_time : this.kitchen_time ,date : new Date() }, numero ).subscribe();
   
-                if(this.kitchen) this.socketIoService.send_k(this.user.username);
-                if(this.bar)     this.socketIoService.send_b("spedito");
-            }
+            if(this.kitchen) this.socketIoService.send_k(this.user.username);
+            if(this.bar)     this.socketIoService.send_b("spedito");
         }
     }
 
     drinks() {
         let menuObservable = this.menuService.GetMenuByKind(Kind.drinks);
-
         menuObservable.subscribe((serverMenu) => this.menu = serverMenu);
     }
 
     dessert() {
         let menuObservable = this.menuService.GetMenuByKind(Kind.dessert);
-
         menuObservable.subscribe((serverMenu) => this.menu = serverMenu);
     }
 
     coffe() {
         let menuObservable = this.menuService.GetMenuByKind(Kind.coffe_bar);
-
         menuObservable.subscribe((serverMenu) => this.menu = serverMenu);
     }
 
     dishes() {
         let menuObservable = this.menuService.GetMenuByKind(Kind.dishes);
-
-        menuObservable.subscribe((serverMenu) => this.menu = serverMenu);
+        menuObservable.subscribe((serverMenu) => this.menu = serverMenu) ;
     }
 
-    submit(): void {
-        if (this.ordersForm.invalid) return;
-        if (this.num) this.tableService.updateTable(this.num, this.ordersForm.controls.customers.value).subscribe(() => location.reload());
+    is_drink(){
+        if(this.menu.length>0) return this.menu[0].kind === Kind.drinks ;
+        return false ;
     }
 
-    ngOnInit(): void {
-        this.ordersForm = this.formBuilder.group({
-            customers: ['', [Validators.required]]
-        })
+    is_dish(){
+        if(this.menu.length>0) return this.menu[0].kind === Kind.dishes ;
+        return false ;
     }
+
+    is_coffe(){
+        if(this.menu.length>0) return this.menu[0].kind === Kind.coffe_bar ;
+        return false ;
+    }
+
+    is_dessert(){
+        if(this.menu.length>0) return this.menu[0].kind === Kind.dessert ;
+        return false ;
+    }
+
+    increment(){
+        this.counter += 1 ;
+        if(this.counter==(+this.table.seats+ + 1)) this.counter = +this.table.seats+ + +0;
+    }
+
+    decrement(){
+        this.counter -= 1 ;
+        if(this.counter===-1) this.counter = 0 ;
+    }
+
+    ngOnInit(): void {}
 }

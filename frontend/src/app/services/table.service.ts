@@ -30,7 +30,7 @@ export class TableService {
 		.pipe(
 			tap({
 				next: (menu) => { 
-					this.toastrService.success('Table customers changhed');
+					this.toastrService.success('Table customers changed');
 				},
 				error: (errorResponse) => {
 					this.toastrService.error('The numbers of customers must be less than the avaible seats');

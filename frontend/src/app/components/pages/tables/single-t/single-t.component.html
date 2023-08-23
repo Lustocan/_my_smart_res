@@ -48,37 +48,75 @@
                     <h3>Total</h3>
                     <h2 id="total">{{total_price}}.00 €</h2>
                     <button id="send" (click)="order()">Order now</button>
-                    <form [formGroup]="ordersForm" (ngSubmit)='submit()'>
-                        <div class="input-box">
-                            <input type="text" placeholder="Customers" formControlName="customers">
-                        </div>
-                        <div class="input-box">
-                            <button type="submit" class="btn">Change</button>
-                       </div>
-                    </form>
                 </div>
             </div>
         </div>
         <div class="container">
             <div class="sidebar">
-                <div class="foot">
-                </div>
-                <div class="button-container">
-                    <button (click)="drinks()">Drinks</button>
-                    <button (click)="dishes()">Dishes</button>
-                    <button (click)="coffe()">Coffe-bar</button>
-                    <button (click)="dessert()">Desserts</button>
+                <div class="customers">
+                    <span class="custom">Customers</span>
+                    <div class="wrapper">
+                        <span (click)="decrement()" class="minus">-</span>
+                        <span class="num">{{counter}}</span>
+                        <span (click)="increment()" class="plus">+</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="flex-container">
+        <div class="container">
+            <div class="sidebar">
+                <div class="button-container">
+                    <button class="kind" (click)="drinks()">Drinks</button>
+                    <button class="kind" (click)="dishes()">Dishes</button>
+                    <button class="kind" (click)="coffe()">Coffe-bar</button>
+                    <button class="kind" (click)="dessert()">Desserts</button>
+                </div>
+            </div>
+        </div>
+        <div class="dish-container" *ngIf="is_dish()">
             <div class="box" *ngFor="let m of menu">
                 <div class="img-box">
-                    <img class="images" src="https://thumb.ac-illust.com/c4/c4cefafc48961d7d2a03b6b0ac901435_t.jpeg">
+                    <img class="images" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxETBhUQEBATFRMXEBUQGRcYEBAVFRAWFxEXFhUYExMYHSggGBolHhUVLTEhJSkrLi4uFx8zODMsNygtLisBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAMgAyAMBIgACEQEDEQH/xAAcAAEAAwEBAQEBAAAAAAAAAAAABgcIBQQDAgH/xABMEAABAwICBQUIDQoHAQAAAAABAAIDBBEFBgcSITFRCEFhgZETIjJicaGisRQjJSYnQlJyc3SjssEkMzY3Y2SSwtHhFUNTZYOz8EX/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AvFERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBc52M0/cS8zM1RKICda4Epdq6h6bkCy6BOxUhhFZrZImf8rMTD21LCgt+XGKdrZXOmY0QkNlJNhES0Ea/DYR2r3McC243Wv5QqjzbN7jZg+lpx2xRhWblybXwCnf8qnid2xhB0kREBERARfGonYyPWe9rW8XODQOsqM4lpHwmE2fXRE8GF0h9AFBLEVeO0zYOHW7tKfJA+y9lJpXweQ29mBvz45W+eyCbovBhuMU9Qy9PPFKOLJGu9S96AiIgIiIC5gx6lOLexBUR93tfueuNe3kXzzTiopcuz1R/y4XPHS63ejtss1aMKt8mk+mlkcXPfO5ziTtcSx90GrEREBERAREQfCtfq0j3cI3HsaVnvK9R8GpP+/U57Swq+cxyauX6h3CmlP2ZWc8szAaN7X/+3TO3+J/ZBMM3y+5uYR+8Uo9FgVl6OZtfItG791jHY234Ko831A9jY+L76qkG/f339lZuiCTW0c0h4Rub2SvCCZIi5eYMbho8LfU1D9WNo63Hma0c5KD111bHDSulme1jGi5c42DQqYznpvs8xYYwHm7s9uzysZ+J7FXuf8+VGJVvfEsgae8iB2AcX8XKHIOrjWYauqm1qmokkN72c86o8jNwXKRe2hwqeZ9oIJJD4kb3eoIPEilEej3Fi24w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">
                 </div>
                 <div class="bottom">
                      <p>{{m.name}}</p>
-                     <h2>{{m.price}}</h2>
+                     <h2>{{m.price}}.00€</h2>
+                     <button (click)="putInCart(m)">Add to table</button>  
+                </div>
+            </div>
+        </div>
+        <div class="coffe-container" *ngIf="is_coffe()">
+            <div class="box" *ngFor="let m of menu">
+                <div class="img-box">
+                    <img class="images" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAgVBMVEX///8AAAD39/cWFhZqampAQEA0NDS5ubnQ0NCwsLBKSkrT09Pw8PDg4ODa2tr5+flycnJbW1uPj48tLS3BwcHr6+tgYGAdHR2JiYmbm5tRUVF8fHzY2Nh0dHSDg4OgoKAODg4iIiLIyMg5OTm0tLQSEhI+Pj6qqqqWlpYaGhopKSnD2BXBAAAGRklEQVR4nO2da3ciIQyGxft9vNSqda1aa63+/x+4SmDUgamtEjJw8nzag3s0b4dLEghTKjEMwzAMwzAMwzAMwzAMwzAMwzAMwzCMA5IFtQXI9Dbim9oGVBriRJ/aCkRWZ4FiTG0GHiBQiHdqQ7D4VALHsXbTvhJYpTYEjQMInFHbgcYMBI6o7UCjCwKX1HbgMYt9oSjBI4x1Fj3RlAKH1GY4omdpm0uFL95tQeFDzM3GqlRY9m8NAuWTklej9U0qJDAHAanl2LW1bkgMcs0IJs11ZjBG9AzflfeZWRgGsm1CZJRbXrTEm6e4l02fVEa5pbdTEq+fWE+21MiMckt5K0wX7SibmlQ2OSZpg8TBVRss+W9kNrmmLrI+TAItH3Q2uUXp2V01QXBRJzPJNTCziNWlpQwtDTqbHLMyHiKMxCOZRc4ZZ8ddUokpvijp3OF13mkf2XSamGv8LqIQ6ozpbI8im2teDYWQE45ne60mo6ibpqiSNaWJRY50WLdEBjlnKRXepmzeDIc8YBqWIBHWyC8iixwD+dHsmJNtZpoqRHSgf/sIO7Itiv1RlY7KJk4XsbhtExUAZ/dC1fYTjVEuUXOMufAtbLIDZCDsT1CNQtEhscod/YMWmD0YlOyiCC1aWp+ZVWvbZtfg+E6HoBEiweZT6Nv4epEQe+Mj8OFCTwnvlb6x2RNf1UfZLamwUOm1mzwwUFbpU/GPwCyH1Kx+TCldJoL3ZpSvvTI+2EciUHkslhNBuvcGn9DPT6S1YlgISyr2M2eZM6e1sBb2LHoGAgf7wcMkjpgwbxieCf8BnpEKp9RWYFKNYkX4CdiJ2STUdiAifhqJUbDK89rioZ7nt0WDds8Cj3J/QpeM2D2bKNBZjG0cR/RszHSkFM9Gb5Z5mouKw1OzkGa8o1VY6lci76anWGkoYtkkzKUV06EZO5OYQwyGYfAoe4JO4de64gPCopOx8EOLTGH9vnGskBUWQeF0UMVjWASFbcxf6EevsMMKkWGFz3NRmJB4bz4Vylm1NvecdPWpUJ2BE0OvJzUpFJ40enyONAp9zjw+Fb5eKfRXJuVT4f599t5OJfqqk/K+Hk7S+yc8bdYRrPgTPR797CqT+DT62LiXM3E0Xps60unlgD+RX6o263zcp0HleUOBio+tLFn+iXrUHnpkNpuoiqU87LfKU9yo5Z8fUoqxswqLhofNLPyLnmDIGWelIbnh4YCqWXvuGlgazHsH1+gzALBAHw6rnKXP1zVh8PuYJSHwNzTDpaonhQ30AS99bcshY18K/8nfwTyUtzn/gKWUHX8GABLslRfuYLAcwK3lPFvn1JH/lLAcmnV96H/alCWylw/nGs3cUwd9eGjg8CheqAalb2aedGR3BBCAE8BoKQW4CsyysNd9+aX6LD7WT8E9E+abITp5yhF4t/r+rhjkDENYK/zkFCG6wQq35ZevjWZ1Ot7TNsYacTb9zIkgwCn1lTOFQ9w4N/+37W6v9R4fPFSPwahsgiDwkG0GP8djdUMbbUmsWr85GePO3ybq5iD3X2yfT3QZv+nJ4THOWbSepWqbZ3obgetk2Gjh9BqIzDLBry5rmPrd8J6ijPytuSRM0h02z1XuKCnovdEzuum+k/8yfogAnMajKucrR3dv0D85T5c94Ir/EjH1SiOXtbDgtlTkv09ORW2a6rNc5OMB1X/cFf2oWjAIAMUNRNWoU9vE9zhq/wwuBmtd6/N5DuMGNbVX3HQg5ZdVwBW86qBvhBfUq27lJChNNteTc5IuEUvalwrB1OAk/ZW9l2jyvRPTaoO6Liw5uJLYNr8oKcQ9Nros/UmJyRd8TREvpW3q6eCZWLGrxuCBuk9a0Tewjh+f0fUNYLuCVranBc2PpmrTG8AKMe5spBIfyttc1oWCPsEzeiyK49+3TdP3CRlvvioUvYq2c/G3Cac3TB2Xgt/XU05PSK7/kEopX2K/AF5Jml6DIY6/zLt30xtAA7lTqrm+GDzvNO+yvPz3dqGH4BUL8Rg+U4RP8q/2gL5BKA8QaBzuS7qhHd6N1637qq70hfnytZf2fWnQP8N9YW6v8RvCGn8MwxSK0bb2e+ohTjd/891YYRFhheErnB3rv6fYyRmGYRiGYRiGYRiGYRiGYRiGYRiGYZiw+A+K7D9Y6eZ2UAAAAABJRU5ErkJggg==">
+                </div>
+                <div class="bottom">
+                     <p>{{m.name}}</p>
+                     <h2>{{m.price}}.00€</h2>
+                     <button (click)="putInCart(m)">Add to table</button>  
+                </div>
+            </div>
+        </div>
+        <div class="drink-container" *ngIf="is_drink()">
+            <div class="box" *ngFor="let m of menu">
+                <div class="img-box">
+                    <img class="images" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQe4uaK9pkaaFUUg3K-fSKfgzMgItwOzNfZeg&usqp=CAU">
+                </div>
+                <div class="bottom">
+                     <p>{{m.name}}</p>
+                     <h2>{{m.price}}.00€</h2>
+                     <button (click)="putInCart(m)">Add to table</button>  
+                </div>
+            </div>
+        </div>
+        <div class="dessert-container" *ngIf="is_dessert()">
+            <div class="box" *ngFor="let m of menu">
+                <div class="img-box">
+                    <img class="images" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaJsq6FAtBaKgBjlrOGcKyIkzTbPr0whj3vg&usqp=CAU">
+                </div>
+                <div class="bottom">
+                     <p>{{m.name}}</p>
+                     <h2>{{m.price}}.00€</h2>
                      <button (click)="putInCart(m)">Add to table</button>  
                 </div>
             </div>

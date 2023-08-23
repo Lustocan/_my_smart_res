@@ -19,6 +19,8 @@ import { ToastrService } from 'ngx-toastr';
 export class TablesComponent implements OnInit {
 	tables: Table[] = [];
 
+	role : String = '' ;
+
 	constructor(private tableService: TableService, private router: Router, private toastrService : ToastrService) {
 		let tableObservable = tableService.getAll().pipe(
 			catchError((error)=>{
@@ -35,7 +37,19 @@ export class TablesComponent implements OnInit {
 		tableObservable.subscribe((serverTable) => this.tables = serverTable);
 	}
 
-	ngOnInit(): void { }
+	ngOnInit(): void {
+         this.role = window.sessionStorage.getItem('my-role') || "" ;
+	}
+
+	is_waiter(){
+		return this.role === 'waiter' ?  true : false ;
+    }
+
+	is_casher(){
+		return this.role === 'casher' ?  true : false ;
+	}
+
+	
 
 	submitDelete(number: Number) {
 		this.tableService.deleteTable(number).subscribe(() => {

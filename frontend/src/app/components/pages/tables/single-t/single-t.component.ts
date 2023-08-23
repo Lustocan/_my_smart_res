@@ -104,7 +104,10 @@ export class SingleTComponent implements OnInit {
 
             let _id = uuid();
 
-            this.ordersService.newOrder({_id : _id, waiter : this.user.username,
+            let el = Array<{username : String, role : String }>();
+            el.push({username : this.user.username, role :  this.user.role })
+
+            this.ordersService.newOrder({_id : _id, staff : el, 
                 to_prepare : this.cart , total_price : this.total_price, bar_time : this.bar_time,
                 kitchen_time : this.kitchen_time ,date : new Date() }, numero ).subscribe();
   

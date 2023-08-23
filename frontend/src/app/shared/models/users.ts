@@ -12,6 +12,6 @@ export class Users{
     username!       : string ;
     name?           : string ;
     surname?        : string ;
-    role?           : string ;
+    role!           : string ;
     password!       : string ;
 }

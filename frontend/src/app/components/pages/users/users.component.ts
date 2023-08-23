@@ -17,6 +17,8 @@ export class UsersComponent {
 	user: Users = new Users();
 	users: Users[] = [];
 
+	current_date = new Date(); 
+
 	constructor(private userService: UserService, private router: Router, private toastrService: ToastrService) {
 		userService.getAll().pipe(
 			catchError((error) => {

@@ -23,7 +23,7 @@
                     <div class="content">
                         <div>
                             <h3>Table Number : {{order.n_table}}</h3>
-                            <h3>Waiter : {{order.waiter}}</h3>
+                            <h3>Waiter : </h3>
                         </div>
                         <div *ngFor="let elem of order.to_prepare">
                             <ul *ngIf ="isDishes(elem.kind, order.ready_k)" class="center_list" style="list-style-type:disc;">

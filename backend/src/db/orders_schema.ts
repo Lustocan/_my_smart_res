@@ -6,7 +6,7 @@ import mongoose from 'mongoose'
 const orderSchema = new mongoose.Schema({
     _id          : { type : String, required : true},
     n_table      : {type : Number, required : true},
-    waiter       : {type : String, required : true},
+    staff        : [{username : String, role : String}],
     to_prepare   : [{_id : String ,element : String ,amount : Number ,kind : String}], 
     total_price  : {type : Number},
     ready_k      : {type : Boolean, default : false},

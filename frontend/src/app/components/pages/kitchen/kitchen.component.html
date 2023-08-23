@@ -5,13 +5,13 @@
     <ul>
         <li *ngIf="wip">
             <div *ngIf=nDishesOrDessert(wip)>
-                <main class="table">
+                <main class="table" style="border: 6px solid #4a9444;">
                     <section class="table-header">
                         <h1>Table Number : {{wip.n_table}}</h1>
-                        <h1>Waiter : {{get_current()}}</h1>
+                        <h4>Waiter : {{get_current()}}</h4>
                     </section>
                     <section class="table-body">
-                        <table class="special-table">
+                        <table>
                             <thead>
                                 <!-- <tr>
                                 <td colspan="3">
@@ -38,29 +38,31 @@
                 </main>
             </div>
         <li *ngFor="let order of orders">
-            <div class="profile-box" *ngIf=nDishesOrDessert(order)>
-                <table class="invoice-table">
-                    <thead>
-                        <tr>
-                            <td colspan="3">
-                                <p>Table Number : {{order.n_table}}</p>
-                                <p>Waiter :{{get_waiter(order)}} </p>
-                            </td>
-                        </tr>
-                        <tr class="thead-exception">
-                            <td>Name</td>
-                            <td>Amount</td>
-                            <td>Time</td>
-                        </tr>
-                    </thead>
-                    <tbody *ngFor="let elem of order.to_prepare">
-                        <tr *ngIf="isDishes(elem.kind, order.ready_k)">
-                            <td>{{elem.element}}</td>
-                            <td> {{elem.amount}}</td>
-                            <td> {{order.kitchen_time}} Min</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div *ngIf=nDishesOrDessert(order)>
+                <main class="table">
+                    <section class="table-header">
+                        <h1>Table Number : {{wip.n_table}}</h1>
+                        <h4>Waiter : {{get_current()}}</h4>
+                    </section>
+                    <section class="table-body">
+                        <table >
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Amount</td>
+                                    <td>Time</td>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let elem of order.to_prepare">
+                                <tr *ngIf="isDishes(elem.kind, order.ready_k)">
+                                    <td>{{elem.element}}</td>
+                                    <td> {{elem.amount}}</td>
+                                    <td> {{order.kitchen_time}} Min</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </main>
             </div>
         </li>
         <button (click)='startTimer()'>Start Timer</button>

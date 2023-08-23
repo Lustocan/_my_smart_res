@@ -2,33 +2,34 @@
 <html>
 
 <body>
-    <ul class="list">
+    <ul>
         <li *ngFor="let order of orders">
-            <a *ngIf = nDrinksOrCoffeOrders(order)>
-                <table class="invoice-table">
-                    <thead>
-                    <tr>
-                        <td colspan="3">
-                            <p>Table Number : {{order.n_table}}</p>
-                            <p>Waiter : {{get_waiter(order)}} </p>
-                        </td>
-                    </tr>
-                    
-                    <tr class="thead-exception">
-                        <td>Name</td>
-                        <td>Amount</td>
-                        <td>Time</td>
-                    </tr>
-                    </thead>
-                    <tbody *ngFor="let elem of order.to_prepare">
-                    <tr *ngIf ="isDrinksOrCoffe(elem.kind)">
-                        <td>{{elem.element}}</td>
-                        <td> {{elem.amount}}</td>
-                        <td> {{order.bar_time}} Min</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </a>
+            <div *ngIf=nDrinksOrCoffeOrders(order)>
+                <main class="table">
+                    <section class="table-header">
+                        <h1>Table Number : {{order.n_table}}</h1>
+                        <h4>Waiter : {{get_waiter(order)}}</h4>
+                    </section>
+                    <section class="table-body">
+                        <table >
+                            <thead>
+                                <tr >
+                                    <td>Name</td>
+                                    <td>Amount</td>
+                                    <td>Time</td>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let elem of order.to_prepare">
+                                <tr *ngIf="isDrinksOrCoffe(elem.kind)">
+                                    <td>{{elem.element}}</td>
+                                    <td> {{elem.amount}}</td>
+                                    <td> {{order.bar_time}} Min</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </main>
+            </div>
         </li>
     </ul>
 </body>

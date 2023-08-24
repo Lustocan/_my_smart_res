@@ -34,9 +34,10 @@ export class OrdersService {
 		return this.http.get<Orders[]>(ORDERS_URL+'/'+n_table, this.httpOptions);
 	}
 
-	getAllOrders() : Observable<Orders[]>{
+	getAllOrder() : Observable<Orders[]>{
 		return this.http.get<Orders[]>(ORDERS_URL,this.httpOptions);
 	}
+
 
 	deleteOrderById(id: string):Observable<Orders>{
 		return this.http.delete<Orders>(ORDERS_URL+'/'+id+'/delete', this.httpOptions).pipe(

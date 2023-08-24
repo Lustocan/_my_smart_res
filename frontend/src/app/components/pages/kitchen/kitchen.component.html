@@ -9,6 +9,12 @@
                     <section class="table-header">
                         <h1>Table Number : {{wip.n_table}}</h1>
                         <h4>Waiter : {{get_current()}}</h4>
+                        <div class="wrapper">
+                            <div class="display">
+                                <section *ngIf="!sec()" id="time">{{minutes}}:{{seconds}}</section>
+                                <section *ngIf="sec()" id="time">{{minutes}}:0{{seconds}}</section>
+                            </div>
+                        </div>
                     </section>
                     <section class="table-body">
                         <table>
@@ -35,6 +41,11 @@
                             </tbody>
                         </table>
                     </section>
+                    <button (click)='startTimer()'><span>Start Timer</span><i></i></button>
+                    <button (click)='pauseTimer()'><span>Pause</span><i></i></button>
+                    <button (click)='ready()'><span>Ready</span><i></i></button>
+                    <!-- <p *ngIf="!sec()">{{minutes}}:{{seconds}} Seconds Left....</p>
+                    <p *ngIf="sec()">{{minutes}}:0{{seconds}} Seconds Left....</p> -->
                 </main>
             </div>
         <li *ngFor="let order of orders">
@@ -45,7 +56,7 @@
                         <h4>Waiter : {{get_current()}}</h4>
                     </section>
                     <section class="table-body">
-                        <table >
+                        <table>
                             <thead>
                                 <tr>
                                     <td>Name</td>
@@ -65,11 +76,11 @@
                 </main>
             </div>
         </li>
-        <button (click)='startTimer()'>Start Timer</button>
+        <!-- <button (click)='startTimer()'>Start Timer</button>
         <button (click)='pauseTimer()'>Pause</button>
         <button (click)='ready()'>Ready</button>
         <p *ngIf="!sec()">{{minutes}}:{{seconds}} Seconds Left....</p>
-        <p *ngIf="sec()">{{minutes}}:0{{seconds}} Seconds Left....</p>
+        <p *ngIf="sec()">{{minutes}}:0{{seconds}} Seconds Left....</p> -->
     </ul>
 </body>
 

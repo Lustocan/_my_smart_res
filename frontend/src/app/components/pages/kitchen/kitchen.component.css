@@ -1,6 +1,5 @@
-
-*{
-    margin: 0 ;
+* {
+    margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'poppins', sans-serif;
@@ -8,7 +7,7 @@
     font-weight: bold;
 }
 
-body{
+body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -21,7 +20,7 @@ li {
     margin: 50px;
 }
 
-main.table{
+main.table {
     width: 50vw;
     background-color: rgba(255, 255, 255, 0.333);
 
@@ -33,15 +32,22 @@ main.table{
     animation: blink 1s;
     animation-iteration-count: infinite;
 }
-@keyframes blink { 50% { border-color: #4b944489;}}
 
-table, thead, td {
+@keyframes blink {
+    50% {
+        border-color: #4b944489;
+    }
+}
+
+table,
+thead,
+td {
     border-collapse: collapse;
     padding: 1rem;
 
 }
 
-.table-header{
+.table-header {
     width: 100%;
     height: 12%;
     background-color: #011638e3;
@@ -49,7 +55,7 @@ table, thead, td {
     color: #cdcdcd;
 }
 
-.table-body{
+.table-body {
     width: 95%;
     max-height: calc(89% - .8rem);
     background-color: #fffb;
@@ -60,18 +66,18 @@ table, thead, td {
     overflow: auto;
 }
 
-.table-body::-webkit-scrollbar{
+.table-body::-webkit-scrollbar {
     width: 0.5rem;
     height: 0.5rem;
 }
 
-.table-body::-webkit-scrollbar-thumb{
+.table-body::-webkit-scrollbar-thumb {
     border-radius: .5rem;
     background-color: #0004;
     visibility: hidden;
 }
 
-.table- body:hover::-webkit-scrollbar-thumb{
+.table- body:hover::-webkit-scrollbar-thumb {
     visibility: visible;
 }
 
@@ -83,12 +89,12 @@ table {
 
 thead {
     position: sticky;
-    top:0;
+    top: 0;
     left: 0;
     background-color: #54b3d04d;
 }
 
-tbody tr:nth-child(even){
+tbody tr:nth-child(even) {
     background-color: #0000000b;
 }
 
@@ -96,3 +102,113 @@ tbody tr:hover {
     background-color: #fff9;
 
 }
+
+
+button {
+    position: relative;
+    background: #cdcdcd;
+    color: #cdcdcd;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+    padding: 8px 20px;
+    transition: 0.5s;
+    border-radius: 10px;
+    margin-left: .8rem;
+    margin-bottom: .8rem;
+}
+
+button:hover {
+    background: #1e9bff;
+    color: #1e9bff;
+    box-shadow: 0 0 35px #1e9bff;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: #011638e3;
+    border-radius: 5px;
+}
+
+button span {
+    position: relative;
+    z-index: 1;
+}
+
+button i {
+    position: absolute;
+    inset: 0;
+    display: block;
+}
+
+
+button:hover i::before {
+    width: 20px;
+    left: 20%;
+}
+
+
+button:hover i::after {
+    width: 20px;
+    left: 80%;
+}
+
+
+
+
+.wrapper{
+    height: 33px;
+    width: 143px;
+    cursor: default;
+    background: #023588e3;
+    border-radius: 5px;
+    position: absolute;
+    top: 3%;
+    left: 62%;
+}
+
+.wrapper .display,
+.wrapper span{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.wrapper .display{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    background: #011638e3;
+    width: 137px;
+    height: 26px;
+    border-radius: 4px;
+    text-align: center;
+
+}
+
+.wrapper .display #time{
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    background: #ffffffe3;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+
+.wrapper span{
+    height: 100%;
+    width: 100%;
+    background: inherit;
+    border-radius: 10px;
+}
+

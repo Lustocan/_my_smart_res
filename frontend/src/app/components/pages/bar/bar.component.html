@@ -70,6 +70,7 @@
             <button (click)='ready()'>Ready</button>
             <p *ngIf="!sec()">{{minutes}}:{{seconds}} Seconds Left....</p>
             <p *ngIf="sec()">{{minutes}}:0{{seconds}} Seconds Left....</p>
+            <p *ngIf="timeLeft">00:0 Seconds Left....</p>
 
     </ul>
 </body>

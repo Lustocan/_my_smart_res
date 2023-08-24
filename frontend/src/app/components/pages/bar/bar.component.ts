@@ -73,6 +73,9 @@ export class BarComponent {
 		window.sessionStorage.removeItem('my-counter');
 		this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
 		this.socketIoService.send_w(this.wip.staff[0]);
+		if(this.orders.length>0&&this.orders[0].kitchen_time){
+			window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
+		 }
 		setTimeout(function(){
 			location.reload();
 		}, 1500)
@@ -80,7 +83,7 @@ export class BarComponent {
 
 	kick_invalid(){
 		for(let i=0; i<this.orders.length; i++){
-			if(this.orders[i].ready_k){
+			if(this.orders[i].ready_b){
 				this.orders.splice(i, 1);
 			}
 		}
@@ -127,9 +130,12 @@ export class BarComponent {
 			 window.sessionStorage.removeItem('my-counter');
 			 this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
 			 this.socketIoService.send_w(this.wip.staff[0]);
+			 if(this.orders.length>0&&this.orders[0].kitchen_time){
+				window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
+			 }
 			 setTimeout(function(){
 				location.reload();
-			}, 1500 )
+			}, 500 )
 		  }
 		  
 		},1000)

@@ -17,7 +17,6 @@ import { Router } from '@angular/router';
 export class KitchenComponent implements OnInit {
 	orders: Orders[] = [];
 	wip: any;
-	browserRefresh = false;
 	session: string = "";
 
 	timeLeft: number = 0;
@@ -30,49 +29,84 @@ export class KitchenComponent implements OnInit {
 		        private toastrService: ToastrService, private router : Router) { }
 
 	ngOnInit(): void {
-		let orderObservable = this.ordersService.getAllOrders().pipe(
-			catchError((error) => {
-				if (error instanceof HttpErrorResponse) {
-					this.toastrService.error('Login required.');
-					this.router.navigateByUrl('/login');
-				}
-				return new Observable<Orders[]>();
-
-			})
-
-		);
-
-		
-		orderObservable.subscribe((serverOrder) => {
-			let i = 0;
-			while (!this.wip && i < serverOrder.length) {
-				if (!serverOrder[i].ready_k) {
-					this.wip = serverOrder[i];
-					serverOrder.splice(i, 1);
-				}
-				i++;
-			}
-			if (window.sessionStorage.getItem('my-counter')) {
-				this.session = window.sessionStorage.getItem('my-counter') || ""
-				this.timeLeft = parseInt(this.session)
-				this.minutes = Math.floor(this.timeLeft/60) ;
-			    this.seconds = this.timeLeft%60 ;
-			} else {
-				this.timeLeft = this.wip.kitchen_time * 60;
-			}
-			this.orders = serverOrder;
-		});
+		this.getAllOrders() ;
 	}
 
+	sec(){
+		return this.seconds<10 ;
+	}
 
-	public nDishesOrDessert(order: Orders) {
+	pauseTimer() {
+		clearInterval(this.interval);
+	}
+
+	isDishes(kind: any, ready_k: any): boolean {
+		return (kind === 'dishes' || kind === 'dessert') && (!ready_k);
+	}
+
+	nDishesOrDessert(order: Orders) {
 		let p = order.to_prepare?.filter((elem) => this.isDishes(elem.kind, order.ready_k));
 		if (p) return p.length > 0;
 		else   return false;
 	}
 
-	public isDishes(kind: any, ready_k: any): boolean {
-		return (kind === 'dishes' || kind === 'dessert') && (!ready_k);
+	get_current(){
+		if(this.wip.staff){
+			return this.wip.staff[0].username ;
+		}
+		return null ;
+	}
+
+	get_waiter(order : Orders){
+		if(order.staff){
+			return order.staff[0].username ;
+		}
+		return null ;
+	}
+
+	ready() {
+		window.sessionStorage.removeItem('my-counter');
+		this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe();
+		this.socketIoService.send_w(this.wip.staff[0]);
+		if(this.orders.length>0&&this.orders[0].kitchen_time){
+		   window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
+		}
+		setTimeout(function(){
+			location.reload();
+		}, 1500)
+	}
+
+	kick_invalid(){
+		for(let i=0; i<this.orders.length; i++){
+			if(this.orders[i].ready_k){
+				this.orders.splice(i, 1);
+			}
+		}
+	}
+
+	partition(start : number, end : number) : number {
+        let pivot = this.orders[end], i = start - 1 , tmp ;
+
+		for(let j=start; j<end; j++){
+			if(this.orders[j].date<=pivot.date){
+				++i ;
+				tmp = this.orders[i] ;
+				this.orders[i] = this.orders[j] ;
+				this.orders[j] = tmp ;
+			}
+		}
+		this.orders[end] = this.orders[i+1] ;
+		this.orders[i+1] = pivot ;
+		return i+1 ;
+	}
+
+	quick_sort (start : number , end : number){
+		if(start<end){
+           let pivot = this.partition(start, end);
+
+		   this.quick_sort(start, pivot-1);
+		   this.quick_sort(pivot+1, end);
+		}
 	}
 
 	startTimer() {
@@ -89,7 +123,7 @@ export class KitchenComponent implements OnInit {
 		  }
 		  else{
 			 window.sessionStorage.removeItem('my-counter');
-			 this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b)
+			 this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe()
 			 this.socketIoService.send_w(this.wip.staff[0]);
 			 if(this.orders.length>0&&this.orders[0].kitchen_time){
 				window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
@@ -102,37 +136,35 @@ export class KitchenComponent implements OnInit {
 		},1000)
 	}
 
-	pauseTimer() {
-		clearInterval(this.interval);
+	initTime(){
+
 	}
 
-	sec(){
-		return this.seconds<10 ;
-	}
-
-	ready() {
-		window.sessionStorage.removeItem('my-counter');
-		this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b)
-		this.socketIoService.send_w(this.wip.staff[0]);
-		if(this.orders.length>0&&this.orders[0].kitchen_time){
-		   window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
-		}
-		setTimeout(function(){
-			location.reload();
-		}, 1500)
-	}
-
-	get_current(){
-		if(this.wip.staff){
-			return this.wip.staff[0].username ;
-		}
-		return null ;
-	}
-
-	get_waiter(order : Orders){
-		if(order.staff){
-			return order.staff[0].username ;
-		}
-		return null ;
+	getAllOrders(){
+		this.ordersService.getAllOrders().pipe(
+			catchError((error) => {
+				if (error instanceof HttpErrorResponse) {
+					if(error.status===400){
+						this.toastrService.error('You must log first');
+						this.router.navigateByUrl('/login');
+					}
+					else if(error.status===403){
+						this.toastrService.error('Unauthorized');
+						this.router.navigateByUrl('/');
+					}
+				}
+				return new Observable<Orders[]>();
+			})
+		).subscribe((serverOrder) => {
+			this.orders = serverOrder;
+			this.kick_invalid();
+			this.quick_sort(0, this.orders.length-1);
+			this.wip = this.orders.shift();
+			let time = this.wip.kitchen_time ;
+			console.log(this.wip);
+			time *= 60                       ;
+			window.sessionStorage.setItem('my-counter', time) 
+			this.session = window.sessionStorage.getItem('my-counter') || ""
+		});
 	}
 }

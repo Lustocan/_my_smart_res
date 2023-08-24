@@ -46,7 +46,7 @@
                 <div class="cartItem" *ngFor="let c of cart; let i = index;">{{cart[i].amount}} x {{cart[i].element}} </div>
                 <div class="foot">
                     <h3>Total</h3>
-                    <h2 id="total">{{total_price}}.00 €</h2>
+                    <h2 id="total">.00 €</h2>
                     <button id="send" (click)="order()">Order now</button>
                 </div>
             </div>

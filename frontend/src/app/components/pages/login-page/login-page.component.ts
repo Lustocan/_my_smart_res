@@ -14,26 +14,20 @@ export class LoginPageComponent implements OnInit {
 	isSubmitted = false;
 	returnUrl = '';
 
-
 	constructor(private formBuilder: FormBuilder, private userService: UserService,
-	        	private activatedRoute: ActivatedRoute, private router: Router) { }
-
-	ngOnInit(): void {
-		this.loginForm = this.formBuilder.group({
-			username: ['', [Validators.required]],
-			password: ['', [Validators.required]]
-		})
-
-		//this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl
-		// sanpshot means return the latest value of the activated route
+	        	private activatedRoute: ActivatedRoute, private router: Router) {
+				
+				this.loginForm = this.formBuilder.group({
+					 username: ['', [Validators.required]],
+					 password: ['', [Validators.required]]
+				})
 	}
+
+	ngOnInit(): void {}
 
 	get fc() {
 		return this.loginForm.controls;
 	}
-
-
-
 
 	submit() {
 		this.isSubmitted = true;

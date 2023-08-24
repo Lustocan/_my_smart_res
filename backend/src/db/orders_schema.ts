@@ -7,12 +7,9 @@ const orderSchema = new mongoose.Schema({
     _id          : { type : String, required : true},
     n_table      : {type : Number, required : true},
     staff        : [{username : String, role : String}],
-    to_prepare   : [{_id : String ,element : String ,amount : Number ,kind : String}], 
-    total_price  : {type : Number},
+    to_prepare   : [{_id : String ,element : String ,amount : Number, price : Number ,kind : String}], 
     ready_k      : {type : Boolean, default : false},
     ready_b      : {type : Boolean, default : false},
-    bar_time     : {type : Number, required : true},
-    kitchen_time     : {type : Number, required : true},
     date         : {type : Date, required : true }
 });
 

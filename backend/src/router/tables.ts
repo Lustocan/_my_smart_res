@@ -3,7 +3,7 @@ import { isAuthenticated, isAdmin, isWaiter, isWaiterOrAdmin } from '../middlewa
 import { build_tab, delete_tab, update_tab, getAllTables, _getTableByNumber_ } from "../controllers/tables_utilities";
 
 export default (router : express.Router) => {
-    router.get("/tables", isAuthenticated , getAllTables) ;
+    router.get("/tables", isAuthenticated, isWaiterOrAdmin , getAllTables) ;
     router.post("/tables/add", isAuthenticated, isWaiterOrAdmin, build_tab) ;
     router.delete("/tables/:number/delete", isAuthenticated, isWaiterOrAdmin, delete_tab) ;
     router.patch("/tables/:number/update", isAuthenticated , isWaiterOrAdmin, update_tab) ;

@@ -8,9 +8,8 @@ import { OrdersService } from 'src/app/services/orders.service';
 import { Users } from 'src/app/shared/models/users';
 import { UserService } from 'src/app/services/user.service';
 import { Observable, Subject, catchError } from 'rxjs';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {  FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Orders } from 'src/app/shared/models/orders';
 import { v4 as uuid } from 'uuid';
 import { SocketIoService } from 'src/app/services/socket.io.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -25,16 +24,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class SingleTComponent implements OnInit {
 
     user = new Users()      ;
-    
-    subjectU : Subject<Users> = new Subject()        ;
 
     table  = new Table();   menu : Menù[] = []       ;
-    total_price = 0     ;   counter = 0              ;
+    counter = 0         ;   bar = false              ;
     bar_time = 0        ;   kitchen_time = 0         ;
-    kitchen  = false    ;   bar = false              ;
+    kitchen  = false    ;   num : any                ;
 
-    cart: Array<{ _id: String, element: String, amount: Number, kind: String, time: Number }> = [];
-    num = this.route.snapshot.paramMap.get('number');
+    cart: Array<{ _id: String, element: String, amount: Number, price : Number, kind: String, time: Number }> = [];
 
 
     constructor(private tableService: TableService, private menuService: MenùService,
@@ -43,81 +39,12 @@ export class SingleTComponent implements OnInit {
                 private toastrService: ToastrService, private socketIoService: SocketIoService,
                 private router : Router) {
 
-        let num = this.route.snapshot.paramMap.get('number');
-
-        if (num) {
-            let tableObservable = tableService.getTableByNumber(num).pipe(
-                catchError((error)=>{
-                    if(error instanceof HttpErrorResponse){
-                        this.toastrService.error('Login required');
-                        this.router.navigateByUrl('/login');
-                    }
-                    return new Observable<Table>();
-                
-                }));
-
-            tableObservable.subscribe((serverTable) => this.table = serverTable);
-        }
-
-        let userObservable: Observable<Users>;
-
-        userObservable = userService.getIt() ;
-
-        userObservable.subscribe((serverUser) => {
-            this.subjectU.next(serverUser);
-        });
-        this.subjectU.subscribe((user) => this.user = user);
+                this.num = this.route.snapshot.paramMap.get('number');
     }
 
-    putInCart(menu : Menù){  
-        this.total_price = +(this.total_price) + +(menu.price)
-        if(menu.kind===Kind.coffe_bar||menu.kind===Kind.drinks){ 
-            this.bar = true ;
-            this.bar_time = +(this.bar_time)+ +(menu.preparation_time)
-        }
-        if(menu.kind===Kind.dishes||menu.kind===Kind.dessert){ 
-            this.kitchen = true ;
-            this.kitchen_time = +(this.kitchen_time)+ +(menu.preparation_time)
-        }
-        for(var i=0 ; i<this.cart.length; i++){
-            if(menu.name===this.cart[i].element) {
-                this.cart[i].amount = + this.cart[i].amount + + 1 ;
-                return ;
-            }
-        }
-        // quando implementi la insert nel menu devi ricordarti di autogenerarti l'id lato client
-        this.cart.push({ _id: menu._id, element: menu.name, amount: 1, kind: menu.kind, time: menu.preparation_time })
-    }
-
-    order() {
-        if (!this.cart) {
-            this.toastrService.error('Cart empty.')
-        }
-        else if(this.counter===0&&this.table.customers===0){
-            this.toastrService.error('Customers must be major than zero.')
-        }
-        else if(this.num) {
-
-            let numero = parseInt(this.num);
-
-            if(this.table.customers===0) this.tableService.updateTable(this.num , this.counter).subscribe();
-
-            let _id = uuid();
-
-            let el = Array<{username : String, role : String }>();
-            el.push({username : this.user.username, role :  this.user.role })
-
-            this.ordersService.newOrder({_id : _id, staff : el, 
-                to_prepare : this.cart , total_price : this.total_price, bar_time : this.bar_time,
-                kitchen_time : this.kitchen_time ,date : new Date() }, numero ).subscribe();
-  
-            if(this.kitchen) this.socketIoService.send_k(this.user.username);
-            if(this.bar)     this.socketIoService.send_b("spedito");
-
-            setTimeout(function(){
-                location.reload();
-            }, 1500)
-        }
+    ngOnInit(): void {
+        this.getTable() ;
+        this.getMe()    ;  
     }
 
     drinks() {
@@ -170,5 +97,74 @@ export class SingleTComponent implements OnInit {
         if(this.counter===-1) this.counter = 0 ;
     }
 
-    ngOnInit(): void {}
+    getMe(){
+        this.userService.getIt().subscribe((serverUser) => {
+            this.user = serverUser
+        });
+    }
+
+    getTable(){
+        if (this.num) {
+            let tableObservable = this.tableService.getTableByNumber(this.num).pipe(
+                catchError((error)=>{
+                    if(error instanceof HttpErrorResponse){
+                        this.toastrService.error('Login required');
+                        this.router.navigateByUrl('/login');
+                    }
+                    return new Observable<Table>();
+                
+                }));
+                tableObservable.subscribe((serverTable) => this.table = serverTable);
+        }
+    }
+
+    putInCart(menu : Menù){  
+        if(menu.kind===Kind.coffe_bar||menu.kind===Kind.drinks){ 
+            this.bar = true ;
+            this.bar_time = +(this.bar_time)+ +(menu.preparation_time)
+        }
+        if(menu.kind===Kind.dishes||menu.kind===Kind.dessert){ 
+            this.kitchen = true ;
+            this.kitchen_time = +(this.kitchen_time)+ +(menu.preparation_time)
+        }
+        for(var i=0 ; i<this.cart.length; i++){
+            if(menu.name===this.cart[i].element) {
+                this.cart[i].amount = + this.cart[i].amount + + 1 ;
+                return ;
+            }
+        }
+        // quando implementi la insert nel menu devi ricordarti di autogenerarti l'id lato client
+        this.cart.push({ _id: menu._id, element: menu.name, amount: 1, price : menu.price, kind: menu.kind, time: menu.preparation_time })
+    }
+
+    order() {
+        if (!this.cart) {
+            this.toastrService.error('Cart empty.')
+        }
+        else if(this.counter===0&&this.table.customers===0){
+            this.toastrService.error('Customers must be major than zero.')
+        }
+        else if(this.num) {
+
+            let numero = parseInt(this.num);
+
+            if(this.table.customers===0) this.tableService.updateTable(this.num , this.counter).subscribe();
+
+            let _id = uuid();
+
+            let el = Array<{username : String, role : String }>();
+            el.push({username : this.user.username, role :  this.user.role })
+
+            this.ordersService.newOrder({_id : _id, staff : el, 
+                to_prepare : this.cart , bar_time : this.bar_time,
+                kitchen_time : this.kitchen_time ,date : new Date() }, numero ).subscribe();
+  
+            if(this.kitchen) this.socketIoService.send_k(this.user.username);
+            if(this.bar)     this.socketIoService.send_b("spedito");
+
+            setTimeout(function(){
+                location.reload();
+            }, 1500)
+        }
+    }
 }

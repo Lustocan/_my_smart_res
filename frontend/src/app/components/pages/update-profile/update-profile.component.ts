@@ -16,38 +16,32 @@ export class UpdateProfileComponent implements OnInit {
   updateForm !: FormGroup  ;
 
   user = new Users() ;
-  subject : Subject<Users> = new Subject();
 
 
   constructor(private http : HttpClient, private userService : UserService,
-              private formBuilder : FormBuilder, private toastrService : ToastrService, private router : Router ) {
-        let userObservable: Observable<Users>;
+              private formBuilder : FormBuilder, private toastrService : ToastrService,
+              private router : Router ) {
 
-        userObservable = userService.getIt().pipe(
-          catchError((error) => {
-            if (error instanceof HttpErrorResponse) {
-              this.toastrService.error('You must log first');
-              this.router.navigateByUrl('/login');
-            }
-            return new Observable<Users>();
-    
-          })
-    
-        );
-        
-        userObservable.subscribe((serverUser) => {
-              this.subject.next(serverUser);
-        });
-        this.subject.subscribe((user)=>this.user = user);
+              this.updateForm = this.formBuilder.group({
+                  username: ['', [Validators.required]],
+                  name: ['', [Validators.required]],
+                  surname: ['', [Validators.required]],
+                  role: ['', [Validators.required]]
+              })
   }
 
   ngOnInit(): void {
-    this.updateForm = this.formBuilder.group({
-      username: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
-      role: ['', [Validators.required]]
-  })
+      this.userService.getIt().pipe(
+        catchError((error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.toastrService.error('You must log first');
+            this.router.navigateByUrl('/login');
+          }
+          return new Observable<Users>()})
+
+      ).subscribe((serverUser) => {
+          this.user = serverUser ;
+      })
   }
 
   update(){

@@ -21,20 +21,35 @@ export class AddTComponent implements OnInit {
 
 	tableForm !: FormGroup;
 	isSubmitted = false;
-	returnUrl = '';
 
 	constructor(private formBuilder: FormBuilder, private tableService: TableService,
-		private activatedRoute: ActivatedRoute, private router: Router, private userService : UserService, 
-		private toastrService: ToastrService) {
-			this.userService.getIt().pipe(
-                catchError((error)=>{
-                    if(error instanceof HttpErrorResponse){
-                        this.toastrService.error('You must log first');
-                        this.router.navigateByUrl('/login');
-                    }
-                    return new Observable<Table>();
-                
-                })).subscribe();
+		private activatedRoute: ActivatedRoute, private router: Router, 
+		private userService : UserService, private toastrService: ToastrService) {
+
+		this.tableForm = this.formBuilder.group({
+			number: ['', [Validators.required]],
+			seats: ['', [Validators.required]]
+		})
+	}
+
+	ngOnInit(): void {
+		this.getMe() ;
+	}
+
+	get fc() {
+		return this.tableForm.controls;
+	}
+
+	getMe(){
+		this.userService.getIt().pipe(
+			catchError((error)=>{
+				if(error instanceof HttpErrorResponse){
+					this.toastrService.error('Login required');
+					this.router.navigateByUrl('/login');
+				}
+				return new Observable<Table>();
+			})
+		).subscribe();
 	}
 
 	submit() {
@@ -50,16 +65,4 @@ export class AddTComponent implements OnInit {
 			this.router.navigateByUrl('/tables');
 		});
 	}
-
-	get fc() {
-		return this.tableForm.controls;
-	}
-
-	ngOnInit(): void {
-		this.tableForm = this.formBuilder.group({
-			number: ['', [Validators.required]],
-			seats: ['', [Validators.required]]
-		})
-	}
-
 }

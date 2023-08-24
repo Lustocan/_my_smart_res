@@ -10,40 +10,38 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-in-page.component.css']
 })
 export class SignInPageComponent implements OnInit{
-   signInForm !: FormGroup  ;
-   isSubmitted = false      ;
-   returnUrl   = ''         ;
+    signInForm !: FormGroup  ;
+    isSubmitted = false      ;
+    returnUrl   = ''         ;
 
-   constructor(private formBuilder: FormBuilder, private userService : UserService,
-    private activatedRoute: ActivatedRoute, private router : Router) {}
-
-
-   ngOnInit(): void {
-      this.signInForm = this.formBuilder.group({
-          username: ['', [Validators.required]],
-          name: ['', [Validators.required]],
-          surname: ['', [Validators.required]],
-          role: ['', [Validators.required]],
-          password: ['', [Validators.required]]
-      })
-
-      this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl ;
-    } 
-  submit() : void {
-    this.isSubmitted = true ;
-    if(this.signInForm.invalid){
-      return ;
+    constructor(private formBuilder: FormBuilder, private userService : UserService,
+                private activatedRoute: ActivatedRoute, private router : Router) {
+               
+               this.signInForm = this.formBuilder.group({
+                 username: ['', [Validators.required]],
+                 name: ['', [Validators.required]],
+                 surname: ['', [Validators.required]],
+                 role: ['', [Validators.required]],
+                 password: ['', [Validators.required]],
+               })
     }
-    
-    this.userService.sign_in({username:this.fc.username.value,
-                              name : this.fc.name.value, surname: this.fc.surname.value, 
-                              role: this.fc.role.value , password:this.fc.password.value}).subscribe(()=> {
-                                  this.router.navigateByUrl("/login")
-     });
-  }
 
-  get fc(){
-    return this.signInForm.controls;
-  }
+
+    ngOnInit(): void {} 
+
+    get fc(){
+       return this.signInForm.controls;
+    }
+
+    submit() : void {
+       this.isSubmitted = true ;
+           if(this.signInForm.invalid) return ;
+           this.userService.sign_in({username:this.fc.username.value,
+                                     name : this.fc.name.value, surname: this.fc.surname.value, 
+                                     role: this.fc.role.value , password:this.fc.password.value}).subscribe(()=> {
+                                     this.router.navigateByUrl("/login")
+        });
+    }
+
    
 }

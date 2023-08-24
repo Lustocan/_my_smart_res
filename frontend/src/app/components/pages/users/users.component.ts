@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs/internal/Observable';
@@ -12,38 +12,31 @@ import { Users } from 'src/app/shared/models/users';
 	templateUrl: './users.component.html',
 	styleUrls: ['./users.component.css']
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit {
 
-	user: Users = new Users();
 	users: Users[] = [];
 
-	current_date = new Date(); 
+	constructor(private userService: UserService, private router: Router, private toastrService: ToastrService) { }
 
-	constructor(private userService: UserService, private router: Router, private toastrService: ToastrService) {
-		userService.getAll().pipe(
-			catchError((error) => {
-				if (error instanceof HttpErrorResponse) {
-					this.toastrService.error('You must log first');
-					this.router.navigateByUrl('/login');
-				}
-				return new Observable<Users[]>();
-
-			})).subscribe((serverUsers) => this.users = serverUsers);
-
-
-		userService.getIt().subscribe((serverUser) => this.user = serverUser);
+	ngOnInit(){
+		this.getUsers() ;
 	}
 
 	submitDelete(id: string) {
 		this.userService.deleteUser(id).subscribe(() => {
 			location.reload();
 		});
-
-
 	}
 
-	myUser(id: string) : boolean{
-		return this.user._id === id;
-	}
+	getUsers(){
+		this.userService.getAll().pipe(
+			catchError((error) => {
+				if (error instanceof HttpErrorResponse) {
+					this.toastrService.error('Login required');
+					this.router.navigateByUrl('/login');
+				}
+				return new Observable<Users[]>();
 
+			})).subscribe((serverUsers) => this.users = serverUsers);
+	}
 }

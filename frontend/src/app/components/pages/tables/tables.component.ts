@@ -62,11 +62,11 @@ export class TablesComponent implements OnInit {
 			catchError((error)=>{
 				if(error instanceof HttpErrorResponse){
 					if(error.status===400){
-						this.toastrService.error('Login required.');
+						this.toastrService.error('Login required');
 						this.router.navigateByUrl('/login');
 					}
 					else if(error.status===403){
-						this.toastrService.error('Unauthorized.');
+						this.toastrService.error('Unauthorized');
 						this.router.navigateByUrl('/');
 					}
 				}

@@ -64,6 +64,13 @@ export class KitchenComponent implements OnInit {
 		return null ;
 	}
 
+	initTime(){
+        let time = this.wip.kitchen_time ;
+		time *= 60                       ;
+		window.sessionStorage.setItem('my-counter', time) 
+		this.session = window.sessionStorage.getItem('my-counter') || ""
+	}
+
 	ready() {
 		window.sessionStorage.removeItem('my-counter');
 		this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe();
@@ -136,16 +143,13 @@ export class KitchenComponent implements OnInit {
 		},1000)
 	}
 
-	initTime(){
-
-	}
 
 	getAllOrders(){
-		this.ordersService.getAllOrders().pipe(
+		this.ordersService.getAllOrder().pipe(
 			catchError((error) => {
 				if (error instanceof HttpErrorResponse) {
 					if(error.status===400){
-						this.toastrService.error('You must log first');
+						this.toastrService.error('Login reauired');
 						this.router.navigateByUrl('/login');
 					}
 					else if(error.status===403){
@@ -160,11 +164,7 @@ export class KitchenComponent implements OnInit {
 			this.kick_invalid();
 			this.quick_sort(0, this.orders.length-1);
 			this.wip = this.orders.shift();
-			let time = this.wip.kitchen_time ;
-			console.log(this.wip);
-			time *= 60                       ;
-			window.sessionStorage.setItem('my-counter', time) 
-			this.session = window.sessionStorage.getItem('my-counter') || ""
+			this.initTime()
 		});
 	}
 }

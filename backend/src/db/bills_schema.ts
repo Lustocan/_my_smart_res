@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 const BillsSchema = new mongoose.Schema({
     _id          : { type : String, required : true},
     n_table      : {type : Number, required : true},
-    operators       : [{type : String, required : true}],
+    operators       : [{username : String, role : String}],
     served   : [{_id : String ,element : String ,amount : Number ,kind : String}], 
     payment : {type : Number, reuqired : true},
     date    : {type : Date, required : true}

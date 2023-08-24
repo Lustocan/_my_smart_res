@@ -26,7 +26,7 @@ export class BarComponent {
 
 
 	constructor(private ordersService: OrdersService, private socketIoService: SocketIoService,
-		        private toastrService: ToastrService, private router : Router) { }
+		        private toastrService: ToastrService, private router : Router) {}
 
 	ngOnInit(): void {
 		let orderObservable = this.ordersService.getAllOrders().pipe(
@@ -87,9 +87,6 @@ export class BarComponent {
 			 window.sessionStorage.removeItem('my-counter');
 			 this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
 			 this.socketIoService.send_w(this.wip.staff[0]);
-			 if(this.orders.length>0&&this.orders[0].bar_time){
-				window.sessionStorage.setItem('my-counter', this.orders[0].bar_time.toString()||'')
-			 }
 			 setTimeout(function(){
 				location.reload();
 			}, 1500 )
@@ -110,9 +107,6 @@ export class BarComponent {
 		window.sessionStorage.removeItem('my-counter');
 		this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
 		this.socketIoService.send_w(this.wip.staff[0]);
-		if(this.orders.length>0&&this.orders[0].bar_time){
-			window.sessionStorage.setItem('my-counter', this.orders[0].bar_time.toString()||'')
-		 }
 		setTimeout(function(){
 			location.reload();
 		}, 1500)

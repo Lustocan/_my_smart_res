@@ -113,6 +113,10 @@ export class SingleTComponent implements OnInit {
   
             if(this.kitchen) this.socketIoService.send_k(this.user.username);
             if(this.bar)     this.socketIoService.send_b("spedito");
+
+            setTimeout(function(){
+                location.reload();
+            }, 1500)
         }
     }
 

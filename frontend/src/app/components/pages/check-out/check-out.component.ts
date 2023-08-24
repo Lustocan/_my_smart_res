@@ -16,6 +16,7 @@ import { NgModel } from '@angular/forms';
 export class CheckOutComponent implements OnInit  {
 
   orders: Orders[] = [];
+  total_order = new Orders(new Date()) ;
   num : any ;
 
   constructor(private ordersService : OrdersService, private toastrService : ToastrService,
@@ -37,7 +38,9 @@ export class CheckOutComponent implements OnInit  {
 
       orderObservable.subscribe((serverOrder) => {
             this.orders = serverOrder;
-            console.log(this.orders)
+            for(let i=0; i<serverOrder.length; i++){
+               console.log(serverOrder[i].total_price)
+            }
       });
       
   }

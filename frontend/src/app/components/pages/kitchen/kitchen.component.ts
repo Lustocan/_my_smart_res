@@ -115,7 +115,6 @@ export class KitchenComponent implements OnInit {
 		this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b)
 		this.socketIoService.send_w(this.wip.staff[0]);
 		if(this.orders.length>0&&this.orders[0].kitchen_time){
-			let n =  this.orders[0].kitchen_time*60
 		   window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
 		}
 		setTimeout(function(){

@@ -3,34 +3,74 @@
 
 <body>
     <ul>
-        <li *ngFor="let order of orders">
-            <div *ngIf=nDrinksOrCoffeOrders(order)>
-                <main class="table">
+        <li *ngIf="wip">
+            <div *ngIf="nDrinksOrCoffeOrders(wip)">
+                <main class="table" style="border: 6px solid #4a9444;">
                     <section class="table-header">
-                        <h1>Table Number : {{order.n_table}}</h1>
-                        <h4>Waiter : {{get_waiter(order)}}</h4>
+                        <h1>Table Number : {{wip.n_table}}</h1>
+                        <h4>Waiter : {{get_current()}}</h4>
                     </section>
                     <section class="table-body">
-                        <table >
+                        <table>
                             <thead>
-                                <tr >
+                                <!-- <tr>
+                                <td colspan="3">
+                                    <p>Table Number : {{wip.n_table}}</p>
+                                    <p>Waiter : {{wip.waiter}}</p>
+                                </td>
+                            </tr> -->
+
+                                <tr class="thead-exception">
                                     <td>Name</td>
                                     <td>Amount</td>
                                     <td>Time</td>
                                 </tr>
                             </thead>
-                            <tbody *ngFor="let elem of order.to_prepare">
-                                <tr *ngIf="isDrinksOrCoffe(elem.kind)">
+                            <tbody *ngFor="let elem of wip.to_prepare">
+                                <tr *ngIf="isDrinksOrCoffe(elem.kind, wip.ready_b)">
                                     <td>{{elem.element}}</td>
                                     <td> {{elem.amount}}</td>
-                                    <td> {{order.bar_time}} Min</td>
+                                    <td> {{wip.bar_time}} Min</td>
                                 </tr>
                             </tbody>
                         </table>
                     </section>
                 </main>
             </div>
-        </li>
+            <li *ngFor="let order of orders">
+                <div *ngIf="nDrinksOrCoffeOrders(order)">
+                    <main class="table">
+                        <section class="table-header">
+                            <h1>Table Number : {{wip.n_table}}</h1>
+                            <h4>Waiter : {{get_current()}}</h4>
+                        </section>
+                        <section class="table-body">
+                            <table >
+                                <thead>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>Amount</td>
+                                        <td>Time</td>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let elem of order.to_prepare">
+                                    <tr *ngIf="isDrinksOrCoffe(elem.kind, order.ready_b)">
+                                        <td>{{elem.element}}</td>
+                                        <td> {{elem.amount}}</td>
+                                        <td> {{order.bar_time}} Min</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                    </main>
+                </div>
+            </li>
+            <button (click)='startTimer()'>Start Timer</button>
+            <button (click)='pauseTimer()'>Pause</button>
+            <button (click)='ready()'>Ready</button>
+            <p *ngIf="!sec()">{{minutes}}:{{seconds}} Seconds Left....</p>
+            <p *ngIf="sec()">{{minutes}}:0{{seconds}} Seconds Left....</p>
+
     </ul>
 </body>
 

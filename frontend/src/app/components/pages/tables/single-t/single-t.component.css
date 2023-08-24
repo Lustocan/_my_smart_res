@@ -112,6 +112,7 @@ body{
     flex-wrap : wrap;
     margin-top: 20px;
     margin-bottom: 9px;
+    margin-left : 170px;
 }
 
 .coffe-container {
@@ -122,6 +123,7 @@ body{
     flex-wrap : wrap;
     margin-top: 20px;
     margin-bottom: 9px;
+    margin-left : 170px;
 }
 
 .dessert-container {
@@ -132,6 +134,7 @@ body{
     flex-wrap : wrap;
     margin-top: 20px;
     margin-bottom: 9px;
+    margin-left : 170px;
 }
 
 .drink-container {
@@ -142,6 +145,7 @@ body{
     flex-wrap : wrap;
     margin-top: 20px;
     margin-bottom: 9px;
+    margin-left : 170px;
 }
 
 .box {
@@ -153,8 +157,7 @@ body{
     border-radius: 5px ;
     padding: 20px ;
     display: flex ;
-    margin-left : 3px ;
-    margin-right : 3px ;
+    margin : 40px 3px 20px 40px;
     background-color: #c7c7c7;
 }
 

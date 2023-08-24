@@ -71,7 +71,7 @@ table, thead, td {
     visibility: hidden;
 }
 
-.table-body:hover::-webkit-scrollbar-thumb{
+.table- body:hover::-webkit-scrollbar-thumb{
     visibility: visible;
 }
 

@@ -159,9 +159,9 @@ button:hover i::after {
     cursor: default;
     background: #023588e3;
     border-radius: 5px;
-    position: absolute;
+    position: sticky;
     top: 3%;
-    left: 62%;
+    left: 69%;
 }
 
 .wrapper .display,

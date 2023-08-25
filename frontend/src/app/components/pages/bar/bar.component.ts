@@ -31,6 +31,10 @@ export class BarComponent implements OnInit {
 		this.getAllOrders();
 	}
 
+	min(){
+		return this.minutes<10 ;
+	}
+
 	sec(){
 		return this.seconds<10 ;
 	}
@@ -60,10 +64,15 @@ export class BarComponent implements OnInit {
 	}
 
 	initTime(){
-        let time = this.wip.bar_time ;
-		time *= 60                       ;
-		window.sessionStorage.setItem('my-counter', time) 
+        if(!window.sessionStorage.getItem('my-counter')){
+			let time = this.wip.bar_time ;
+			time *= 60                       ;
+			window.sessionStorage.setItem('my-counter', time) 
+		}
 		this.session = window.sessionStorage.getItem('my-counter') || ""
+		this.timeLeft = parseInt(this.session)
+		this.minutes = Math.floor(this.timeLeft/60) ;
+		this.seconds = this.timeLeft%60 ;
 	}
 
 	ready() {
@@ -71,7 +80,9 @@ export class BarComponent implements OnInit {
 		this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
 		this.socketIoService.send_w({username : this.wip.staff[0].username, use : "bar"});
 		if(this.orders.length>0&&this.orders[0].bar_time){
-			window.sessionStorage.setItem('my-counter', this.orders[0].bar_time.toString()||'')
+			let time = 0+ + +this.orders[0].bar_time ;
+			time *= 60                       ;
+			window.sessionStorage.setItem('my-counter', time.toString())
 		 }
 		setTimeout(function(){
 			location.reload();
@@ -134,7 +145,9 @@ export class BarComponent implements OnInit {
 			 this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
 			 this.socketIoService.send_w({username : this.wip.staff[0].username, use : "bar"});
 			 if(this.orders.length>0&&this.orders[0].bar_time){
-				window.sessionStorage.setItem('my-counter', this.orders[0].bar_time.toString()||'')
+				let time = 0+ + +this.orders[0].bar_time ;
+				time *= 60                       ;
+				window.sessionStorage.setItem('my-counter', time.toString())
 			 }
 			 setTimeout(function(){
 				location.reload();

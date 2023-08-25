@@ -33,6 +33,10 @@ export class KitchenComponent implements OnInit {
 		this.getAllOrders() ;
 	}
 
+	min(){
+		return this.minutes<10 ;
+	}
+
 	sec(){
 		return this.seconds<10 ;
 	}
@@ -62,10 +66,15 @@ export class KitchenComponent implements OnInit {
 	}
 
 	initTime(){
-        let time = this.wip.kitchen_time ;
-		time *= 60                       ;
-		window.sessionStorage.setItem('my-counter', time) 
+		if(!window.sessionStorage.getItem('my-counter')){
+			let time = this.wip.kitchen_time ;
+			time *= 60                       ;
+			window.sessionStorage.setItem('my-counter', time) 
+		}
 		this.session = window.sessionStorage.getItem('my-counter') || ""
+		this.timeLeft = parseInt(this.session)
+		this.minutes = Math.floor(this.timeLeft/60) ;
+		this.seconds = this.timeLeft%60 ;
 	}
 
 	ready() {
@@ -73,7 +82,9 @@ export class KitchenComponent implements OnInit {
 		this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe();
 		this.socketIoService.send_w({username : this.wip.staff[0].username, use : 'kitchen'});
 		if(this.orders.length>0&&this.orders[0].kitchen_time){
-		   window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
+			let time = 0+ + +this.orders[0].kitchen_time ;
+			time *= 60                       ;
+			window.sessionStorage.setItem('my-counter', time.toString()) 
 		}
 		setTimeout(function(){
 			location.reload();
@@ -86,6 +97,9 @@ export class KitchenComponent implements OnInit {
 				let g = true ;
 				for(let j=0; j<this.queue[i].to_prepare.length; j++){
                     if(this.isDishes(this.queue[i].to_prepare[j].kind)&&g){
+						let p = 0+ + +this.queue[i].to_prepare[j].price ;
+						let a = 0+ + +this.queue[i].to_prepare[j].amount ;
+						this.queue[i].to_prepare[j].price = p*a ;
 						this.orders.push(this.queue[i]);
 						g = false ;
 					}
@@ -136,7 +150,9 @@ export class KitchenComponent implements OnInit {
 			 this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe()
 			 this.socketIoService.send_w({username : this.wip.staff[0].username, use : 'kitchen'});
 			 if(this.orders.length>0&&this.orders[0].kitchen_time){
-				window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
+				let time = 0+ + +this.orders[0].kitchen_time ;
+				time *= 60                       ;
+				window.sessionStorage.setItem('my-counter', time.toString()) 
 			 }
 			 setTimeout(function(){
 				location.reload();

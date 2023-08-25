@@ -148,7 +148,12 @@ export class SingleTComponent implements OnInit {
 
             let numero = parseInt(this.num);
 
-            if(this.table.customers===0) this.tableService.updateTable(this.num , this.counter).subscribe();
+            if(!this.table.customers) this.tableService.updateTable(this.num , this.counter).subscribe();
+            else {
+                let cust = +0+ + +this.table.customers;
+                if(numero>cust)
+                   this.tableService.updateTable(this.num , this.counter).subscribe();
+            }
 
             let _id = uuid();
 

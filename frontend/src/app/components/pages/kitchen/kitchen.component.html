@@ -19,14 +19,14 @@
                     <section class="table-body">
                         <table>
                             <thead>
-                                <tr class="thead-exception">
+                                <tr>
                                     <td>Name</td>
                                     <td>Amount</td>
                                     <td>Time</td>
                                 </tr>
                             </thead>
                             <tbody *ngFor="let elem of wip.to_prepare">
-                                <tr >
+                                <tr>
                                     <td>{{elem.element}}</td>
                                     <td> {{elem.amount}}</td>
                                     <td> {{wip.bar_time}} Min</td>

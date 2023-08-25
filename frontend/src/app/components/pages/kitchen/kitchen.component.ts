@@ -71,7 +71,7 @@ export class KitchenComponent implements OnInit {
 	ready() {
 		window.sessionStorage.removeItem('my-counter');
 		this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe();
-		this.socketIoService.send_w(this.wip.staff[0].username);
+		this.socketIoService.send_w({username : this.wip.staff[0].username, use : 'kitchen'});
 		if(this.orders.length>0&&this.orders[0].kitchen_time){
 		   window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
 		}
@@ -134,7 +134,7 @@ export class KitchenComponent implements OnInit {
 		  else{
 			 window.sessionStorage.removeItem('my-counter');
 			 this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe()
-			 this.socketIoService.send_w(this.wip.staff[0].username);
+			 this.socketIoService.send_w({username : this.wip.staff[0].username, use : 'kitchen'});
 			 if(this.orders.length>0&&this.orders[0].kitchen_time){
 				window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
 			 }

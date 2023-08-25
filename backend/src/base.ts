@@ -65,39 +65,16 @@ let users = [{id : String(), username : String() }] ;
 io.on('connection', socket => {
 
    socket.on('kitchen', (arg) => {
-      console.log("kitchen")
-       let bool = true ;
-       for(let i=0; i<users.length; i++){
-           if(users[i].username===arg) bool = false ;
-       }
-       if(bool) users.push({id : socket.id, username : arg})
-       socket.broadcast.emit('kitchen', users)
+      socket.broadcast.emit('kitchen', arg)
    })
-
    socket.on('bar', (arg) => {
-      console.log("bar")
-      let bool = true ;
-      for(let i=0; i<users.length; i++){
-          if(users[i].username===arg) bool = false ;
-      }
-      if(bool) users.push({id : socket.id, username : arg})
-      socket.broadcast.emit('bar', users)
+      socket.broadcast.emit('bar', arg)
    })
-
    socket.on('tables', (arg) => {
-      console.log("tables")
-
-      console.log(arg)
-      console.log(users)
-      for(let i =0 ; i<users.length; i++){
-         if(users[i].username===arg){
-            console.log(users[i].id)
-            
-            socket.broadcast.to(users[i].id).emit('tables');
-         }
-      }
+      socket.broadcast.emit('tables', arg);
    })
 })
+
 
 
 

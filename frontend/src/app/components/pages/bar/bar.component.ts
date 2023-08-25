@@ -69,7 +69,7 @@ export class BarComponent implements OnInit {
 	ready() {
 		window.sessionStorage.removeItem('my-counter');
 		this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
-		this.socketIoService.send_w(this.wip.staff[0]);
+		this.socketIoService.send_w({username : this.wip.staff[0].username, use : "bar"});
 		if(this.orders.length>0&&this.orders[0].bar_time){
 			window.sessionStorage.setItem('my-counter', this.orders[0].bar_time.toString()||'')
 		 }
@@ -132,7 +132,7 @@ export class BarComponent implements OnInit {
 		  else{
 			 window.sessionStorage.removeItem('my-counter');
 			 this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
-			 this.socketIoService.send_w(this.wip.staff[0]);
+			 this.socketIoService.send_w({username : this.wip.staff[0].username, use : "bar"});
 			 if(this.orders.length>0&&this.orders[0].bar_time){
 				window.sessionStorage.setItem('my-counter', this.orders[0].bar_time.toString()||'')
 			 }

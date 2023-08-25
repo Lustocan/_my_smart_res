@@ -37,12 +37,10 @@
                     <button (click)='startTimer()'><span>Start Timer</span><i></i></button>
                     <button (click)='pauseTimer()'><span>Pause</span><i></i></button>
                     <button (click)='ready()'><span>Ready</span><i></i></button>
-                    <!-- <p *ngIf="!sec()">{{minutes}}:{{seconds}} Seconds Left....</p>
-                    <p *ngIf="sec()">{{minutes}}:0{{seconds}} Seconds Left....</p> -->
                 </main>
             </div>
         <li *ngFor="let order of orders">
-            <div *ngIf=nDishesOrDessert(order)>
+            <div>
                 <main class="table">
                     <section class="table-header">
                         <h1>Table Number : {{wip.n_table}}</h1>
@@ -58,7 +56,7 @@
                                 </tr>
                             </thead>
                             <tbody *ngFor="let elem of order.to_prepare">
-                                <tr *ngIf="isDishes(elem.kind, order.ready_k)">
+                                <tr>
                                     <td>{{elem.element}}</td>
                                     <td> {{elem.amount}}</td>
                                     <td> {{order.kitchen_time}} Min</td>
@@ -69,11 +67,6 @@
                 </main>
             </div>
         </li>
-        <!-- <button (click)='startTimer()'>Start Timer</button>
-        <button (click)='pauseTimer()'>Pause</button>
-        <button (click)='ready()'>Ready</button>
-        <p *ngIf="!sec()">{{minutes}}:{{seconds}} Seconds Left....</p>
-        <p *ngIf="sec()">{{minutes}}:0{{seconds}} Seconds Left....</p> -->
     </ul>
 </body>
 

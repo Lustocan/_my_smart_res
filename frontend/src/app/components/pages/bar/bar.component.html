@@ -40,7 +40,7 @@
                 </main>
             </div>
         <li *ngFor="let order of orders">
-            <div *ngIf="nDrinksOrCoffeOrders(order)">
+            <div>
                 <main class="table">
                     <section class="table-header">
                         <h1>Table Number : {{wip.n_table}}</h1>
@@ -56,7 +56,7 @@
                                 </tr>
                             </thead>
                             <tbody *ngFor="let elem of order.to_prepare">
-                                <tr *ngIf="isDrinksOrCoffe(elem.kind, order.ready_b)">
+                                <tr>
                                     <td>{{elem.element}}</td>
                                     <td> {{elem.amount}}</td>
                                     <td> {{order.bar_time}} Min</td>

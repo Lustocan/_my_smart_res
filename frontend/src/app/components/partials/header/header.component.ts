@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
       showLog : Boolean = true  ;
 
       constructor(private http : HttpClient, private userService : UserService,
-                  private socketIoService : SocketIoService, private router : Router ) { }
+                  private socketIoService : SocketIoService, private router : Router ) { this.activeSocket();}
       
       ngOnInit(): void { 
             this.userService.getIt().pipe(catchError((error)=>{
@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit {
                         this.user = serverUser ;
                         this.activeSocket()    ;
             })    
+            this.activeSocket();
       }
 
 

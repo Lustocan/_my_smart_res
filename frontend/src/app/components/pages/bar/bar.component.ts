@@ -20,8 +20,11 @@ export class BarComponent implements OnInit {
 
 	timeLeft: number = 0 ;
 	interval: any        ;
+
 	minutes: number  = 0 ;
 	seconds: number  = 0 ;
+
+	start : boolean = true ;
 
 
 	constructor(private ordersService: OrdersService, private socketIoService: SocketIoService,
@@ -39,8 +42,15 @@ export class BarComponent implements OnInit {
 		return this.seconds<10 ;
 	}
 
+	testAndSet(){
+		let el = this.start ;
+		this.start = !this.start ;
+		return el ;
+	}
+
 	pauseTimer() {
 		clearInterval(this.interval);
+		this.testAndSet() ;
 	}
 
 	isDrinksOrCoffe(kind: any): boolean {
@@ -64,12 +74,7 @@ export class BarComponent implements OnInit {
 	}
 
 	initTime(){
-        if(!window.sessionStorage.getItem('my-counter')){
-			let time = this.wip.bar_time ;
-			time *= 60                       ;
-			window.sessionStorage.setItem('my-counter', time) 
-		}
-		this.session = window.sessionStorage.getItem('my-counter') || ""
+		this.session = this.wip.bar_time ;
 		this.timeLeft = parseInt(this.session)
 		this.minutes = Math.floor(this.timeLeft/60) ;
 		this.seconds = this.timeLeft%60 ;
@@ -77,13 +82,8 @@ export class BarComponent implements OnInit {
 
 	ready() {
 		window.sessionStorage.removeItem('my-counter');
-		this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
+		this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true, this.wip.kitchen_time, this.wip.bar_time).subscribe();
 		this.socketIoService.send_w({username : this.wip.staff[0].username, use : "bar"});
-		if(this.orders.length>0&&this.orders[0].bar_time){
-			let time = 0+ + +this.orders[0].bar_time ;
-			time *= 60                       ;
-			window.sessionStorage.setItem('my-counter', time.toString())
-		 }
 		setTimeout(function(){
 			location.reload();
 		}, 1500)
@@ -95,6 +95,9 @@ export class BarComponent implements OnInit {
 				let g = true ;
 				for(let j=0; j<this.queue[i].to_prepare.length; j++){
                     if(this.isDrinksOrCoffe(this.queue[i].to_prepare[j].kind)&&g){
+						let p = 0+ + +this.queue[i].to_prepare[j].price ;
+						let a = 0+ + +this.queue[i].to_prepare[j].amount ;
+						this.queue[i].to_prepare[j].price = p*a ;
 						this.orders.push(this.queue[i]);
 						g = false ;
 					}
@@ -129,26 +132,18 @@ export class BarComponent implements OnInit {
 	}
 
 	startTimer() {
-		if (window.sessionStorage.getItem('my-counter')) {
-			this.session = window.sessionStorage.getItem('my-counter') || ""
-			this.timeLeft = parseInt(this.session)
-		}
+		this.testAndSet() ;
 		this.interval = setInterval(() => {
 		  if(this.timeLeft > 0) {
 			 this.timeLeft--;
+			 this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , this.wip.ready_b, this.wip.kitchen_time, this.timeLeft).subscribe();
 			 this.minutes = Math.floor(this.timeLeft/60) ;
 			 this.seconds = this.timeLeft%60 ;
 			 window.sessionStorage.setItem('my-counter', this.timeLeft.toString());
 		  }
 		  else{
-			 window.sessionStorage.removeItem('my-counter');
-			 this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
+			 this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true, this.wip.kitchen_time, this.wip.bar_time).subscribe();
 			 this.socketIoService.send_w({username : this.wip.staff[0].username, use : "bar"});
-			 if(this.orders.length>0&&this.orders[0].bar_time){
-				let time = 0+ + +this.orders[0].bar_time ;
-				time *= 60                       ;
-				window.sessionStorage.setItem('my-counter', time.toString())
-			 }
 			 setTimeout(function(){
 				location.reload();
 			}, 500 )

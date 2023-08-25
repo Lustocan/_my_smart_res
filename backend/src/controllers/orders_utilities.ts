@@ -33,21 +33,26 @@ export const  getAllOrders = async (req : express.Request, res : express.Respons
 
 export const new_Order = async(req : express.Request, res : express.Response ) => {
     try{
-        const {_id ,staff,  to_prepare, kitchen_time, bar_time, date } = req.body ;
+        let {_id ,staff,  to_prepare, kitchen_time, bar_time, date } = req.body ;
 
         const { n_table } = req.params         ;
+
+        
 
         if(!n_table||!staff||!to_prepare||!date){
             return res.sendStatus(400) ;
         }
+
+        bar_time  = bar_time * 60 ;
+        kitchen_time = kitchen_time * 60 ;
 
         const order = await createOrder({
              _id,
              n_table,
              staff,
              to_prepare,
-             kitchen_time,
              bar_time,
+             kitchen_time,
              date
         })
 
@@ -61,16 +66,20 @@ export const new_Order = async(req : express.Request, res : express.Response ) =
 
 export const updateOrder = async (req : express.Request, res : express.Response) => {
     try{
-        const { ready_k, ready_b  } = req.body ;
+        const { ready_k, ready_b, kitchen_time, bar_time  } = req.body ;
         const { _id } = req.params    ;
        
-        if(!_id||(!ready_k&&!ready_b)){
+        if(!_id){
            return res.sendStatus(400) ;
         }
 
         if(ready_k) await updateById(_id, {ready_k : ready_k});
 
         if(ready_b) await updateById(_id, {ready_b : ready_b});
+
+        if(kitchen_time) await updateById(_id, {kitchen_time : kitchen_time});
+
+        if(bar_time) await updateById(_id, {bar_time : bar_time});
 
         return res.status(200).end()  ;
     }

@@ -36,8 +36,8 @@
                             </tbody>
                         </table>
                     </section>
-                    <button (click)='startTimer()'><span>Start Timer</span><i></i></button>
-                    <button (click)='pauseTimer()'><span>Pause</span><i></i></button>
+                    <button *ngIf="start" (click)='startTimer()'><span>Start Timer</span><i></i></button>
+                    <button *ngIf="!start" (click)='pauseTimer()'><span>Pause</span><i></i></button>
                     <button (click)='ready()'><span>Ready</span><i></i></button>
                 </main>
             </div>

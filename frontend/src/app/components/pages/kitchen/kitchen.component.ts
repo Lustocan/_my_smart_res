@@ -26,6 +26,8 @@ export class KitchenComponent implements OnInit {
 	minutes: number  = 0;
 	seconds: number  = 0;
 
+	start : boolean = true ;
+
 	constructor(private ordersService: OrdersService, private socketIoService: SocketIoService,
 		        private toastrService: ToastrService, private router : Router) { }
 
@@ -41,8 +43,15 @@ export class KitchenComponent implements OnInit {
 		return this.seconds<10 ;
 	}
 
+	testAndSet(){
+		let el = this.start ;
+		this.start = !this.start ;
+		return el ;
+	}
+
 	pauseTimer() {
 		clearInterval(this.interval);
+		this.testAndSet() ;
 	}
 
 	isDishes(kind: any): boolean {
@@ -66,12 +75,7 @@ export class KitchenComponent implements OnInit {
 	}
 
 	initTime(){
-		if(!window.sessionStorage.getItem('my-counter')){
-			let time = this.wip.kitchen_time ;
-			time *= 60                       ;
-			window.sessionStorage.setItem('my-counter', time) 
-		}
-		this.session = window.sessionStorage.getItem('my-counter') || ""
+		this.session = this.wip.kitchen_time ;
 		this.timeLeft = parseInt(this.session)
 		this.minutes = Math.floor(this.timeLeft/60) ;
 		this.seconds = this.timeLeft%60 ;
@@ -79,13 +83,8 @@ export class KitchenComponent implements OnInit {
 
 	ready() {
 		window.sessionStorage.removeItem('my-counter');
-		this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe();
+		this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b, this.wip.kitchen_time, this.wip.bar_time).subscribe()
 		this.socketIoService.send_w({username : this.wip.staff[0].username, use : 'kitchen'});
-		if(this.orders.length>0&&this.orders[0].kitchen_time){
-			let time = 0+ + +this.orders[0].kitchen_time ;
-			time *= 60                       ;
-			window.sessionStorage.setItem('my-counter', time.toString()) 
-		}
 		setTimeout(function(){
 			location.reload();
 		}, 1500)
@@ -134,26 +133,17 @@ export class KitchenComponent implements OnInit {
 	}
 
 	startTimer() {
-		if (window.sessionStorage.getItem('my-counter')) {
-			this.session = window.sessionStorage.getItem('my-counter') || ""
-			this.timeLeft = parseInt(this.session)
-		}
+		this.testAndSet();
 		this.interval = setInterval(() => {
 		  if(this.timeLeft > 0) {
 			 this.timeLeft--;
+			 this.ordersService.updateOrder(this.wip._id,  this.wip.ready_k, this.wip.ready_b, this.timeLeft , this.wip.bar_time).subscribe()
 			 this.minutes = Math.floor(this.timeLeft/60) ;
 			 this.seconds = this.timeLeft%60 ;
-			 window.sessionStorage.setItem('my-counter', this.timeLeft.toString());
 		  }
 		  else{
-			 window.sessionStorage.removeItem('my-counter');
-			 this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe()
+			 this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b, this.wip.kitchen_time, this.wip.bar_time).subscribe()
 			 this.socketIoService.send_w({username : this.wip.staff[0].username, use : 'kitchen'});
-			 if(this.orders.length>0&&this.orders[0].kitchen_time){
-				let time = 0+ + +this.orders[0].kitchen_time ;
-				time *= 60                       ;
-				window.sessionStorage.setItem('my-counter', time.toString()) 
-			 }
 			 setTimeout(function(){
 				location.reload();
 			}, 500 )
@@ -183,6 +173,7 @@ export class KitchenComponent implements OnInit {
 			this.kick_invalid();
 			this.quick_sort(0, this.orders.length-1);
 			this.wip = this.orders.shift();
+			console.log(this.wip.kitchen_time)
 			this.initTime()
 		});
 	}

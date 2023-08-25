@@ -73,6 +73,10 @@ io.on('connection', socket => {
    socket.on('tables', (arg) => {
       socket.broadcast.emit('tables', arg);
    })
+   socket.on('cash', (arg) => {
+      console.log(arg);
+      socket.broadcast.emit('cash', arg);
+   })
 })
 
 

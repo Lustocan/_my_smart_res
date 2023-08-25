@@ -12,7 +12,6 @@ import { KitchenComponent } from './components/pages/kitchen/kitchen.component';
 import { BarComponent } from './components/pages/bar/bar.component';
 import { UsersComponent } from './components/pages/users/users.component';
 import { CheckOutComponent } from './components/pages/check-out/check-out.component';
-
 const routes: Routes = [
     {path : 'search/:searchTerm', component : HomeComponent},
     {path: '', component : HomeComponent },
@@ -26,7 +25,7 @@ const routes: Routes = [
     {path : 'kitchen', component: KitchenComponent},
     {path : 'bar', component: BarComponent},
     {path : 'users', component: UsersComponent},
-    {path : 'tables/:number/check-out', component: CheckOutComponent}
+    {path : 'tables/:number/check-out', component: CheckOutComponent},
 ];
 
 @NgModule({

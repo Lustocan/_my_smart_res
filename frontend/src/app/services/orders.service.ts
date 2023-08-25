@@ -38,6 +38,14 @@ export class OrdersService {
 		return this.http.get<Orders[]>(ORDERS_URL,this.httpOptions);
 	}
 
+	getAllOrderK() : Observable<Orders[]>{
+		return this.http.get<Orders[]>(ORDERS_URL+'/kitchen/all',this.httpOptions);
+	}
+
+	getAllOrderB() : Observable<Orders[]>{
+		return this.http.get<Orders[]>(ORDERS_URL+'/bar/all',this.httpOptions);
+	}
+
 
 	deleteOrderById(id: string):Observable<Orders>{
 		return this.http.delete<Orders>(ORDERS_URL+'/'+id+'/delete', this.httpOptions).pipe(

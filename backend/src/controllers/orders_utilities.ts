@@ -9,7 +9,6 @@ export const getAllOrdersInThisTable = async(req : express.Request, res : expres
         const orders = await getOrderByTable(n_table) ;
 
         return res.status(200).json(orders) ;
-       return res.status(200);
 
     }
     catch(error){
@@ -38,7 +37,7 @@ export const new_Order = async(req : express.Request, res : express.Response ) =
 
         const { n_table } = req.params         ;
 
-        if(!n_table||!staff||!to_prepare||!kitchen_time||!bar_time||!date){
+        if(!n_table||!staff||!to_prepare||!date){
             return res.sendStatus(400) ;
         }
 

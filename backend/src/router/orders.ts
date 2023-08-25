@@ -6,6 +6,8 @@ export default (router : express.Router) => {
     router.get("/orders/:n_table", isAuthenticated ,isAdmin, getAllOrdersInThisTable) ;
     router.post("/tables/:n_table/add_order", isAuthenticated, isWaiterOrAdmin, new_Order) ;
     router.get("/orders",isAuthenticated ,getAllOrders);
+    router.get("/orders/kitchen/all", isAuthenticated, isCookOrAdmin ,getAllOrders);
+    router.get("/orders/bar/all", isAuthenticated, isBartenderOrAdmin ,getAllOrders);
     router.delete("/orders/:_id/delete", isAuthenticated, isAdmin, deleteOrder);
     router.patch("/orders/:_id/update", isAuthenticated , updateOrder);
 }

@@ -12,8 +12,9 @@ import {  Observable, catchError } from 'rxjs';
 	templateUrl: './bar.component.html',
 	styleUrls: ['./bar.component.css']
 })
-export class BarComponent {
+export class BarComponent implements OnInit {
 	orders: Orders[] = [];
+	queue : Orders[] = [];  
 	wip: any             ;  
 	session: string = "" ;
 
@@ -38,15 +39,11 @@ export class BarComponent {
 		clearInterval(this.interval);
 	}
 
-	isDrinksOrCoffe(kind: any, ready_b : any): boolean {
-		return (kind === 'drinks' || kind === 'coffe_bar') && (!ready_b) ;
+	isDrinksOrCoffe(kind: any): boolean {
+		return (kind === 'drinks' || kind === 'coffe_bar') ;
 	}
 
-	nDrinksOrCoffeOrders(order: Orders): boolean {
-		let p = order.to_prepare?.filter((elem) => this.isDrinksOrCoffe(elem.kind, order.ready_b));
-		if (p) return p.length > 0;
-		else   return false;
-	}
+	
 
 	get_current(){
 		if(this.wip.staff){
@@ -63,7 +60,7 @@ export class BarComponent {
 	}
 
 	initTime(){
-        let time = this.wip.kitchen_time ;
+        let time = this.wip.bar_time ;
 		time *= 60                       ;
 		window.sessionStorage.setItem('my-counter', time) 
 		this.session = window.sessionStorage.getItem('my-counter') || ""
@@ -73,8 +70,8 @@ export class BarComponent {
 		window.sessionStorage.removeItem('my-counter');
 		this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
 		this.socketIoService.send_w(this.wip.staff[0]);
-		if(this.orders.length>0&&this.orders[0].kitchen_time){
-			window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
+		if(this.orders.length>0&&this.orders[0].bar_time){
+			window.sessionStorage.setItem('my-counter', this.orders[0].bar_time.toString()||'')
 		 }
 		setTimeout(function(){
 			location.reload();
@@ -82,9 +79,15 @@ export class BarComponent {
 	}
 
 	kick_invalid(){
-		for(let i=0; i<this.orders.length; i++){
-			if(this.orders[i].ready_b){
-				this.orders.splice(i, 1);
+		for(let i=0; i<this.queue.length; i++){
+			if(!this.queue[i].ready_b){
+				let g = true ;
+				for(let j=0; j<this.queue[i].to_prepare.length; j++){
+                    if(this.isDrinksOrCoffe(this.queue[i].to_prepare[j].kind)&&g){
+						this.orders.push(this.queue[i]);
+						g = false ;
+					}
+				}
 			}
 		}
 	}
@@ -130,8 +133,8 @@ export class BarComponent {
 			 window.sessionStorage.removeItem('my-counter');
 			 this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true).subscribe();
 			 this.socketIoService.send_w(this.wip.staff[0]);
-			 if(this.orders.length>0&&this.orders[0].kitchen_time){
-				window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
+			 if(this.orders.length>0&&this.orders[0].bar_time){
+				window.sessionStorage.setItem('my-counter', this.orders[0].bar_time.toString()||'')
 			 }
 			 setTimeout(function(){
 				location.reload();
@@ -142,7 +145,7 @@ export class BarComponent {
 	}
 
 	getAllOrders(){
-		this.ordersService.getAllOrder().pipe(
+		this.ordersService.getAllOrderB().pipe(
 			catchError((error) => {
 				if (error instanceof HttpErrorResponse) {
 					if(error.status===400){
@@ -157,14 +160,11 @@ export class BarComponent {
 				return new Observable<Orders[]>();
 			})
 		).subscribe((serverOrder) => {
-			this.orders = serverOrder;
-			this.kick_invalid();
+			this.queue = serverOrder;
+			this.kick_invalid()	
 			this.quick_sort(0, this.orders.length-1);
 			this.wip = this.orders.shift();
             this.initTime();
 		});
 	}
-
-
-	
 }

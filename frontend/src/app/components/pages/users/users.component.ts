@@ -35,6 +35,7 @@ export class UsersComponent implements OnInit {
 					this.toastrService.error('Login required');
 					this.router.navigateByUrl('/login');
 				}
+
 				return new Observable<Users[]>();
 
 			})).subscribe((serverUsers) => this.users = serverUsers);

@@ -4,7 +4,7 @@
 <body>
     <ul>
         <li *ngIf="wip">
-            <div *ngIf="nDrinksOrCoffeOrders(wip)">
+            <div >
                 <main class="table" style="border: 6px solid #4a9444;">
                     <section class="table-header">
                         <h1>Table Number : {{wip.n_table}}</h1>
@@ -26,7 +26,7 @@
                                 </tr>
                             </thead>
                             <tbody *ngFor="let elem of wip.to_prepare">
-                                <tr *ngIf="isDrinksOrCoffe(elem.kind, wip.ready_b)">
+                                <tr >
                                     <td>{{elem.element}}</td>
                                     <td> {{elem.amount}}</td>
                                     <td> {{wip.bar_time}} Min</td>

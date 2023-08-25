@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 })
 export class KitchenComponent implements OnInit {
 	orders: Orders[] = [];
+	queue : Orders[] = [];
 	wip: any;
 	session: string = "";
 
@@ -40,15 +41,11 @@ export class KitchenComponent implements OnInit {
 		clearInterval(this.interval);
 	}
 
-	isDishes(kind: any, ready_k: any): boolean {
-		return (kind === 'dishes' || kind === 'dessert') && (!ready_k);
+	isDishes(kind: any): boolean {
+		return (kind === 'dishes' || kind === 'dessert');
 	}
 
-	nDishesOrDessert(order: Orders) {
-		let p = order.to_prepare?.filter((elem) => this.isDishes(elem.kind, order.ready_k));
-		if (p) return p.length > 0;
-		else   return false;
-	}
+
 
 	get_current(){
 		if(this.wip.staff){
@@ -74,7 +71,7 @@ export class KitchenComponent implements OnInit {
 	ready() {
 		window.sessionStorage.removeItem('my-counter');
 		this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe();
-		this.socketIoService.send_w(this.wip.staff[0]);
+		this.socketIoService.send_w(this.wip.staff[0].username);
 		if(this.orders.length>0&&this.orders[0].kitchen_time){
 		   window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
 		}
@@ -84,9 +81,15 @@ export class KitchenComponent implements OnInit {
 	}
 
 	kick_invalid(){
-		for(let i=0; i<this.orders.length; i++){
-			if(this.orders[i].ready_k){
-				this.orders.splice(i, 1);
+		for(let i=0; i<this.queue.length; i++){
+			if(!this.queue[i].ready_k){
+				let g = true ;
+				for(let j=0; j<this.queue[i].to_prepare.length; j++){
+                    if(this.isDishes(this.queue[i].to_prepare[j].kind)&&g){
+						this.orders.push(this.queue[i]);
+						g = false ;
+					}
+				}
 			}
 		}
 	}
@@ -131,7 +134,7 @@ export class KitchenComponent implements OnInit {
 		  else{
 			 window.sessionStorage.removeItem('my-counter');
 			 this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b).subscribe()
-			 this.socketIoService.send_w(this.wip.staff[0]);
+			 this.socketIoService.send_w(this.wip.staff[0].username);
 			 if(this.orders.length>0&&this.orders[0].kitchen_time){
 				window.sessionStorage.setItem('my-counter', this.orders[0].kitchen_time.toString()||'')
 			 }
@@ -145,7 +148,7 @@ export class KitchenComponent implements OnInit {
 
 
 	getAllOrders(){
-		this.ordersService.getAllOrder().pipe(
+		this.ordersService.getAllOrderK().pipe(
 			catchError((error) => {
 				if (error instanceof HttpErrorResponse) {
 					if(error.status===400){
@@ -160,7 +163,7 @@ export class KitchenComponent implements OnInit {
 				return new Observable<Orders[]>();
 			})
 		).subscribe((serverOrder) => {
-			this.orders = serverOrder;
+			this.queue = serverOrder;
 			this.kick_invalid();
 			this.quick_sort(0, this.orders.length-1);
 			this.wip = this.orders.shift();

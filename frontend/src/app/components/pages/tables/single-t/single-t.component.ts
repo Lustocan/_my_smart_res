@@ -160,7 +160,7 @@ export class SingleTComponent implements OnInit {
                 kitchen_time : this.kitchen_time ,date : new Date() }, numero ).subscribe();
   
             if(this.kitchen) this.socketIoService.send_k(this.user.username);
-            if(this.bar)     this.socketIoService.send_b("spedito");
+            if(this.bar)     this.socketIoService.send_b(this.user.username);
 
             setTimeout(function(){
                 location.reload();

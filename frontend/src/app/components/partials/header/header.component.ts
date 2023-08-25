@@ -20,11 +20,16 @@ export class HeaderComponent implements OnInit {
       showLog : Boolean = true  ;
 
       constructor(private http : HttpClient, private userService : UserService,
-                  private socketIoService : SocketIoService, private router : Router ) {}
+                  private socketIoService : SocketIoService, private router : Router ) { }
       
       ngOnInit(): void { 
-            this.getUser()        ;
-            this.activeSocket()   ;
+            this.userService.getIt().pipe(catchError((error)=>{
+                  this.showLog = false ;
+                        return new Observable<Users>;
+                    })).subscribe((serverUser) => {
+                        this.user = serverUser ;
+                        this.activeSocket()    ;
+            })    
       }
 
 
@@ -64,6 +69,7 @@ export class HeaderComponent implements OnInit {
                         return new Observable<Users>;
                     })).subscribe((serverUser) => {
                         this.user = serverUser ;
+                        this.activeSocket()    ;
             })      
       }
 

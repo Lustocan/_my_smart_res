@@ -52,7 +52,7 @@ export class SocketIoService {
     receive_w() {
         this.socket.on('tables', (message:any) => {
             if(message){
-                this.toastrService.warning('There is some dishes ready in the kitchen.' );
+                this.toastrService.warning('There are some dishes ready in the kitchen.' );
             }
         })
     }

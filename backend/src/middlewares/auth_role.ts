@@ -12,7 +12,6 @@ export const isAuthenticated = async (req: express.Request, res: express.Respons
         const { authorization } = req.headers;
 
         if (!sessionCookie) {
-            console.log("ciao bello")
             return res.sendStatus(401);
         }
         dtn.config();

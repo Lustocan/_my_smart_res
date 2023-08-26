@@ -34,4 +34,6 @@ export const createOrder = (values : Record<string, any>) =>
 
 export const deleteOrderById = (id :string) => OrderModel.findOneAndDelete({_id : id});
 
+export const deleteOrdersByTable = (ntable : string) => OrderModel.deleteMany({"n_table": Number(ntable)});
+
 export const updateById = (id : string, values : Record<string, any>) => OrderModel.findByIdAndUpdate(id, values);

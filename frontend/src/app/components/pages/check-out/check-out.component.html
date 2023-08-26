@@ -25,10 +25,18 @@
                                     <td>{{row_price(el.amount, el.price)}}.00€</td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"> TOTAL: </td>
+                                    <td>{{tot_price.toFixed(2)}}€</td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </section>
+                    <button (click)='pay()' style="vertical-align:middle"><span>PAY</span></button>
                 </main>
             </div>
+        </li>
     </ul>
 </body>
 

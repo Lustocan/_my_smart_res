@@ -12,49 +12,49 @@ import { tap } from 'rxjs';
 })
 export class OrdersService {
 
-	httpOptions : HttpOptions = new HttpOptions();
+	httpOptions: HttpOptions = new HttpOptions();
 
-	constructor(private http: HttpClient, private toastrService : ToastrService ) { }
+	constructor(private http: HttpClient, private toastrService: ToastrService) { }
 
 
-	newOrder(Order : Orders, n_table: Number) : Observable<Orders>{
-		return this.http.post<Orders>(TABLES_URL+'/'+n_table+'/add_order', Order, this.httpOptions).pipe(
+	newOrder(Order: Orders, n_table: Number): Observable<Orders> {
+		return this.http.post<Orders>(TABLES_URL + '/' + n_table + '/add_order', Order, this.httpOptions).pipe(
 			tap({
 				next: () => {
-					this.toastrService.success('Order sended' );
+					this.toastrService.success('Order sended');
 				},
 				error: (errorResponse) => {
-					this.toastrService.error('Order Failed')			
+					this.toastrService.error('Order Failed')
 				}
 			})
 		);
 	}
 
-	getAllOrdersInThisTable(n_table: Number) : Observable<Orders[]>{
-		return this.http.get<Orders[]>(ORDERS_URL+'/'+n_table, this.httpOptions);
+	getAllOrdersInThisTable(n_table: Number): Observable<Orders[]> {
+		return this.http.get<Orders[]>(ORDERS_URL + '/' + n_table, this.httpOptions);
 	}
 
-	getAllOrder() : Observable<Orders[]>{
-		return this.http.get<Orders[]>(ORDERS_URL,this.httpOptions);
+	getAllOrder(): Observable<Orders[]> {
+		return this.http.get<Orders[]>(ORDERS_URL, this.httpOptions);
 	}
 
-	getAllOrderK() : Observable<Orders[]>{
-		return this.http.get<Orders[]>(ORDERS_URL+'/kitchen/all',this.httpOptions);
+	getAllOrderK(): Observable<Orders[]> {
+		return this.http.get<Orders[]>(ORDERS_URL + '/kitchen/all', this.httpOptions);
 	}
 
-	getAllOrderB() : Observable<Orders[]>{
-		return this.http.get<Orders[]>(ORDERS_URL+'/bar/all',this.httpOptions);
+	getAllOrderB(): Observable<Orders[]> {
+		return this.http.get<Orders[]>(ORDERS_URL + '/bar/all', this.httpOptions);
 	}
 
 
-	deleteOrderById(id: string):Observable<Orders>{
-		return this.http.delete<Orders>(ORDERS_URL+'/'+id+'/delete', this.httpOptions).pipe(
+	deleteOrderById(id: string): Observable<Orders> {
+		return this.http.delete<Orders>(ORDERS_URL + '/' + id + '/delete', this.httpOptions).pipe(
 			tap({
 				next: () => {
 					this.toastrService.success('Order deleted');
 				},
 				error: (errorResponse) => {
-					this.toastrService.error('Delete Failed');			
+					this.toastrService.error('Delete Failed');
 				}
 			})
 		);
@@ -62,5 +62,9 @@ export class OrdersService {
 
 	updateOrder(_id : String, ready_k : Boolean, ready_b : Boolean, kitchen_time : Number, bar_time : Number) : Observable<Orders> {
 		return this.http.patch<Orders>(ORDERS_URL+'/'+ _id + '/update', { ready_k : ready_k, ready_b : ready_b, kitchen_time : kitchen_time , bar_time : bar_time}, this.httpOptions) 
+	}
+
+	deleteAllOrdersInThisTable(n_table: Number): Observable<any> {
+		return this.http.delete<any>(ORDERS_URL + '/' +  n_table, this.httpOptions);
 	}
 }

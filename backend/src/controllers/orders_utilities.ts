@@ -1,5 +1,5 @@
 import express from 'express' ;
-import { updateById, createOrder, getOrders, deleteOrderById, getOrderByTable } from '../db/orders_schema';
+import { updateById, createOrder, getOrders, deleteOrderById, getOrderByTable, deleteOrdersByTable } from '../db/orders_schema';
 
 
 export const getAllOrdersInThisTable = async(req : express.Request, res : express.Response ) => {
@@ -20,7 +20,6 @@ export const getAllOrdersInThisTable = async(req : express.Request, res : expres
 export const  getAllOrders = async (req : express.Request, res : express.Response) => {
     try{
         const orders = await getOrders();
-
         return res.status(200).json(orders);
     }
     catch(error){
@@ -92,6 +91,11 @@ export const updateOrder = async (req : express.Request, res : express.Response)
 export const deleteOrder = async(req : express.Request, res : express.Response ) => {
     try{
         const {_id} = req.params;
+
+        if(!_id){
+            return res.sendStatus(400) ;
+        }
+
         let delete_order = await deleteOrderById(_id);
 
         return res.status(200).json(delete_order);
@@ -100,5 +104,25 @@ export const deleteOrder = async(req : express.Request, res : express.Response )
         console.log(error);
         return res.sendStatus(400);
 
+    }
+}
+
+
+export const deleteAllOrdersInThisTable = async(req : express.Request, res : express.Response) => {
+    try{
+        const { n_table } = req.params ;
+        if(!n_table){
+            return res.sendStatus(400) ;
+        }
+
+
+        const orders = await deleteOrdersByTable(n_table) ;
+
+        return res.status(200).json(orders) ;
+
+    }
+    catch(error){
+        console.log(error);
+        return res.sendStatus(400) ;
     }
 }

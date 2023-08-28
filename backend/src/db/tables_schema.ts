@@ -19,7 +19,7 @@ TableModel.findOne({"waiter" : {$regex : new RegExp(waiter, "i")}});
 
 export const getTableById = (id : string) => TableModel.findById(id);
 
-export const getTableByNumber = (number : string) => TableModel.findOne({"number" : number});
+export const getTableByNumber_ = (number : string) => TableModel.findOne({"number" : number});
 
 
 export const createTable = (values : Record<string, any>) => 

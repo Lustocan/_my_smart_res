@@ -32,13 +32,13 @@ export const getAllByKind = async (req : express.Request, res : express.Response
 
 export const addNewElement = async (req : express.Request, res : express.Response ) => {
     try{
-        const { name, kind, price, preparation_time } = req.body ;
+        const {_id ,name, price, preparation_time } = req.body ;
 
-        if(!name||!kind||!price||!preparation_time){
+        const { kind } = req.params ;
+
+        if(!_id||!name||!kind||!price||!preparation_time){
             return res.sendStatus(400) ;
         }
-
-        const _id = require('uuid').v4() ;
  
         const el = await createElement({
             _id,

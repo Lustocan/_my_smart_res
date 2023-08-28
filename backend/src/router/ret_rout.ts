@@ -4,6 +4,7 @@ import users from './users'
 import tables from './tables'
 import menu from './menu'
 import orders from './orders'
+import bills from './bills';
 
 // This function return a new router object
 const router = express.Router();
@@ -14,5 +15,6 @@ export default () : express.Router => {
     tables(router)          ;
     menu(router)            ;
     orders(router)          ;
+    bills(router)           ;
     return router           ;
 };

@@ -65,10 +65,7 @@ export class TablesComponent implements OnInit {
 						this.toastrService.error('Login required');
 						this.router.navigateByUrl('/login');
 					}
-					else if(error.status===403){
-						this.toastrService.error('Unauthorized');
-						this.router.navigateByUrl('/');
-					}
+				
 				}
 				return new Observable<Table[]>();
 			

@@ -21,6 +21,8 @@ import { KitchenComponent } from './components/pages/kitchen/kitchen.component';
 import { BarComponent } from './components/pages/bar/bar.component';
 import { UsersComponent } from './components/pages/users/users.component';
 import { CheckOutComponent } from './components/pages/check-out/check-out.component';
+import { MenuComponent } from './components/pages/menu/menu.component';
+import { MenuKindComponent } from './components/pages/menu/menu-kind/menu-kind.component';
 
 
 const config : SocketIoConfig = {
@@ -46,6 +48,8 @@ const config : SocketIoConfig = {
     BarComponent,
     UsersComponent,
     CheckOutComponent,
+    MenuComponent,
+    MenuKindComponent
   ],
   imports: [
     BrowserModule,

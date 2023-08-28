@@ -1,7 +1,7 @@
 export class Bills{
-    constructor(date : Date, _id ?: String, n_table ?: Number ,
-                operators ?: Array<{username : String, role : String}>,
-                served ?: Array<{_id : String ,element : String , price : Number ,amount : Number}>,
+    constructor(operators : Array<{username : String, role : String}>,
+                served : Array<{_id : String ,element : String ,kind : String ,price : Number ,amount : Number}>, 
+                date : Date, _id ?: String, n_table ?: Number ,
                 payment ?: Number){
             
                 this._id= _id;
@@ -14,8 +14,8 @@ export class Bills{
     
     _id ?: String;
     n_table ?: Number;
-    operators ?: Array<{username : String ,role: String}> ;
-    served ?: Array<{_id : String ,element: String, price : Number, amount : Number}> ;
+    operators : Array<{username : String ,role: String}> ;
+    served : Array<{_id : String ,element: String ,kind : String ,price : Number, amount : Number}> ;
     total_price ?: Number;
     payment ?: Number ;
     date : Date ;

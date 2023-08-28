@@ -6,6 +6,10 @@ import { Observable } from 'rxjs/internal/Observable';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { UserService } from 'src/app/services/user.service';
 import { Users } from 'src/app/shared/models/users';
+import { Orders } from 'src/app/shared/models/orders';
+import { OrdersService } from 'src/app/services/orders.service';
+import { BillsService } from 'src/app/services/bills.service';
+import { Bills } from 'src/app/shared/models/bills';
 
 @Component({
 	selector: 'app-users',
@@ -14,12 +18,25 @@ import { Users } from 'src/app/shared/models/users';
 })
 export class UsersComponent implements OnInit {
 
-	users: Users[] = [];
+	users  : Users[]  = [] ;
 
-	constructor(private userService: UserService, private router: Router, private toastrService: ToastrService) { }
+	orders : Orders[] = [] ;
+	
+	bills  : Bills[]  = [] ;
+	
+	today  : Orders[] = [] ;
+
+	date  ;
+
+	constructor(private userService: UserService, private router: Router, private toastrService: ToastrService,
+		        private ordersService : OrdersService, private billsService : BillsService) { 
+					this.date = new Date() ;
+				}
 
 	ngOnInit(){
-		this.getUsers() ;
+		this.getUsers()     ;
+		this.getAllOrders() ;
+		this.getAllBills()      ;
 	}
 
 	submitDelete(id: string) {
@@ -35,9 +52,67 @@ export class UsersComponent implements OnInit {
 					this.toastrService.error('Login required');
 					this.router.navigateByUrl('/login');
 				}
-
 				return new Observable<Users[]>();
-
 			})).subscribe((serverUsers) => this.users = serverUsers);
+	}
+
+	getAllOrders(){
+		this.ordersService.getAllOrder().pipe(
+			catchError((error) => {
+				return new Observable<Orders[]>();
+			})
+		).subscribe((serverOrder) => {
+			this.orders = serverOrder ;
+		});
+	}
+
+	getAllBills(){
+		this.billsService.getAllBills().pipe(
+			catchError((error) => {
+				return new Observable<Bills[]>();
+			})
+		).subscribe((serverOrder) => {
+			this.bills = serverOrder ;
+		});
+	}
+
+	countTotalwork(user : String) : Number {
+		let cnt = 0 ; 
+		for(let i=0; i<this.bills.length; i++){
+			for(let j=0; j<this.bills[i].operators.length; j++){
+				if(this.bills[i].operators[j].username===user) cnt++ ;
+			}
+		}
+		return cnt ;
+	}
+
+	countTotaldishes(user : String) : Number {
+		let cnt = 0 ; 
+		for(let i=0; i<this.bills.length; i++){
+			for(let j=0; j<this.bills[i].operators.length; j++){
+				if(this.bills[i].operators[j].username===user){
+					for(let k=0; k<this.bills[i].served.length; k++){
+						if((this.bills[i].served[k].kind==='dishes')||(this.bills[i].served[k].kind==='dessert')) cnt++ ;
+					}
+				}
+			}
+		}
+		return cnt ;
+	}
+
+	countTotaldrinks(user : String) : Number {
+		let cnt = 0 ; 
+		for(let i=0; i<this.bills.length; i++){
+			for(let j=0; j<this.bills[i].operators.length; j++){
+				if(this.bills[i].operators[j].username===user){
+					for(let k=0; k<this.bills[i].served.length; k++){
+						if((this.bills[i].served[k].kind==='drinks')||this.bills[i].served[k].kind==='coffe-bar'){
+							 cnt++ 
+							};
+					}
+				}
+			}
+		}
+		return cnt ;
 	}
 }

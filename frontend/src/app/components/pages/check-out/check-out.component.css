@@ -108,9 +108,9 @@ tfoot {
 
 button {
     position: sticky;
-    display: inline-block;
+
     border-radius: 9px;
-    background-color: #f4511e;
+    background-color: #011638e3;
     border: none;
     color: #FFFFFF;
     text-align: center;
@@ -120,7 +120,8 @@ button {
     transition: all 0.5s;
     cursor: pointer;
     margin-bottom: 5px;
-    left: 14px;
+    right: 16px;
+    float: right;
 }
 
 

@@ -12,6 +12,9 @@ import { KitchenComponent } from './components/pages/kitchen/kitchen.component';
 import { BarComponent } from './components/pages/bar/bar.component';
 import { UsersComponent } from './components/pages/users/users.component';
 import { CheckOutComponent } from './components/pages/check-out/check-out.component';
+import { MenuComponent } from './components/pages/menu/menu.component';
+import { MenuKindComponent } from './components/pages/menu/menu-kind/menu-kind.component';
+
 const routes: Routes = [
     {path : 'search/:searchTerm', component : HomeComponent},
     {path: '', component : HomeComponent },
@@ -26,6 +29,8 @@ const routes: Routes = [
     {path : 'bar', component: BarComponent},
     {path : 'users', component: UsersComponent},
     {path : 'tables/:number/check-out', component: CheckOutComponent},
+    {path : 'menu', component: MenuComponent},
+    {path : 'menu/:kind', component: MenuKindComponent}
 ];
 
 @NgModule({

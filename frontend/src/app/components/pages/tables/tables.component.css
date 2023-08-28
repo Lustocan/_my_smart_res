@@ -77,6 +77,10 @@ button img{
     margin: 3px;
 }
 
+.delete-icon:hover{
+    cursor: pointer;
+}
+
 .green-btn {
     position: relative;
     width: 20px;

@@ -27,9 +27,25 @@
                     <input type="text" placeholder="Surname" formControlName="surname" required>
                 </div>
 
+                <script>
+                    function copyTextValue() {
+                        var text1 = document.getElementById("source").value;
+                        document.getElementById("destination").value = text1;
+                    
+                    }
+                </script>
                 <div class="input-box">
-                    <input type="text" placeholder="Role" formControlName="role" required>
+                    <ul class="menu">
+                        <select id="source" onchange="copyTextValue()" class="select-box">
+                            <option value="">select a role</option>
+                            <option value="casher">casher</option>
+                            <option value="waiter">waiter</option>
+                            <option value="cook">cook</option>
+                            <option value="bartender">bartender</option>
+                        </select>
+                    </ul>
                 </div>
+
 
                 <div class="input-box">
                     <input type="password" placeholder="Password" formControlName="password" required>

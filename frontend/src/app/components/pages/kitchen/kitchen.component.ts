@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { OrdersService } from 'src/app/services/orders.service';
+import { UserService } from 'src/app/services/user.service';
 import { SocketIoService } from 'src/app/services/socket.io.service';
 import { Orders } from 'src/app/shared/models/orders';
+import { Users } from 'src/app/shared/models/users';
 import { Observable, Subject, catchError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -15,24 +17,32 @@ import { Router } from '@angular/router';
 	styleUrls: ['./kitchen.component.css']
 })
 export class KitchenComponent implements OnInit {
+	me    = new Users()  ;
 	orders: Orders[] = [];
 	queue : Orders[] = [];
-	wip: any;
-	session: string = "";
 
-	timeLeft: number = 0;
+	wip: any;
+	session: string = "" ;
+
+	timeLeft: number = 0 ;
 	interval: any;
 
-	minutes: number  = 0;
-	seconds: number  = 0;
+	minutes: number  = 0 ;
+	seconds: number  = 0 ;
 
 	start : boolean = true ;
 
 	constructor(private ordersService: OrdersService, private socketIoService: SocketIoService,
-		        private toastrService: ToastrService, private router : Router) { }
+		        private toastrService: ToastrService, private router : Router,
+				private userService  : UserService) { }
 
 	ngOnInit(): void {
 		this.getAllOrders() ;
+		this.getUser();
+	}
+
+	deleteOrd(order : Orders){
+		if(order._id) this.ordersService.deleteOrderById(order._id).subscribe()
 	}
 
 	min(){
@@ -41,6 +51,16 @@ export class KitchenComponent implements OnInit {
 
 	sec(){
 		return this.seconds<10 ;
+	}
+
+	minConv(el : Number = 0){
+        let e = +el ;
+		return e/60 ;
+	}
+
+	price(am : Number, price : Number ){
+		let a= +am , p = +price ; 
+		return a*p ;
 	}
 
 	testAndSet(){
@@ -58,7 +78,9 @@ export class KitchenComponent implements OnInit {
 		return (kind === 'dishes' || kind === 'dessert');
 	}
 
-
+	isCasher(role : String) : Boolean{
+		return this.me.role==='casher';
+	}
 
 	get_current(){
 		if(this.wip.staff){
@@ -81,9 +103,18 @@ export class KitchenComponent implements OnInit {
 		this.seconds = this.timeLeft%60 ;
 	}
 
+	getUser(){
+		this.userService.getIt().pipe(catchError((error)=>{
+					return new Observable<Users>;
+				})).subscribe((serverUser) => {
+					this.me = serverUser ;
+		})      
+    }
+
 	ready() {
 		window.sessionStorage.removeItem('my-counter');
-		this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b, this.wip.kitchen_time, this.wip.bar_time).subscribe()
+		this.wip.staff.push({username : this.me.username, role : this.me.role}) ;
+		this.ordersService.updateOrder(this.wip._id, this.wip.staff ,  true, this.wip.ready_b, this.wip.kitchen_time, this.wip.bar_time).subscribe()
 		this.socketIoService.send_w({username : this.wip.staff[0].username, use : 'kitchen'});
 		setTimeout(function(){
 			location.reload();
@@ -92,6 +123,7 @@ export class KitchenComponent implements OnInit {
 
 	kick_invalid(){
 		for(let i=0; i<this.queue.length; i++){
+			let arr : [] = [] ;
 			if(!this.queue[i].ready_k){
 				let g = true ;
 				for(let j=0; j<this.queue[i].to_prepare.length; j++){
@@ -137,12 +169,13 @@ export class KitchenComponent implements OnInit {
 		this.interval = setInterval(() => {
 		  if(this.timeLeft > 0) {
 			 this.timeLeft--;
-			 this.ordersService.updateOrder(this.wip._id,  this.wip.ready_k, this.wip.ready_b, this.timeLeft , this.wip.bar_time).subscribe()
+			 this.ordersService.updateOrder(this.wip.staff ,this.wip._id,  this.wip.ready_k, this.wip.ready_b, this.timeLeft , this.wip.bar_time).subscribe()
 			 this.minutes = Math.floor(this.timeLeft/60) ;
 			 this.seconds = this.timeLeft%60 ;
 		  }
 		  else{
-			 this.ordersService.updateOrder(this.wip._id,  true, this.wip.ready_b, this.wip.kitchen_time, this.wip.bar_time).subscribe()
+			 this.wip.staff.push({username : this.me.username, role : this.me.role}) ;
+			 this.ordersService.updateOrder(this.wip._id, this.wip.staff ,  true, this.wip.ready_b, this.wip.kitchen_time, this.wip.bar_time).subscribe()
 			 this.socketIoService.send_w({username : this.wip.staff[0].username, use : 'kitchen'});
 			 setTimeout(function(){
 				location.reload();
@@ -173,7 +206,6 @@ export class KitchenComponent implements OnInit {
 			this.kick_invalid();
 			this.quick_sort(0, this.orders.length-1);
 			this.wip = this.orders.shift();
-			console.log(this.wip.kitchen_time)
 			this.initTime()
 		});
 	}

@@ -12,7 +12,7 @@ body{
     min-height: 100vh;
     background-image: url("https://images.squarespace-cdn.com/content/v1/5e1b73fb6eeb973ee1becfc4/1592675000454-J3PX30T4VNJIPWH3CT7P/custom-restaurant-tables-david-stine+3.jpg") ;
     background-size: cover;
-    background-attachment: fixed;;
+    background-attachment: fixed;
 }
 
 
@@ -21,7 +21,7 @@ body{
     background: #cdcdcd ;
     border: 2px solid rgba(255,255,255,0.2);
     color: #011638;
-    border-radius: 30px;
+    border-radius: 10px;
     padding: 30px;
 }
 
@@ -34,7 +34,7 @@ body{
     position: relative;
     width : 100% ;
     height: 50px ;
-    margin : 30px 0 ; 
+    margin : 20px 0 ; 
 }
 
 .input-box input{
@@ -64,6 +64,7 @@ body{
 
 
 .wrapper .btn{
+
     width: 100%; 
     height: 45px;
     background: #011638;
@@ -77,27 +78,36 @@ body{
     font-weight: 600;
 }
 
+.wrapper .register-link {
+    font-size: 14.5px;
+    text-align: center;
+    margin : 20px 0 15px;
+}
+
+.register-link p a {
+    color : #011638 ; 
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link p a:hover{
+    text-decoration: underline ;
+}
+
+
 .error-list{
-    color :red;
-    margin: 0px 20px;
-    font-style:oblique;
+    margin-top: 3px ;
+    font-size: 18px ;
+    color: #C62828;
+    background: rgba(255,0,0,0.1);
+    text-align: center ;
+    padding: 3px 8px ;
+    border-radius: 20px ;
+    border: 1px solid #Ef9a9a;
+    margin: 15px 15px;
 }
 
-.menu{
-    border-radius: 50px !important;
+.alert {
+    color : red ;
+    font-size: 20px;
 }
-
-
-.select-box{
-    width: 100%;
-    height: 50px;
-    background: transparent;
-    border : none ;
-    outline: none ;
-    border : 2px solid rgba(255,255,255,.2) ;
-    border-radius: 40px !important;
-    font-size: 16px;
-    color: #011638;
-    padding: 20px 45px 20px 20px;
-}
-

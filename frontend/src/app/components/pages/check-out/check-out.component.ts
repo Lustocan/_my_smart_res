@@ -27,44 +27,21 @@ export class CheckOutComponent implements OnInit {
 	num: any;
 
 	constructor(private billsService: BillsService, private toastrService: ToastrService,
-		private router: Router, private route: ActivatedRoute,
-		private ordersService: OrdersService, private tableService: TableService) {
+		        private router: Router, private route: ActivatedRoute,
+	        	private ordersService: OrdersService, private tableService: TableService) {
 
-		this.num = route.snapshot.paramMap.get('number');
+		        this.num = route.snapshot.paramMap.get('number');
 	}
 
 
 
 	ngOnInit(): void {
-		let orderObservable = this.ordersService.getAllOrdersInThisTable(this.num).pipe(
-			catchError((error) => {
-				if (error instanceof HttpErrorResponse) {
-					this.toastrService.error('Login required.');
-					this.router.navigateByUrl('/login');
-				}
-				return new Observable<Orders[]>();
-			})
-		)
-		orderObservable.subscribe((serverOrder) => {
-			for (let i = 0; i < serverOrder.length; i++) {
-				//if(serverOrder[i].ready_b&&serverOrder[i].ready_k){
-				for (let j = 0; j < serverOrder[i].to_prepare.length; j++) {
-					let am = 0, price = 0;
-					// delete serverOrder[i].to_prepare[j]['kind']
-					delete serverOrder[i].to_prepare[j]['time']
-					this.order.to_prepare.push(serverOrder[i].to_prepare[j])
-					this.order.staff.push(serverOrder[i].staff[j])
-					price = +price + + +serverOrder[i].to_prepare[j].price;
-					am = +am + +  +serverOrder[i].to_prepare[j].amount;
-					this.tot_price += (am * price)
-				}
-				//}
-				//  else{
-				//    this.bool = false ;
-				// }
-			}
-			this.orders = serverOrder;
-		});
+		this.getAllInThisTable();
+	}
+
+	row_price(price: Number, amount: Number) {
+		let p = +price, a = +amount;
+		return p * a;
 	}
 
 	calculate() {
@@ -74,19 +51,46 @@ export class CheckOutComponent implements OnInit {
 			date: this.order.date
 		}, this.num).subscribe();
 
-		if (this.bool) this.tableService.updateTable(this.num, 0).subscribe();
-
 		setTimeout(function () {
 			location.reload();
 		}, 1500)
 	}
 
-	row_price(price: Number, amount: Number) {
-		let p = +price, a = +amount;
-		return p * a;
+
+	getAllInThisTable(){
+		this.ordersService.getAllOrdersInThisTable(this.num).pipe(
+			catchError((error) => {
+				if (error instanceof HttpErrorResponse) {
+					this.toastrService.error('Login required.');
+					this.router.navigateByUrl('/login');
+				}
+				return new Observable<Orders[]>();
+			})
+		).subscribe((serverOrder) => {
+			for (let i = 0; i < serverOrder.length; i++) {
+				for (let j = 0; j < serverOrder[i].to_prepare.length; j++) {
+					let am = 0, price = 0;
+					delete serverOrder[i].to_prepare[j]['time']
+					this.order.to_prepare.push(serverOrder[i].to_prepare[j])
+					if(this.order.staff.length<3&&serverOrder[i].staff.length>2){ 
+						this.order.staff = [] ;
+						this.order.staff.push(serverOrder[i].staff[0])
+						this.order.staff.push(serverOrder[i].staff[1])
+						this.order.staff.push(serverOrder[i].staff[2])
+					}
+					else if(this.order.staff.length<3&&serverOrder[i].staff.length<3){
+						this.order.staff = [] ;
+						this.order.staff.push(serverOrder[i].staff[0])
+						this.order.staff.push(serverOrder[i].staff[1])
+					}
+					price = +price + + +serverOrder[i].to_prepare[j].price;
+					am = +am + +  +serverOrder[i].to_prepare[j].amount;
+					this.tot_price += (am * price)
+				}
+			}
+			this.orders = serverOrder;
+		});
 	}
-
-
 
 
 	pay(): void {
@@ -104,19 +108,21 @@ export class CheckOutComponent implements OnInit {
 			}
 		}
 		if (flag) {
+			this.calculate();
 			this.ordersService.deleteAllOrdersInThisTable(this.num).pipe(
 				tap({
 					next: () => {
 						this.toastrService.success('Order Paid');
-						this.tableService.updateTable(this.num, 0).subscribe();
-						setTimeout(() => {
-							this.router.navigateByUrl('/tables');
-						}, 1500)
 					},
 					error: (errorResponse) => {
 						this.toastrService.error('Payment Failed');
 					}
-				})).subscribe();
+				})).subscribe(() => {
+					this.tableService.updateTable(this.num, 0).subscribe();
+						setTimeout(() => {
+							this.router.navigateByUrl('/tables');
+						}, 1500)
+		            });
 		}
 		else {
 			this.toastrService.error('Something still preparing');

@@ -2,10 +2,11 @@
 <html>
 
 <body>
-    <ul>
+    <ul *ngIf="!isCasher(me.role)">
         <li *ngIf="wip">
             <div>
                 <main class="table" style="border: 6px solid #4a9444;">
+                    
                     <section class="table-header">
                         <h1>Table Number : {{wip.n_table}}</h1>
                         <h4>Waiter : {{get_current()}}</h4>
@@ -28,10 +29,10 @@
                                 </tr>
                             </thead>
                             <tbody *ngFor="let elem of wip.to_prepare">
-                                <tr >
+                                <tr *ngIf="isDrinksOrCoffe(elem.kind)">
                                     <td>{{elem.element}}</td>
-                                    <td> {{elem.amount}}</td>
-                                    <td> {{wip.bar_time}} Min</td>
+                                    <td>{{elem.amount}}</td>
+                                    <td>{{elem.price*elem.amount}} €</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -45,7 +46,7 @@
             <div>
                 <main class="table">
                     <section class="table-header">
-                        <h1>Table Number : {{wip.n_table}}</h1>
+                        <h1>Table Number : {{order.n_table}}</h1>
                         <h4>Waiter : {{get_current()}}</h4>
                     </section>
                     <section class="table-body">
@@ -58,12 +59,89 @@
                                 </tr>
                             </thead>
                             <tbody *ngFor="let elem of order.to_prepare">
-                                <tr>
+                                <tr *ngIf="isDrinksOrCoffe(elem.kind)">
                                     <td>{{elem.element}}</td>
-                                    <td> {{elem.amount}}</td>
-                                    <td> {{order.bar_time}} Min</td>
+                                    <td>{{elem.amount}}</td>
+                                    <td>{{price(elem.amount, elem.price)}} €</td>
                                 </tr>
                             </tbody>
+                        </table>
+                    </section>
+                </main>
+            </div>
+        </li>
+    </ul>
+    <ul *ngIf="isCasher(me.role)">
+        <li *ngIf="wip">
+            <div>
+                <main class="table" style="border: 6px solid #4a9444;">
+                    <section class="table-header">
+                        <div class="flex-box">
+                            <img (click)="deleteOrd(wip)" class="delete-icon"  id="delete-button" src="https://cdn-icons-png.flaticon.com/512/1345/1345874.png">
+                        </div>
+                        <h1>Table Number : {{wip.n_table}}</h1>
+                        <h4>Waiter : {{get_current()}}</h4>
+                        <div class="wrapper">
+                            <div class="display">
+                                <section *ngIf="!sec()&&!min()" id="time">{{minutes}}:{{seconds}}</section>
+                                <section *ngIf="sec()&&min()" id="time">0{{minutes}}:0{{seconds}}</section>
+                                <section *ngIf="sec()&&!min()" id="time">{{minutes}}:0{{seconds}}</section>
+                                <section *ngIf="!sec()&&min()" id="time">0{{minutes}}:{{seconds}}</section>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="table-body">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Amount</td>
+                                    <td>Price</td>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let elem of wip.to_prepare">
+                                <tr *ngIf="isDrinksOrCoffe(elem.kind)">
+                                    <td>{{elem.element}}</td>
+                                    <td>{{elem.amount}}</td>
+                                    <td>{{elem.price*elem.amount}}.00 €</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </main>
+            </div>
+        <li *ngFor="let order of orders">
+            <div>
+                <main class="table">
+                    <section class="table-header">
+                        <div class="flex-box">
+                            <img (click)="deleteOrd(order)" class="delete-icon"  id="delete-button" src="https://cdn-icons-png.flaticon.com/512/1345/1345874.png">
+                        </div>
+                        <h1>Table Number : {{order.n_table}}</h1>
+                        <h4>Waiter : {{get_current()}}</h4>
+                    </section>
+                    <section class="table-body">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Amount</td>
+                                    <td>Price</td>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let elem of order.to_prepare">
+                                <tr *ngIf="isDrinksOrCoffe(elem.kind)">
+                                    <td>{{elem.element}}</td>
+                                    <td>{{elem.amount}}</td>
+                                    <td>{{price(elem.amount, elem.price)}}.00 €</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"> Total time: </td>
+                                    <td>{{minConv(order.bar_time)}} min</td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </section>
                 </main>

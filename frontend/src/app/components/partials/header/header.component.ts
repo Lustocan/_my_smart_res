@@ -70,7 +70,6 @@ export class HeaderComponent implements OnInit {
                         return new Observable<Users>;
                     })).subscribe((serverUser) => {
                         this.user = serverUser ;
-                        this.activeSocket()    ;
             })      
       }
 

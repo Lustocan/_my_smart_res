@@ -97,6 +97,10 @@ tbody tr:hover {
 
 }
 
+tfoot{
+    border-top: 1px dashed grey ; 
+}
+
 button {
     position: relative;
     background: #cdcdcd;
@@ -117,6 +121,7 @@ button:hover {
     background: #1e9bff;
     color: #1e9bff;
     box-shadow: 0 0 35px #1e9bff;
+    cursor: pointer;
 }
 
 button::before {
@@ -151,8 +156,6 @@ button:hover i::after {
 }
 
 
-
-
 .wrapper{
     height: 33px;
     width: 143px;
@@ -183,7 +186,6 @@ button:hover i::after {
     height: 26px;
     border-radius: 4px;
     text-align: center;
-
 }
 
 .wrapper .display #time{
@@ -197,10 +199,23 @@ button:hover i::after {
 
 }
 
-
 .wrapper span{
     height: 100%;
     width: 100%;
     background: inherit;
     border-radius: 10px;
+}
+
+.delete-icon {
+    position: relative;
+    width: 25px;
+    height: 25px !important;
+    padding: 1px;
+    border-radius: 20px !important;
+    float: right;
+}
+
+.delete-icon:hover{
+    cursor: pointer;
+    background-color: red;
 }

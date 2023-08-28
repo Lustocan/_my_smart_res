@@ -1,5 +1,5 @@
 import express from 'express' ;
-import { createTable, deleteTableById, getTableById, updateTableById, getTables, getTableByNumber } from '../db/tables_schema';
+import { createTable, deleteTableById, getTableById, updateTableById, getTables,  getTableByNumber_ } from '../db/tables_schema';
 
 export const getAllTables = async (req : express.Request, res : express.Response ) => {
     try{
@@ -13,7 +13,7 @@ export const getAllTables = async (req : express.Request, res : express.Response
     }
 }
 
-export const _getTableByNumber_ = async (req : express.Request, res : express.Response ) => {
+export const getTableByNumber = async (req : express.Request, res : express.Response ) => {
     try{
         const { number } = req.params ;
 
@@ -21,7 +21,7 @@ export const _getTableByNumber_ = async (req : express.Request, res : express.Re
             return res.sendStatus(400) ;
         }
 
-        const table = await getTableByNumber(number) ;
+        const table = await getTableByNumber_(number) ;
         return res.status(200).json(table) ;
 
     }
@@ -58,7 +58,7 @@ export const delete_tab = async (req : express.Request, res : express.Response) 
         const {number} =  req.params ;
         
 
-        var deletedTable = await getTableByNumber(number);
+        var deletedTable = await getTableByNumber_(number);
 
         deletedTable = await deleteTableById(deletedTable._id)
 
@@ -75,7 +75,7 @@ export const update_tab = async (req : express.Request, res : express.Response) 
         const { number, free  } = req.params ;
         const { customers } = req.body ;
 
-        let updatedTable = await getTableByNumber(number)
+        let updatedTable = await getTableByNumber_(number)
 
         updatedTable = await getTableById(updatedTable._id) ;
 

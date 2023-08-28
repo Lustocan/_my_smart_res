@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Kind, Menù } from '../shared/models/menù';
 import { Observable, tap } from 'rxjs';
-import { ADD_MENU_URL, MENU_URL } from '../shared/constants/urls';
+import {  MENU_URL } from '../shared/constants/urls';
 import { HttpOptions } from '../shared/models/httpOptions';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,14 +18,17 @@ export class MenùService {
 		return this.http.get<Menù[]>(MENU_URL+'/'+kind,this.httpOptions);
 	}
 
-	addNewElement(menù: Menù) : Observable<Menù>{
-		return this.http.post<Menù>(ADD_MENU_URL,menù,this.httpOptions).pipe(
+	addNewElement(menù: Menù, kind : String) : Observable<Menù>{
+		return this.http.post<Menù>(MENU_URL+'/'+kind ,menù,this.httpOptions).pipe(
 			tap({
 				next: (menu) => { 
-					this.toastrService.success('Menù successfully added');
+					this.toastrService.success('Element successfully added');
+					setTimeout(function(){
+						location.reload();
+					}, 1500)
 				},
 				error: (errorResponse) => {
-					this.toastrService.error('Add menù failed');
+					this.toastrService.error('Add element failed');
 				}
 			}));
 	}
@@ -48,6 +51,9 @@ export class MenùService {
 			tap({
 				next: (menu) => { 
 					this.toastrService.success('Menù successfully deleted');
+					setTimeout(function(){
+						location.reload();
+					}, 1500)
 				},
 				error: (errorResponse) => {
 					this.toastrService.error('Delete menù failed');

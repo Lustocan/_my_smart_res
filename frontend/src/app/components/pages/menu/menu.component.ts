@@ -14,14 +14,12 @@ import { v4 as uuid } from 'uuid';
 import { SocketIoService } from 'src/app/services/socket.io.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
-
-
 @Component({
-    selector: 'app-single-t',
-    templateUrl: './single-t.component.html',
-    styleUrls: ['./single-t.component.css']
+  selector: 'app-menu',
+  templateUrl: './menu.component.html',
+  styleUrls: ['./menu.component.css']
 })
-export class SingleTComponent implements OnInit {
+export class MenuComponent implements OnInit {
 
     user = new Users()      ;
 
@@ -47,6 +45,10 @@ export class SingleTComponent implements OnInit {
         this.getTable() ;
         this.getMe()    ;  
     }
+
+    deleteEl(menù : Menù){
+		this.menuService.deleteElement(menù).subscribe();
+	}
 
     drinks() {
         let menuObservable = this.menuService.GetMenuByKind(Kind.drinks);
@@ -140,7 +142,7 @@ export class SingleTComponent implements OnInit {
                 return ;
             }
         }
-        // quando implementi la insert nel menu devi ricordarti di autogenerarti l'id lato client
+
         this.cart.push({ _id: menu._id, element: menu.name, amount: 1, price : menu.price, kind: menu.kind, time: menu.preparation_time })
     }
 

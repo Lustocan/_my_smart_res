@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class SignInPageComponent implements OnInit{
     signInForm !: FormGroup  ;
     isSubmitted = false      ;
-    returnUrl   = ''         ;
+    role = new String()      ;
 
     constructor(private formBuilder: FormBuilder, private userService : UserService,
                 private activatedRoute: ActivatedRoute, private router : Router) {
@@ -21,13 +21,14 @@ export class SignInPageComponent implements OnInit{
                  username: ['', [Validators.required]],
                  name: ['', [Validators.required]],
                  surname: ['', [Validators.required]],
-                 role: ['', [Validators.required]],
+                 role: [this.role, [Validators.required]],
                  password: ['', [Validators.required]],
                })
     }
 
 
-    ngOnInit(): void {} 
+    ngOnInit(): void {
+    } 
 
     get fc(){
        return this.signInForm.controls;

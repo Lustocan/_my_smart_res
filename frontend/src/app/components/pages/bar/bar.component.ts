@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { OrdersService } from 'src/app/services/orders.service';
 import { Orders } from 'src/app/shared/models/orders';
 import {  Observable, catchError } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
+import { Users } from 'src/app/shared/models/users';
 
 @Component({
 	selector: 'app-bar',
@@ -13,8 +15,10 @@ import {  Observable, catchError } from 'rxjs';
 	styleUrls: ['./bar.component.css']
 })
 export class BarComponent implements OnInit {
+	me    = new Users()  ;
 	orders: Orders[] = [];
 	queue : Orders[] = [];  
+
 	wip: any             ;  
 	session: string = "" ;
 
@@ -28,10 +32,16 @@ export class BarComponent implements OnInit {
 
 
 	constructor(private ordersService: OrdersService, private socketIoService: SocketIoService,
-		        private toastrService: ToastrService, private router : Router) {}
+		        private toastrService: ToastrService, private router : Router,
+				private userService  : UserService) {}
 
 	ngOnInit(): void {
 		this.getAllOrders();
+		this.getUser()     ;
+	}
+
+	deleteOrd(order : Orders){
+		if(order._id) this.ordersService.deleteOrderById(order._id).subscribe()
 	}
 
 	min(){
@@ -40,6 +50,16 @@ export class BarComponent implements OnInit {
 
 	sec(){
 		return this.seconds<10 ;
+	}
+
+	minConv(el : Number = 0){
+        let e = +el ;
+		return e/60 ;
+	}
+
+	price(am : Number, price : Number ){
+		let a= +am , p = +price ; 
+		return a*p ;
 	}
 
 	testAndSet(){
@@ -57,7 +77,9 @@ export class BarComponent implements OnInit {
 		return (kind === 'drinks' || kind === 'coffe_bar') ;
 	}
 
-	
+	isCasher(role : String) : Boolean{
+		return this.me.role==='casher';
+	}
 
 	get_current(){
 		if(this.wip.staff){
@@ -80,9 +102,18 @@ export class BarComponent implements OnInit {
 		this.seconds = this.timeLeft%60 ;
 	}
 
+	getUser(){
+		this.userService.getIt().pipe(catchError((error)=>{
+					return new Observable<Users>;
+				})).subscribe((serverUser) => {
+					this.me = serverUser ;
+		})      
+    }
+
 	ready() {
 		window.sessionStorage.removeItem('my-counter');
-		this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true, this.wip.kitchen_time, this.wip.bar_time).subscribe();
+		this.wip.staff.push({username : this.me.username, role : this.me.role}) ;
+		this.ordersService.updateOrder(this.wip._id, this.wip.staff , this.wip.ready_k , true, this.wip.kitchen_time, this.wip.bar_time).subscribe();
 		this.socketIoService.send_w({username : this.wip.staff[0].username, use : "bar"});
 		setTimeout(function(){
 			location.reload();
@@ -108,7 +139,6 @@ export class BarComponent implements OnInit {
 
 	partition(start : number, end : number) : number {
         let pivot = this.orders[end], i = start - 1 , tmp ;
-
 		for(let j=start; j<end; j++){
 			if(this.orders[j].date<=pivot.date){
 				++i ;
@@ -136,13 +166,14 @@ export class BarComponent implements OnInit {
 		this.interval = setInterval(() => {
 		  if(this.timeLeft > 0) {
 			 this.timeLeft--;
-			 this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , this.wip.ready_b, this.wip.kitchen_time, this.timeLeft).subscribe();
+			 this.ordersService.updateOrder(this.wip._id, this.wip.staff , this.wip.ready_k , this.wip.ready_b, this.wip.kitchen_time, this.timeLeft).subscribe();
 			 this.minutes = Math.floor(this.timeLeft/60) ;
 			 this.seconds = this.timeLeft%60 ;
 			 window.sessionStorage.setItem('my-counter', this.timeLeft.toString());
 		  }
 		  else{
-			 this.ordersService.updateOrder(this.wip._id, this.wip.ready_k , true, this.wip.kitchen_time, this.wip.bar_time).subscribe();
+			 this.wip.staff.push({username : this.me.username, role : this.me.role}) ;
+			 this.ordersService.updateOrder(this.wip.staff ,this.wip._id, this.wip.ready_k , true, this.wip.kitchen_time, this.wip.bar_time).subscribe();
 			 this.socketIoService.send_w({username : this.wip.staff[0].username, use : "bar"});
 			 setTimeout(function(){
 				location.reload();

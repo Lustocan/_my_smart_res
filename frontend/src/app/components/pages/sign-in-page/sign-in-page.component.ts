@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class SignInPageComponent implements OnInit{
     signInForm !: FormGroup  ;
     isSubmitted = false      ;
-    role = new String()      ;
+    selectedValue: string = '';
 
     constructor(private formBuilder: FormBuilder, private userService : UserService,
                 private activatedRoute: ActivatedRoute, private router : Router) {
@@ -21,18 +21,18 @@ export class SignInPageComponent implements OnInit{
                  username: ['', [Validators.required]],
                  name: ['', [Validators.required]],
                  surname: ['', [Validators.required]],
-                 role: [this.role, [Validators.required]],
+                 role: ['', [Validators.required]],
                  password: ['', [Validators.required]],
                })
     }
 
 
-    ngOnInit(): void {
-    } 
+    ngOnInit(): void {} 
 
     get fc(){
        return this.signInForm.controls;
     }
+
 
     submit() : void {
        this.isSubmitted = true ;

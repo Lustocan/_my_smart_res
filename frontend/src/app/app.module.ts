@@ -24,13 +24,13 @@ import { CheckOutComponent } from './components/pages/check-out/check-out.compon
 import { MenuComponent } from './components/pages/menu/menu.component';
 import { MenuKindComponent } from './components/pages/menu/menu-kind/menu-kind.component';
 
-
 const config : SocketIoConfig = {
       url : "https://localhost:443" ,
       options : {
           transports : ['websocket']
       }
 }
+
 
 @NgModule({
   declarations: [
@@ -65,6 +65,6 @@ const config : SocketIoConfig = {
     }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

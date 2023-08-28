@@ -40,8 +40,7 @@ body{
 }
 
 .delete-icon:hover{
-    background-color: red;
-    
+    cursor: pointer;
 }
 
 .profile-pic{

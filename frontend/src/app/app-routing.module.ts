@@ -14,6 +14,7 @@ import { UsersComponent } from './components/pages/users/users.component';
 import { CheckOutComponent } from './components/pages/check-out/check-out.component';
 import { MenuComponent } from './components/pages/menu/menu.component';
 import { MenuKindComponent } from './components/pages/menu/menu-kind/menu-kind.component';
+import { PageNotFoundComponent } from './components/pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
     {path : 'search/:searchTerm', component : HomeComponent},
@@ -30,7 +31,8 @@ const routes: Routes = [
     {path : 'users', component: UsersComponent},
     {path : 'tables/:number/check-out', component: CheckOutComponent},
     {path : 'menu', component: MenuComponent},
-    {path : 'menu/:kind', component: MenuKindComponent}
+    {path : 'menu/:kind', component: MenuKindComponent},
+    {path : '**', component : PageNotFoundComponent}
 ];
 
 @NgModule({

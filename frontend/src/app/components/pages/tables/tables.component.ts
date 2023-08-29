@@ -7,6 +7,7 @@ import { Observable, catchError, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
+import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
 	selector: 'app-tables',
@@ -23,11 +24,12 @@ export class TablesComponent implements OnInit {
 	tables: Table[] = [] ;
 
 	constructor(private tableService: TableService, private router: Router, 
-		        private toastrService : ToastrService, private userService : UserService) {}
+		        private toastrService : ToastrService, private userService : UserService,
+				private orderService : OrdersService) {}
 
 	ngOnInit(): void {
-		this.getUser()      ;
-		this.getAllTables() ;
+		this.getUser()       ;
+		this.getAllTables()  ;
 	}
 
 	is_waiter(){
@@ -64,12 +66,25 @@ export class TablesComponent implements OnInit {
 					if(error.status===400){
 						this.toastrService.error('Login required');
 						this.router.navigateByUrl('/login');
-					}
-				
+					}		
 				}
 				return new Observable<Table[]>();
 			
 			})	
-		).subscribe((serverTable) => this.tables = serverTable);
+		).subscribe((serverTable) =>{ this.tables = serverTable; this.updateIfEmpty()});
+	}
+
+	updateIfEmpty(){
+		for(let i=0; i<this.tables.length; i++){
+			this.orderService.getAllOrdersInThisTable(this.tables[i].number).subscribe((serverOrder) => {
+				if(serverOrder.length===0&&this.tables[i].customers!==0){
+					this.tableService.updateTable(this.tables[i].number.toString(), 0).subscribe(() =>
+						setTimeout(function(){
+							location.reload();
+						}, 1500
+					))
+				}
+			})
+		}
 	}
 }

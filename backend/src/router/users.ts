@@ -5,8 +5,8 @@ import { isAuthenticated, isAdmin, sameUser, isWaiterOrAdmin } from '../middlewa
 
 
 export default (router : express.Router) => {
-    router.get('/users' , isAuthenticated, getAllUsers);
+    router.get('/users' , isAuthenticated, isAdmin, getAllUsers);  // added isAdmin
     router.delete('/users/:id', isAuthenticated, isAdmin , deleteUser);
     router.patch('/users/:id', isAuthenticated, isAdmin , updateUser);
-    router.get('/user' , isAuthenticated ,getUser);
+    router.get('/user', isAuthenticated ,getUser);  
 }

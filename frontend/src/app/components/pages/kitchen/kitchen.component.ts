@@ -41,10 +41,6 @@ export class KitchenComponent implements OnInit {
 		this.getUser();
 	}
 
-	deleteOrd(order : Orders){
-		if(order._id) this.ordersService.deleteOrderById(order._id).subscribe()
-	}
-
 	min(){
 		return this.minutes<10 ;
 	}
@@ -119,6 +115,30 @@ export class KitchenComponent implements OnInit {
 		setTimeout(function(){
 			location.reload();
 		}, 1500)
+	}
+
+	deleteOrd(order : Orders){
+		let v : Array<{_id : String, element: String, amount : Number, price : Number, kind : String, time ?: Number }> = [] ;
+		for(let i=0; i<order.to_prepare.length; i++){
+			if(!this.isDishes(order.to_prepare[i].kind)){
+				v.push(order.to_prepare[i])
+			}
+		}
+		order.to_prepare = v ;
+		if(order.to_prepare.length===0){
+           if(order._id) this.ordersService.deleteOrderById(order._id).subscribe(()=>
+				setTimeout(function(){
+					location.reload();
+				}, 500 )
+		   )
+		}
+		else if(order._id&&order.to_prepare){
+			this.ordersService.updatePrepOrder(order._id, order.to_prepare).subscribe(()=>{
+				setTimeout(function(){
+					location.reload();
+				}, 500 )
+			})
+		}
 	}
 
 	kick_invalid(){

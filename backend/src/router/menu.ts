@@ -8,6 +8,5 @@ export default (router : express.Router) => {
     router.get('/menu', getAllElements);
     router.get('/menu/:kind', getAllByKind);
     router.delete('/menu/:id/delete', isAuthenticated, isAdmin , deleteElement);
-    router.patch('/menu/:id/update', isAuthenticated, isAdmin , updateElement);
     router.post('/menu/:kind', isAuthenticated, isAdmin, addNewElement);
 }

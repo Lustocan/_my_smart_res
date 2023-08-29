@@ -65,7 +65,7 @@ export const new_Order = async(req : express.Request, res : express.Response ) =
 
 export const updateOrder = async (req : express.Request, res : express.Response) => {
     try{
-        const { staff ,ready_k, ready_b, kitchen_time, bar_time  } = req.body ;
+        const { staff ,ready_k, ready_b, kitchen_time, bar_time, to_prepare  } = req.body ;
         const { _id } = req.params    ;
        
         if(!_id){
@@ -81,6 +81,8 @@ export const updateOrder = async (req : express.Request, res : express.Response)
         if(bar_time) await updateById(_id, {bar_time : bar_time});
 
         if(staff) await updateById(_id, {staff : staff});
+
+        if(to_prepare) await updateById(_id, {to_prepare : to_prepare});
 
         return res.status(200).end()  ;
     }

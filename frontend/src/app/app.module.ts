@@ -23,6 +23,7 @@ import { UsersComponent } from './components/pages/users/users.component';
 import { CheckOutComponent } from './components/pages/check-out/check-out.component';
 import { MenuComponent } from './components/pages/menu/menu.component';
 import { MenuKindComponent } from './components/pages/menu/menu-kind/menu-kind.component';
+import { PageNotFoundComponent } from './components/pages/page-not-found/page-not-found.component';
 
 const config : SocketIoConfig = {
       url : "https://localhost:443" ,
@@ -49,7 +50,8 @@ const config : SocketIoConfig = {
     UsersComponent,
     CheckOutComponent,
     MenuComponent,
-    MenuKindComponent
+    MenuKindComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

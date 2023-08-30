@@ -3,23 +3,22 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Users } from '../shared/models/users';
 import { IUserLogin } from '../shared/interfaces/IUserLogin';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { USERS_LOGIN_URL, USERS_URL, USERS_SIGN_IN_URL, USER_URL } from '../shared/constants/urls';
+import { USERS_LOGIN_URL, USERS_URL, USERS_SIGN_IN_URL, USER_URL, AUTH_URL } from '../shared/constants/urls';
 import { tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { IUserSign_in } from '../shared/interfaces/IUserSign_in';
 import { HttpOptions } from '../shared/models/httpOptions';
-import { TOKEN } from '../shared/constants/storage_name';
+import { TOKEN } from '../shared/constants/Storage_name';
 
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root'	
 })
 export class UserService {
 
 	httpOptions = new HttpOptions();
 	constructor(private http: HttpClient ,private toastrService : ToastrService) {
 	}
-
 
 	
 	//TODO da cambiare: eliminare 'User' dal localstorage e mantenere solo 'Token'
@@ -37,6 +36,7 @@ export class UserService {
 		);
 	}
 
+
 	sign_in(userLogin: IUserSign_in): Observable<Users> {
 		return this.http.post<Users>(USERS_SIGN_IN_URL, userLogin, this.httpOptions).pipe(
 			tap({
@@ -50,9 +50,20 @@ export class UserService {
 		);
 	}
 
-	logout(){
+	logout(_id : String){
 		this.deleteUserFromLocalStorage() ;
-		window.location.reload();
+	    window.location.reload();
+		return this.http.post<Users>(AUTH_URL+'/'+_id+'/logout', this.httpOptions).pipe(
+			tap({
+				next: (user) => {
+					this.toastrService.success('Logout Successful' );
+					
+				},
+				error: (errorResponse) => {
+					this.toastrService.error('Logout in Failed');			
+				}
+			})
+		);
 	}
 
 	private setUserToLocalStorage(user: Users) {

@@ -1,6 +1,6 @@
 import express from 'express' ;
 import { updateById, createOrder, getOrders, deleteOrderById, getOrderByTable, deleteOrdersByTable } from '../db/orders_schema';
-
+import { redisClient } from '../base';
 
 export const getAllOrdersInThisTable = async(req : express.Request, res : express.Response ) => {
     try{
@@ -19,8 +19,17 @@ export const getAllOrdersInThisTable = async(req : express.Request, res : expres
 
 export const  getAllOrders = async (req : express.Request, res : express.Response) => {
     try{
-        const orders = await getOrders();
-        return res.status(200).json(orders);
+        const redOrders = await redisClient.get('orders') ;
+        if(redOrders){
+            return res.status(200).json(JSON.parse(redOrders)) ;
+        }
+        else{
+            const orders = await getOrders();
+
+            redisClient.set('orders', JSON.stringify(orders))
+
+            return res.status(200).json(orders);
+        }
     }
     catch(error){
         console.log(error);
@@ -55,6 +64,8 @@ export const new_Order = async(req : express.Request, res : express.Response ) =
              date
         })
 
+        redisClient.del('orders') 
+
         return res.status(200).json(order) ;
     }
     catch(error){
@@ -84,6 +95,8 @@ export const updateOrder = async (req : express.Request, res : express.Response)
 
         if(to_prepare) await updateById(_id, {to_prepare : to_prepare});
 
+        redisClient.del('orders') 
+
         return res.status(200).end()  ;
     }
     catch(error){
@@ -102,6 +115,8 @@ export const deleteOrder = async(req : express.Request, res : express.Response )
 
         let delete_order = await deleteOrderById(_id);
 
+        redisClient.del('orders') 
+
         return res.status(200).json(delete_order);
     }
     catch(error){
@@ -119,11 +134,11 @@ export const deleteAllOrdersInThisTable = async(req : express.Request, res : exp
             return res.sendStatus(400) ;
         }
 
-
         const orders = await deleteOrdersByTable(n_table) ;
 
-        return res.status(200).json(orders) ;
+        redisClient.del('orders') 
 
+        return res.status(200).json(orders) ;
     }
     catch(error){
         console.log(error);

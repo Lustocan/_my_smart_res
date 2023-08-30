@@ -58,9 +58,9 @@ export class HeaderComponent implements OnInit {
             return this.user.role === 'bartender' ?  true : false ;
       }
 
-      logout(){
+      logout(_id : String){
             sessionStorage.removeItem("my-role")
-            this.userService.logout();
+            this.userService.logout(_id).subscribe();
       }
 
 

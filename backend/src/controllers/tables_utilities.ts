@@ -1,11 +1,21 @@
 import express from 'express' ;
 import { createTable, deleteTableById, getTableById, updateTableById, getTables,  getTableByNumber_ } from '../db/tables_schema';
+import { redisClient } from '../base';
 
 export const getAllTables = async (req : express.Request, res : express.Response ) => {
     try{
-        const tables = await getTables();
-    
-        return res.status(200).json(tables);
+        const redTables = await redisClient.get('tables');
+
+        if(redTables){
+           return res.status(200).json(JSON.parse(redTables)) ;
+        }
+        else{
+            const tables = await getTables();
+
+            redisClient.set('tables', JSON.stringify(tables))
+        
+            return res.status(200).json(tables);
+        }
     }
     catch(error){
         console.log(error) ;
@@ -45,6 +55,9 @@ export const build_tab = async (req : express.Request , res : express.Response )
             number,
             seats
         });
+
+        redisClient.del('tables')
+
         return res.status(200).json(table);
     }
     catch(error){
@@ -72,7 +85,7 @@ export const delete_tab = async (req : express.Request, res : express.Response) 
 
 export const update_tab = async (req : express.Request, res : express.Response) => {
     try{
-        const { number, free  } = req.params ;
+        const { number } = req.params ;
         const { customers } = req.body ;
 
         let updatedTable = await getTableByNumber_(number)
@@ -96,6 +109,8 @@ export const update_tab = async (req : express.Request, res : express.Response) 
                 customers
           })
         }
+
+        redisClient.del('tables')
 
         updatedTable = await getTableById(updatedTable._id) ;
 

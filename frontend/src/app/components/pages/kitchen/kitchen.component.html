@@ -31,7 +31,7 @@
                                 <tr *ngIf="isDishes(elem.kind)">
                                     <td>{{elem.element}}</td>
                                     <td> {{elem.amount}}</td>
-                                    <td> {{elem.price*elem.amount}}.00 €</td>
+                                    <td> {{elem.price*elem.amount}} €</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -61,7 +61,7 @@
                                 <tr *ngIf="isDishes(elem.kind)">
                                     <td>{{elem.element}}</td>
                                     <td> {{elem.amount}}</td>
-                                    <td> {{price(elem.price,elem.amount)}}.00€</td>
+                                    <td> {{price(elem.price,elem.amount)}} €</td>
                                 </tr>
                             </tbody>
                         </table>

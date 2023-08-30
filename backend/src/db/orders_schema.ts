@@ -23,9 +23,6 @@ export const OrderModel = mongoose.model('Order', orderSchema) ;
 // find method it's used to find a particular data from Mongodb , in this case all the oders
 export const getOrders = () => OrderModel.find() ;
 
-export const getOrderByWaiter = (waiter : string) => OrderModel.findOne(({ "waiter" : {
-    $regex : new RegExp(waiter, "i") }}));
-
 export const getOrderByTable = (n_table : string) => OrderModel.find({'n_table' : n_table});
 
 // Functions to create/delete/update an order

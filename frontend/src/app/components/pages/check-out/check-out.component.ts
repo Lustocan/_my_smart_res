@@ -39,21 +39,18 @@ export class CheckOutComponent implements OnInit {
 		this.getAllInThisTable();
 	}
 
+
 	row_price(price: Number, amount: Number) {
 		let p = +price, a = +amount;
 		return p * a;
 	}
 
 	calculate() {
-		this.billsService.newBill({
+		return this.billsService.newBill({
 			n_table: this.num, operators: this.order.staff,
 			served: this.order.to_prepare, payment: this.tot_price,
 			date: this.order.date
-		}, this.num).subscribe();
-
-		setTimeout(function () {
-			location.reload();
-		}, 1500)
+		}, this.num).subscribe()
 	}
 
 
@@ -99,7 +96,9 @@ export class CheckOutComponent implements OnInit {
 			let dishes = order.to_prepare.filter((elem) => elem.kind === 'dishes' || elem.kind === 'dessert');
 			let drinks = order.to_prepare.filter((elem) => elem.kind === 'drinks' || elem.kind === 'coffe_bar');
 			if (flag) {
-				if (((order.ready_k && order.ready_b) || (dishes.length <= 0 && order.ready_b) || (drinks.length <= 0 && order.ready_k) || (drinks.length <= 0 && dishes.length <= 0))) {
+				if (((order.ready_k && order.ready_b) || (dishes.length <= 0 && order.ready_b) ||
+				     (drinks.length <= 0 && order.ready_k) || (drinks.length <= 0 && dishes.length <= 0))) {
+					
 					flag = true;
 				}
 				else {
@@ -107,8 +106,8 @@ export class CheckOutComponent implements OnInit {
 				}
 			}
 		}
-		if (flag) {
-			this.calculate();
+		if (flag&&this.tot_price>0) {
+			this.calculate()
 			this.ordersService.deleteAllOrdersInThisTable(this.num).pipe(
 				tap({
 					next: () => {
@@ -125,7 +124,8 @@ export class CheckOutComponent implements OnInit {
 		            });
 		}
 		else {
-			this.toastrService.error('Something still preparing');
+			if(this.tot_price>0) this.toastrService.error('Something still preparing');
+			else                 this.toastrService.error('Order empty');
 		}
 	}
 }

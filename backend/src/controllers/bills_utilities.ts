@@ -1,25 +1,23 @@
 import express from 'express' ;
-import { deleteBillById ,updateBillById , getBillsByTable, getAllBills, createBill } from '../db/bills_schema';
+import { getAllBills, createBill } from '../db/bills_schema';
+import { redisClient } from '../base';
 
 
-export const getAllBillsbyTable = async(req : express.Request, res : express.Response ) => {
-    try{
-       const tables = await getAllBills();
-       
-       return res.status(200).json(tables);
-
-    }
-    catch(error){
-        console.log(error);
-        return res.sendStatus(400) ;
-    }
-}
 
 export const  getBills = async (req : express.Request, res : express.Response) => {
     try{
-        const orders = await getAllBills();
+        const redBills = await redisClient.get('bills') ;
 
-        return res.status(200).json(orders);
+        if(redBills){
+            return res.status(200).json(JSON.parse(redBills))
+        }
+        else{
+            const bills = await getAllBills();
+
+            redisClient.set('bills', JSON.stringify(bills))
+
+            return res.status(200).json(bills);
+        }
     }
     catch(error){
         console.log(error);
@@ -50,48 +48,12 @@ export const new_Bill = async(req : express.Request, res : express.Response ) =>
              date
         })
 
+        redisClient.del('bills') ;
+
         return res.status(200).json(order) ;
     }
     catch(error){
         console.log(error) ;
         return res.sendStatus(400) ;
-    }
-}
-
-export const updateBill = async (req : express.Request, res : express.Response) => {
-    try{
-        const { _id } = req.params    ;
-       
-        if(!_id){
-           return res.sendStatus(400) ;
-        }
-
-        //if(ready_b) await updateBillById(_id, {ready_b : ready_b});
-
-        return res.status(200).end()  ;
-    }
-    catch(error){
-        console.log(error) ;
-        res.sendStatus(400);
-    }
-}
-
-
-export const deleteBill = async(req : express.Request, res : express.Response ) => {
-    try{
-        const {_id} = req.params;
-
-        if(!_id){
-            return res.sendStatus(400) ;
-        }
-
-        let delete_order = await deleteBillById(_id);
-
-        return res.status(200).json(delete_order);
-    }
-    catch(error){
-        console.log(error);
-        return res.sendStatus(400);
-
     }
 }

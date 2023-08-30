@@ -11,16 +11,9 @@ const MenuSchema = new mongoose.Schema({
 
 export const MenuModel = mongoose.model('Menu', MenuSchema) ;
 
-export const getMenu = () => MenuModel.find() ;
-
-export const getElementsByKind = (kind : string) => MenuModel.findOne({"kind" : kind});
-
 export const getAllElementsByKind = (kind : string) => MenuModel.find({"kind" : {$regex : new RegExp(kind, "i")}});
 
 export const getElementById = (id : string) => MenuModel.findById(id);
-
-export const getElementByName = (name : string) => MenuModel.findOne({"name" : name});
-
 
 // Functions to create/delete/update an element
 export const createElement = (values : Record<string, any>) => 

@@ -13,3 +13,32 @@ body{
     background-size: cover;
     background-attachment: fixed;
 }
+
+section#hero {
+    height: calc(100vh - 60px);
+    display : flex ;
+    flex-direction: column;
+    align-items: center ;
+    justify-content: center;
+    text-align: center;
+    color: #011638;
+}
+
+#hero h1{
+    font-size : 3rem ;
+    margin-bottom: 1rem;
+}
+
+#hero p{
+    font-size : 20px;
+}
+
+.mero{
+    background-color: white;
+    padding: 50px 90px 50px 90px;
+    border-radius: 80px;
+    background-size: cover ;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to top right,white,#a3a3a3);
+    opacity: 0.8    ;
+}

@@ -5,9 +5,11 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
-import mongoose, { connection } from 'mongoose';
+import mongoose from 'mongoose';
 import router from './router/ret_rout';
-import {Server} from "socket.io"
+import { Server } from "socket.io"
+import { createClient } from 'redis';
+
 
 
 
@@ -15,7 +17,7 @@ import {Server} from "socket.io"
     HTTP verb ( GET , POST , SET , etc.) and URL pattern ("Route"), 
     and methods to specify what template ("view") engine is used, where template files are located, 
     and what template to use to render a response. */
-const app = express()                 ;
+const app = express()                      ;
 
 /* Cross-origin resource sharing (CORS) is a browser mechanism which enables
    controlled access to resources located outside of a given domain.        
@@ -55,11 +57,7 @@ app.use(bodyParser.json());
 
 const httpsServer = https.createServer({key : readFileSync('key.pem'), cert : readFileSync('certificate.pem')}, app);
 
-
 const io = new Server(httpsServer);
-
-let users = [{id : String(), username : String() }] ;
-
 
 
 io.on('connection', socket => {
@@ -74,18 +72,20 @@ io.on('connection', socket => {
       socket.broadcast.emit('tables', arg);
    })
    socket.on('cash', (arg) => {
-      console.log(arg);
       socket.broadcast.emit('cash', arg);
    })
+
 })
-
-
-
-
 
 if(httpsServer.listen(443)){
    console.log("Server running on https://localhost:443/");
 }
+
+export const redisClient = createClient()         ;
+
+(async () => {
+   await redisClient.connect();
+})();
 
 // Our mongodb url 
 const MONGO_URL = "mongodb+srv://lustocan:lustocan@cluster0.moozrf8.mongodb.net/?retryWrites=true&w=majority"

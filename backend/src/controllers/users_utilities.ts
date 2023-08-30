@@ -3,6 +3,7 @@ import { getUserByUsername, createUser, deleteUserById, getUsers, getUserById, u
 import { random, authentication } from '../helpers/hash_pass' ;
 import jwt from 'jsonwebtoken' ; 
 import dtn from 'dotenv'       ;
+import { redisClient } from '../base';
 
 interface jwtPayload {
     _id: string
@@ -26,6 +27,7 @@ export const login = async (req : express.Request , res : express.Response ) => 
             return res.sendStatus(403) ;
         }
 
+        redisClient.set(user.id, JSON.stringify(user))
 
         await user.save();
 
@@ -59,6 +61,9 @@ export const logout = async (req : express.Request , res : express.Response ) =>
         dtn.config() ;
         
         res.cookie("SessionCookie", "invalid_cookie", {domain : 'localhost', path: '/', secure : true , httpOnly : true });
+
+        redisClient.del(id)
+
 
         return res.status(200).end();
     }
@@ -132,6 +137,9 @@ export const updateUser = async (req : express.Request, res : express.Response) 
         dtn.config() ;
         const token = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET, { expiresIn : "10h"});
 
+        redisClient.del(id)
+        redisClient.del('users')
+
         return res.status(200).json(token).end()  ;
     }
     catch(error){
@@ -146,6 +154,9 @@ export const deleteUser = async (req : express.Request, res : express.Response) 
 
         const deletedUser = await deleteUserById(id);
 
+        redisClient.del(id)
+        redisClient.del('users')
+
         return res.status(200).json(deletedUser).end();
     }
     catch(error){
@@ -156,8 +167,17 @@ export const deleteUser = async (req : express.Request, res : express.Response) 
 
 export const getAllUsers = async(req : express.Request, res: express.Response) => {
     try{
-       const users = await getUsers();
-       return res.status(200).json(users);
+       const redUsers = await redisClient.get('users')
+       if(redUsers){
+          return res.status(200).json(JSON.parse(redUsers)) ;
+       }
+       else{
+          const users = await getUsers();
+
+          redisClient.set('users' , JSON.stringify(users))
+
+          return res.status(200).json(users);
+       }
     }
     catch(error){
         console.log(error);
@@ -177,13 +197,22 @@ export const getUser = async(req : express.Request, res: express.Response) => {
 
         const { _id } = jwt.verify(authorization, process.env.ACCESS_TOKEN_SECRET) as jwtPayload;
 
-        const user = await getUserById(_id) ;
+        const redUser = await redisClient.get(_id) ;
 
-        if(!user){
-            return res.sendStatus(401);
+        if(redUser){
+            return res.status(200).json(JSON.parse(redUser)) ;
         }
+        else{
+            const user = await getUserById(_id) ;
+
+            if(!user){
+                return res.sendStatus(401);
+            }
+
+            redisClient.set(user.id , JSON.stringify(user))
         
-        return res.status(200).json(user);
+            return res.status(200).json(user);
+        }
     }
     catch(error){
         console.log(error);

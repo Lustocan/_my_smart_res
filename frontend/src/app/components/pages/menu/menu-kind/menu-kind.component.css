@@ -97,10 +97,9 @@ body{
 
 .error-list{
     margin-top: 3px ;
-    font-size: 18px ;
+    font-size: 14px ;
     color: #C62828;
     background: rgba(255,0,0,0.1);
-    text-align: center ;
     padding: 3px 8px ;
     border-radius: 20px ;
     border: 1px solid #Ef9a9a;

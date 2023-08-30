@@ -14,9 +14,6 @@ export const TableModel = mongoose.model('Table', TableSchema) ;
 
 export const getTables = () => TableModel.find().sort({number : 'asc'})               ;
 
-export const getTablesByWaiter = (waiter : string ) => 
-TableModel.findOne({"waiter" : {$regex : new RegExp(waiter, "i")}});
-
 export const getTableById = (id : string) => TableModel.findById(id);
 
 export const getTableByNumber_ = (number : string) => TableModel.findOne({"number" : number});

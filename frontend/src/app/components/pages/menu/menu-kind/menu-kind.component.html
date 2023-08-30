@@ -25,14 +25,14 @@
                     <input type="number" min="0" placeholder="Preparation time" formControlName="preparation_time" required>
                 </div>
                 <div class="error-list" *ngIf="fc.preparation_time.errors && isSubmitted">
-                    <div *ngIf="fc.preparation_time.errors.required">Password should not be empty</div>
+                    <div *ngIf="fc.preparation_time.errors.required">Preparation time should not be empty</div>
                 </div>
 
                 <div class="input-box">
                     <input type="number" min="0" placeholder="Price" formControlName="price" required>
                 </div>
                 <div class="error-list" *ngIf="fc.price.errors && isSubmitted">
-                    <div *ngIf="fc.price.errors.required">Password should not be empty</div>
+                    <div *ngIf="fc.price.errors.required">Price should not be empty</div>
                 </div>
 
                 <div class="input-box">

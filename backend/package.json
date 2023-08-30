@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon base.ts"
+    "start": "nodemon base.ts",
+    "dev": "nodemon -L base.ts localhost 443"
   },
   "keywords": [],
   "author": "",

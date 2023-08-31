@@ -1,5 +1,17 @@
 version: '3.9'
 services:
+    redis:
+        container_name: redis-container
+        image: redis:alpine
+        restart: always
+        ports:
+            - 6379:6379
+        networks:
+            - mean-stack-net
+        command: ["redis-server", "--bind", "redis", "--port", "6379"]
+        volumes:
+            - /path/to/redis-persistence:/redis/data
+
     mongo_db:
         container_name: mongo-db
         image: mongo:latest
@@ -25,6 +37,10 @@ services:
             - 443:443
         depends_on:
             - mongo_db
+            - redis
+        environment:
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
 
     frontend:
         build: 

@@ -58,8 +58,14 @@ export class CheckOutComponent implements OnInit {
 		this.ordersService.getAllOrdersInThisTable(this.num).pipe(
 			catchError((error) => {
 				if (error instanceof HttpErrorResponse) {
-					this.toastrService.error('Login required.');
-					this.router.navigateByUrl('/login');
+					if(error.status===400){
+						this.toastrService.error('Login required');
+				     	this.router.navigateByUrl('/login');
+					}
+					else if(error.status===403){
+						this.toastrService.error('Unauthorized');
+				     	this.router.navigateByUrl('/');
+					}
 				}
 				return new Observable<Orders[]>();
 			})

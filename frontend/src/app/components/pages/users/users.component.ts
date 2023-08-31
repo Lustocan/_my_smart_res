@@ -49,8 +49,14 @@ export class UsersComponent implements OnInit {
 		this.userService.getAll().pipe(
 			catchError((error) => {
 				if (error instanceof HttpErrorResponse) {
-					this.toastrService.error('Login required');
-					this.router.navigateByUrl('/login');
+					if(error.status===400){
+						this.toastrService.error('Login required');
+					    this.router.navigateByUrl('/login');
+					}
+					else if(error.status===403){
+						this.toastrService.error('Unathorized');
+					    this.router.navigateByUrl('/');
+					}
 				}
 				return new Observable<Users[]>();
 			})).subscribe((serverUsers) => this.users = serverUsers);

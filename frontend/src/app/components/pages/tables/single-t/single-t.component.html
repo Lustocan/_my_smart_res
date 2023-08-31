@@ -12,7 +12,7 @@
         <div class="container">
             <div class="sidebar">
                 <div class="head"><p *ngIf="table">Table #{{table.number}}</p></div>
-                <div class="cartItem" *ngFor="let c of cart; let i = index;">{{cart[i].amount}} x {{cart[i].element}}   {{getPrice(cart[i].amount,cart[i].price)}}.00 € </div>
+                <div class="cartItem" *ngFor="let c of cart; let i = index;">{{cart[i].amount}} x {{cart[i].element}}   {{getPrice(cart[i].amount,cart[i].price)}} € </div>
                 <div class="foot">
                     <h3>Total</h3>
                     <h2 id="total">{{tot_price}} €</h2>

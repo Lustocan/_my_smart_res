@@ -32,6 +32,7 @@ export const getTableByNumber = async (req : express.Request, res : express.Resp
         }
 
         const table = await getTableByNumber_(number) ;
+        console.log(table);
         return res.status(200).json(table) ;
 
     }
@@ -74,6 +75,7 @@ export const delete_tab = async (req : express.Request, res : express.Response) 
         var deletedTable = await getTableByNumber_(number);
 
         deletedTable = await deleteTableById(deletedTable._id)
+        redisClient.del('tables')
 
         return res.status(200).json(deletedTable);
     }

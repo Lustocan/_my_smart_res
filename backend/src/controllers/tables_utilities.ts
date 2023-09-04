@@ -75,7 +75,6 @@ export const delete_tab = async (req : express.Request, res : express.Response) 
 
 
         deletedTable = await deleteTableById(deletedTable._id)
-        redisClient.del('tables')
 
         redisClient.del('tables')
 

@@ -108,7 +108,6 @@ export class KitchenComponent implements OnInit {
     }
 
 	ready() {
-		window.sessionStorage.removeItem('my-counter');
 		this.wip.staff.push({username : this.me.username, role : this.me.role}) ;
 		this.ordersService.updateOrder(this.wip._id, this.wip.staff ,  true, this.wip.ready_b, this.wip.kitchen_time, this.wip.bar_time).subscribe()
 		this.socketIoService.send_w({username : this.wip.staff[0].username, use : 'kitchen'});
@@ -189,7 +188,7 @@ export class KitchenComponent implements OnInit {
 		this.interval = setInterval(() => {
 		  if(this.timeLeft > 0) {
 			 this.timeLeft--;
-			 this.ordersService.updateOrder(this.wip.staff ,this.wip._id,  this.wip.ready_k, this.wip.ready_b, this.timeLeft , this.wip.bar_time).subscribe()
+			 this.ordersService.updateOrder(this.wip._id, this.wip.staff ,  this.wip.ready_k, this.wip.ready_b, this.timeLeft , this.wip.bar_time).subscribe()
 			 this.minutes = Math.floor(this.timeLeft/60) ;
 			 this.seconds = this.timeLeft%60 ;
 		  }

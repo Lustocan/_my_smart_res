@@ -1,12 +1,13 @@
+
 import mongoose from 'mongoose'
 
 // Here we create our userSchema
 const UserSchema = new mongoose.Schema({
-    _id : { type: String},
-    username : { type: String, required:true, unique : true},
-    name : { type: String,  required:true},
-    surname : { type: String,  required:true},
-    role    : { type: String,  required:true, enum : ['waiter', 'cook', 'casher', 'bartender']},
+    _id      : { type: String,  required:true},
+    username : { type: String,  required:true, unique : true},
+    name     : { type: String,  required:true},
+    surname  : { type: String,  required:true},
+    role     : { type: String,  required:true, enum : ['waiter', 'cook', 'casher', 'bartender']},
     authentication: {
          password     : { type : String, required: true, select: false},
          salt         : { type : String, select : false},

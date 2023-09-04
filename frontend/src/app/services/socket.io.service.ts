@@ -3,7 +3,7 @@ import { Socket } from 'ngx-socket-io';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Observer } from 'rxjs';
 import { UserService } from './user.service';
-
+import { TOKEN } from '../shared/constants/storage_name';
 @Injectable({
     providedIn: 'root'
 })
@@ -57,6 +57,21 @@ export class SocketIoService {
                     else if(arg.use==="kitchen") this.toastrService.warning('There are some dishes ready in the kitchen.' );
                 }
           })     
+        })
+    }
+
+    send_d(_id : String) {
+        this.socket.emit('delete', _id);
+    } 
+
+    // listen event
+    receive_d() {
+        this.socket.on('delete', (arg:any) => {
+            this.userService.getIt().subscribe((serverUser) => {
+                if(arg==serverUser._id) {
+                    if(localStorage.getItem(TOKEN)) localStorage.removeItem(TOKEN) ;
+                }
+            })
         })
     }
 }

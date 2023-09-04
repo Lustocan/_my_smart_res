@@ -210,8 +210,8 @@ export class KitchenComponent implements OnInit {
 		this.ordersService.getAllOrderK().pipe(
 			catchError((error) => {
 				if (error instanceof HttpErrorResponse) {
-					if(error.status===400){
-						this.toastrService.error('Login reauired');
+					if(error.status===401){
+						this.toastrService.error('Login required');
 						this.router.navigateByUrl('/login');
 					}
 					else if(error.status===403){

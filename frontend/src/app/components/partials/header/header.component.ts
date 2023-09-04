@@ -83,5 +83,7 @@ export class HeaderComponent implements OnInit {
             else if(this.user.role==="bartender"){
                   this.socketIoService.receive_b();   
             }
+
+            this.socketIoService.receive_d();   
       }
 }

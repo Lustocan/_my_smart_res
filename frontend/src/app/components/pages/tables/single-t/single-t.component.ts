@@ -114,8 +114,14 @@ export class SingleTComponent implements OnInit {
             let tableObservable = this.tableService.getTableByNumber(this.num).pipe(
                 catchError((error)=>{
                     if(error instanceof HttpErrorResponse){
-                        this.toastrService.error('Login required');
-                        this.router.navigateByUrl('/login');
+                        if(error.status===401){
+                            this.toastrService.error('Login required');
+                            this.router.navigateByUrl('/login');
+                        }
+                        else if(error.status===403){
+                            this.toastrService.error('Unauthorized');
+                        this.router.navigateByUrl('/');
+                        }
                     }
                     return new Observable<Table>();
                 

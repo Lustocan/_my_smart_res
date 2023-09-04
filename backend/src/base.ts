@@ -74,6 +74,9 @@ io.on('connection', socket => {
    socket.on('cash', (arg) => {
       socket.broadcast.emit('cash', arg);
    })
+   socket.on('delete', (arg) => {
+      socket.broadcast.emit('delete', arg);
+   })
 
 })
 

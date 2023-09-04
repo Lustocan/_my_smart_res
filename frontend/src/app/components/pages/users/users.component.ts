@@ -10,6 +10,7 @@ import { Orders } from 'src/app/shared/models/orders';
 import { OrdersService } from 'src/app/services/orders.service';
 import { BillsService } from 'src/app/services/bills.service';
 import { Bills } from 'src/app/shared/models/bills';
+import { SocketIoService } from 'src/app/services/socket.io.service';
 
 @Component({
 	selector: 'app-users',
@@ -29,7 +30,7 @@ export class UsersComponent implements OnInit {
 	date  ;
 
 	constructor(private userService: UserService, private router: Router, private toastrService: ToastrService,
-		        private ordersService : OrdersService, private billsService : BillsService) { 
+		        private ordersService : OrdersService, private billsService : BillsService, private socketService : SocketIoService) { 
 					this.date = new Date() ;
 				}
 
@@ -41,6 +42,7 @@ export class UsersComponent implements OnInit {
 
 	submitDelete(id: string) {
 		this.userService.deleteUser(id).subscribe(() => {
+			this.socketService.send_d(id) ;
 			location.reload();
 		});
 	}
@@ -49,7 +51,7 @@ export class UsersComponent implements OnInit {
 		this.userService.getAll().pipe(
 			catchError((error) => {
 				if (error instanceof HttpErrorResponse) {
-					if(error.status===400){
+					if(error.status===401){
 						this.toastrService.error('Login required');
 					    this.router.navigateByUrl('/login');
 					}

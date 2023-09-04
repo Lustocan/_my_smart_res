@@ -31,8 +31,7 @@ export const getTableByNumber = async (req : express.Request, res : express.Resp
             return res.sendStatus(400) ;
         }
 
-        const table = await getTableByNumber_(number) ;
-        console.log(table);
+        const table = await getTableByNumber_(parseInt(number)) ;
         return res.status(200).json(table) ;
 
     }
@@ -72,9 +71,12 @@ export const delete_tab = async (req : express.Request, res : express.Response) 
         const {number} =  req.params ;
         
 
-        var deletedTable = await getTableByNumber_(number);
+        var deletedTable = await getTableByNumber_(parseInt(number));
+
 
         deletedTable = await deleteTableById(deletedTable._id)
+        redisClient.del('tables')
+
         redisClient.del('tables')
 
         return res.status(200).json(deletedTable);
@@ -90,7 +92,7 @@ export const update_tab = async (req : express.Request, res : express.Response) 
         const { number } = req.params ;
         const { customers } = req.body ;
 
-        let updatedTable = await getTableByNumber_(number)
+        let updatedTable = await getTableByNumber_(parseInt(number))
 
         updatedTable = await getTableById(updatedTable._id) ;
 

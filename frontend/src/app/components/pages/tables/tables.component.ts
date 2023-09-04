@@ -63,15 +63,21 @@ export class TablesComponent implements OnInit {
         this.tableService.getAll().pipe(
 			catchError((error)=>{
 				if(error instanceof HttpErrorResponse){
-					if(error.status===400){
+					if(error.status===401){
 						this.toastrService.error('Login required');
 						this.router.navigateByUrl('/login');
-					}		
+					}	
+					else if(error.status===403){
+						this.toastrService.error('Unauthorized');
+						this.router.navigateByUrl('/');
+					}	
 				}
 				return new Observable<Table[]>();
-			
 			})	
-		).subscribe((serverTable) =>{ this.tables = serverTable; this.updateIfEmpty()});
+		).subscribe((serverTable) =>{ 
+			this.tables = serverTable;
+			if(this.user.role==='casher') this.updateIfEmpty()
+		});
 	}
 
 	updateIfEmpty(){

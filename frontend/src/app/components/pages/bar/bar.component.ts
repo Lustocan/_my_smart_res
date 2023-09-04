@@ -207,7 +207,7 @@ export class BarComponent implements OnInit {
 		this.ordersService.getAllOrderB().pipe(
 			catchError((error) => {
 				if (error instanceof HttpErrorResponse) {
-					if(error.status===400){
+					if(error.status===401){
 						this.toastrService.error('Login required');
 						this.router.navigateByUrl('/login');
 					}

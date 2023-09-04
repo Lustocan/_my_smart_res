@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { getAllUsers, deleteUser, updateUser, getUser} from '../controllers/users_utilities'
-import { isAuthenticated, isAdmin, sameUser, isWaiterOrAdmin } from '../middlewares/auth_role';
+import { isAuthenticated, isAdmin, isWaiterOrAdmin } from '../middlewares/auth_role';
 
 
 export default (router : express.Router) => {

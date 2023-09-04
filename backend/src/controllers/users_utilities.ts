@@ -6,7 +6,11 @@ import dtn from 'dotenv';
 import { redisClient } from '../base';
 
 interface jwtPayload {
-    _id: string
+    _id: string,
+    username : string,
+    name : string,
+    surname : string,
+    role :string,
 }
 
 // this is the login controller
@@ -56,14 +60,10 @@ export const logout = async (req: express.Request, res: express.Response) => {
             return res.sendStatus(400);
         }
 
-        const user = await getUserById(id);
-
         dtn.config();
 
-        res.cookie("SessionCookie", "invalid_cookie", { domain: 'localhost', path: '/', secure: true, httpOnly: true });
 
         redisClient.del(id)
-
 
         return res.status(200).end();
     }
@@ -107,6 +107,9 @@ export const sign_in = async (req: express.Request, res: express.Response) => {
                 password: authentication(salt, password),
             }
         });
+
+        redisClient.del('users')
+        
         return res.status(200).end();
     }
     catch (error) {
@@ -195,21 +198,18 @@ export const getUser = async (req: express.Request, res: express.Response) => {
 
         dtn.config();
 
-        const { _id } = jwt.verify(authorization, process.env.ACCESS_TOKEN_SECRET) as jwtPayload;
+        const { _id, username, name, surname, role } = jwt.verify(authorization, process.env.ACCESS_TOKEN_SECRET) as jwtPayload;
 
         const redUser = await redisClient.get(_id);
+
 
         if (redUser) {
             return res.status(200).json(JSON.parse(redUser));
         }
         else {
-            const user = await getUserById(_id);
+            const user = {_id : _id, username : username, name : name, surname : surname, role : role};
 
-            if (!user) {
-                return res.sendStatus(401);
-            }
-
-            redisClient.set(user.id, JSON.stringify(user))
+            redisClient.set(user._id, JSON.stringify(user))
 
             return res.status(200).json(user);
         }

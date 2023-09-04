@@ -16,7 +16,7 @@ export const getTables = () => TableModel.find().sort({number : 'asc'})         
 
 export const getTableById = (id : string) => TableModel.findById(id);
 
-export const getTableByNumber_ = (number : string) => TableModel.findOne({"number" : number});
+export const getTableByNumber_ = (number : number) => TableModel.findOne({number : number});
 
 
 export const createTable = (values : Record<string, any>) => 

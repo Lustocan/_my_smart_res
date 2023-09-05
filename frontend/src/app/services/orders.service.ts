@@ -18,7 +18,7 @@ export class OrdersService {
 
 
 	newOrder(Order: Orders, n_table: Number): Observable<Orders> {
-		return this.http.post<Orders>(TABLES_URL + '/' + n_table + '/add_order', Order, this.httpOptions).pipe(
+		return this.http.post<Orders>(ORDERS_URL + '/' + n_table, Order, this.httpOptions).pipe(
 			tap({
 				next: () => {
 					this.toastrService.success('Order sended');
@@ -48,7 +48,7 @@ export class OrdersService {
 
 
 	deleteOrderById(id: String): Observable<Orders> {
-		return this.http.delete<Orders>(ORDERS_URL + '/' + id + '/delete', this.httpOptions).pipe(
+		return this.http.delete<Orders>(ORDERS_URL + '/' + id , this.httpOptions).pipe(
 			tap({
 				next: () => {
 					this.toastrService.success('Order deleted');
@@ -64,11 +64,11 @@ export class OrdersService {
 	}
 
 	updateOrder(_id : String, staff : Array<{username : String, role : String }>,  ready_k : Boolean, ready_b : Boolean, kitchen_time : Number, bar_time : Number) : Observable<Orders> {
-		return this.http.patch<Orders>(ORDERS_URL+'/'+ _id + '/update', { staff : staff ,ready_k : ready_k, ready_b : ready_b, kitchen_time : kitchen_time , bar_time : bar_time}, this.httpOptions) 
+		return this.http.patch<Orders>(ORDERS_URL+'/'+ _id , { staff : staff ,ready_k : ready_k, ready_b : ready_b, kitchen_time : kitchen_time , bar_time : bar_time}, this.httpOptions) 
 	}
 
 	updatePrepOrder(_id : String, to_prepare: Array<{_id : String, element: String, amount : Number, price : Number, kind : String, time ?: Number }>) : Observable<Orders> {
-		return this.http.patch<Orders>(ORDERS_URL+'/'+ _id + '/update', { to_prepare : to_prepare }, this.httpOptions) 
+		return this.http.patch<Orders>(ORDERS_URL+'/'+ _id , { to_prepare : to_prepare }, this.httpOptions) 
 	}
 
 	deleteAllOrdersInThisTable(n_table: Number): Observable<any> {

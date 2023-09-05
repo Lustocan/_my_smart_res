@@ -152,3 +152,28 @@ export const isBartenderOrAdmin = async (req: express.Request, res: express.Resp
     }
 }
 
+export const isBartenderCookOrAdmin = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    try {
+        const { authorization } = req.headers;
+
+        dtn.config();
+
+        const { role } = jwt.verify(authorization, process.env.ACCESS_TOKEN_SECRET) as jwtPayload;
+
+
+
+        if(!role){
+            return res.sendStatus(401);
+        }
+        if(role != 'bartender'&&role != 'casher'&&role != 'cook') {
+            return res.sendStatus(403);
+        }
+
+        return next();
+    }
+    catch (error) {
+        console.log(error);
+        return res.sendStatus(400)
+    }
+}
+

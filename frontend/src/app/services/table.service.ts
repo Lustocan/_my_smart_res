@@ -26,7 +26,7 @@ export class TableService {
 	}
 
 	updateTable(number:string, costumers: Number): Observable<Table>{
-		return this.http.patch<Table>(TABLES_URL+'/'+number+'/update',{customers: costumers},this.httpOptions)
+		return this.http.patch<Table>(TABLES_URL+'/'+number,{customers: costumers},this.httpOptions)
 		.pipe(
 			tap({
 				next: (menu) => { 
@@ -39,7 +39,7 @@ export class TableService {
 	}
 
 	deleteTable(number: Number): Observable<Table>{
-		return this.http.delete<Table>(TABLES_URL+'/'+number+'/delete',this.httpOptions).pipe(
+		return this.http.delete<Table>(TABLES_URL+'/'+number,this.httpOptions).pipe(
 				tap({
 					next: (table) => { 
 						this.toastrService.success('Table successfully deleted')
@@ -52,7 +52,7 @@ export class TableService {
 	}
 
 	buildTable(newTable : ITable) {
-		return this.http.post<Table>(ADD_TABLES_URL, newTable, this.httpOptions).pipe(
+		return this.http.post<Table>(TABLES_URL, newTable, this.httpOptions).pipe(
 			tap({
 				next: (table) => { 
 					this.toastrService.success('Table successfully added');

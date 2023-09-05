@@ -27,12 +27,9 @@ export class UsersComponent implements OnInit {
 	
 	today  : Orders[] = [] ;
 
-	date  ;
 
 	constructor(private userService: UserService, private router: Router, private toastrService: ToastrService,
-		        private ordersService : OrdersService, private billsService : BillsService, private socketService : SocketIoService) { 
-					this.date = new Date() ;
-				}
+		        private ordersService : OrdersService, private billsService : BillsService, private socketService : SocketIoService) { }
 
 	ngOnInit(){
 		this.getUsers()     ;

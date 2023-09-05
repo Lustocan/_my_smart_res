@@ -1,15 +1,14 @@
 import express from "express" 
-import { isAuthenticated, isAdmin, isWaiter , isWaiterOrAdmin, isCookOrAdmin, isBartenderOrAdmin} from '../middlewares/auth_role';
+import { isAuthenticated, isAdmin , isWaiterOrAdmin, isCookOrAdmin, isBartenderOrAdmin, isBartenderCookOrAdmin} from '../middlewares/auth_role';
 import { deleteAllOrdersInThisTable, deleteOrder, getAllOrders, getAllOrdersInThisTable, new_Order, updateOrder } from "../controllers/orders_utilities";
 
 export default (router : express.Router) => {
     router.get("/orders/:n_table", isAuthenticated ,isAdmin, getAllOrdersInThisTable) ;
-    
-    router.post("/tables/:n_table/add_order", isAuthenticated, isWaiterOrAdmin, new_Order) ;
+    router.post("/orders/:n_table", isAuthenticated, isWaiterOrAdmin, new_Order) ;
+    router.delete("/orders/:n_table",isAuthenticated, isAdmin, deleteAllOrdersInThisTable);
+    router.delete("/orders/:_id", isAuthenticated, isAdmin, deleteOrder);
+    router.patch("/orders/:_id", isAuthenticated , isBartenderCookOrAdmin, updateOrder);
     router.get("/orders", isAuthenticated, isAdmin ,getAllOrders);  
     router.get("/orders/kitchen/queue", isAuthenticated, isCookOrAdmin ,getAllOrders);
     router.get("/orders/bar/queue", isAuthenticated, isBartenderOrAdmin ,getAllOrders);
-    router.delete("/orders/:_id/delete", isAuthenticated, isAdmin, deleteOrder);
-    router.patch("/orders/:_id/update", isAuthenticated , updateOrder);
-    router.delete("/orders/:n_table",isAuthenticated, isAdmin, deleteAllOrdersInThisTable);
 }

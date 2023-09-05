@@ -191,7 +191,6 @@ export class BarComponent implements OnInit {
 			 this.seconds = this.timeLeft%60 ;
 		  }
 		  else{
-		     console.log('ciao')
 			 this.wip.staff.push({username : this.me.username, role : this.me.role}) ;
 			 this.ordersService.updateOrder(this.wip._id, this.wip.staff , this.wip.ready_k , true, this.wip.kitchen_time, this.wip.bar_time).subscribe();
 			 this.socketIoService.send_w({username : this.wip.staff[0].username, use : "bar"});

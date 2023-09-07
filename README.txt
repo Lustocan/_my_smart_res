@@ -47,5 +47,5 @@ If you want to start the program without using docker compose you need to:
 
 Note: the application works even if you do not load the certificates, however the browser will consider the page "untrusted".
 If you still want to access the site and use the application, you need to access the page https://localhost:4200/,
-click on "continue anyway", access the page https://localhost:443/ and click on "continue anyway" there too (otherwise
+click on "Continue with localhost (unsafe)", access the page https://localhost:443/ and click on "Continue with localhost (unsafe)" there too (otherwise
 the web page is displayed but the services provided by the server will be blocked by the browser).

@@ -79,7 +79,10 @@ if(httpsServer.listen(443)){
    console.log("Server running on https://localhost:443/");
 }
 
-export const redisClient = createClient()         ;
+export const redisClient = createClient({socket:{
+   port: 6379,
+   host: 'redis'
+}})         ;
 
 (async () => {
    await redisClient.connect();

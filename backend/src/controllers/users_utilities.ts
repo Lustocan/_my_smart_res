@@ -28,21 +28,19 @@ export const login = async (req: express.Request, res: express.Response) => {
         const expectedHash = authentication(user.authentication.salt, password);
 
         if (user.authentication.password !== expectedHash) {
-            return res.sendStatus(403);
+            return res.sendStatus(401);
         }
 
         redisClient.set(user.id, JSON.stringify(user))
 
-        await user.save();
-
-        var user = await getUserByUsername(username).select('-authentication.password -authentication.salt -authentication.sessionToken');
+        var user = await getUserByUsername(username).select('-authentication.password -authentication.salt');
 
         dtn.config();
         const token = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10h" });
 
         const sec = authentication(process.env.ACCESS_COOKIE_SECRET, user._id);
 
-        res.cookie("SessionCookie", sec, { domain: 'localhost', path: '/', secure: true, httpOnly: true });
+        res.cookie("SessionCookie", sec, { domain: 'localhost', path: '/', httpOnly: true });
 
         return res.status(200).json(token).end();
     }
@@ -84,7 +82,7 @@ export const sign_in = async (req: express.Request, res: express.Response) => {
             return res.sendStatus(400);
         }
 
-        /* Let's check if the email adress already exists
+        /* Let's check if the username already exists
            Asynchronous functions are prefixed with the async keyword; await suspends the execution until an 
            asynchronous function return promise is fulfilled and unwraps the value from the Promise returned */
         const existingUser = await getUserByUsername(username);
@@ -122,7 +120,7 @@ export const updateUser = async (req: express.Request, res: express.Response) =>
     try {
         const { id } = req.params;
         const { username, name, surname, role } = req.body;
-        if (!username && !name && !surname) {
+        if (!username && !name && !surname && !role) {
             return res.sendStatus(400);
         }
 
@@ -216,6 +214,6 @@ export const getUser = async (req: express.Request, res: express.Response) => {
     }
     catch (error) {
         console.log(error);
-        return res.sendStatus(401);
+        return res.sendStatus(400);
     }
 }

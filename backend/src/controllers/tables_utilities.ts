@@ -27,13 +27,9 @@ export const getTableByNumber = async (req : express.Request, res : express.Resp
     try{
         const { number } = req.params ;
 
-        if(!number){
-            return res.sendStatus(400) ;
-        }
-
         const table = await getTableByNumber_(parseInt(number)) ;
-        return res.status(200).json(table) ;
 
+        return res.status(200).json(table) ;
     }
     catch(error) {
         console.log(error) ;
@@ -96,7 +92,7 @@ export const update_tab = async (req : express.Request, res : express.Response) 
         updatedTable = await getTableById(updatedTable._id) ;
 
 
-        if(customers<0||customers>updatedTable.seats||!updatedTable){
+        if(customers<0||customers>updatedTable.seats){
             return res.sendStatus(400) ;
         }
 

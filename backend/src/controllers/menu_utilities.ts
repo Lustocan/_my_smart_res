@@ -1,15 +1,11 @@
 import express from 'express' ;
-import { createElement, getElementById, deleteElementById, updateElementById, getAllElementsByKind } from '../db/menu_schema'; 
+import { createElement, getElementById, deleteElementById, getAllElementsByKind } from '../db/menu_schema'; 
 import { redisClient } from '../base';
 
 
 export const getAllByKind = async (req : express.Request, res : express.Response ) => {
     try{
         const {kind} = req.params;
-        
-        if(!kind){
-            return res.sendStatus(400) ;
-        }
 
         const redisKind = await redisClient.get(kind)
 
@@ -22,7 +18,6 @@ export const getAllByKind = async (req : express.Request, res : express.Response
             redisClient.set(kind, JSON.stringify(allKindEl))
             
             return res.status(200).json(allKindEl);
-
         }
     }
     catch(error){
@@ -75,31 +70,5 @@ export const deleteElement = async (req : express.Request, res : express.Respons
     catch(error){
         console.log(error) ;
         return res.sendStatus(400);
-    }
-}
-
-export const updateElement = async (req : express.Request, res : express.Response ) => {
-    try{
-        const {id}  = req.params ;
-        const {name, kind, price} = req.body ;
-
-        if(!name&&!kind&&!price){
-            return res.sendStatus(400) ;
-        }
-        if(name) await updateElementById(id, { name });
-
-        if(kind) await updateElementById(id, { kind });
-
-        if(price) await updateElementById(id, { price });
-
-        const updatedElement = await getElementById(id);
-
-        redisClient.del(kind) ;
-
-        return res.status(200).json(updatedElement) ;
-    }
-    catch(error){
-        console.log(error) ;
-        return res.sendStatus(400) ;
     }
 }

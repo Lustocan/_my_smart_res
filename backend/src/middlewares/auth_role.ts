@@ -92,7 +92,6 @@ export const isWaiterOrAdmin = async (req: express.Request, res: express.Respons
            return res.sendStatus(401);
         }
         if(role != 'waiter'&&role != 'casher') {
-            console.log('ciao')
             return res.sendStatus(403);
         }
 

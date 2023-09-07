@@ -47,7 +47,7 @@ export class MenùService {
 
 
 	deleteElement(menù: Menù){
-		return this.http.delete<Menù>(MENU_URL+'/'+menù._id+'/delete',this.httpOptions).pipe(
+		return this.http.delete<Menù>(MENU_URL+'/'+menù._id,this.httpOptions).pipe(
 			tap({
 				next: (menu) => { 
 					this.toastrService.success('Menù successfully deleted');

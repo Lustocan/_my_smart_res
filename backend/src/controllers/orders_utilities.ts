@@ -78,10 +78,6 @@ export const updateOrder = async (req : express.Request, res : express.Response)
     try{
         const { staff ,ready_k, ready_b, kitchen_time, bar_time, to_prepare  } = req.body ;
         const { _id } = req.params    ;
-       
-        if(!_id){
-           return res.sendStatus(400) ;
-        }
 
         if(ready_k) await updateById(_id, {ready_k : ready_k});
 
@@ -130,9 +126,6 @@ export const deleteOrder = async(req : express.Request, res : express.Response )
 export const deleteAllOrdersInThisTable = async(req : express.Request, res : express.Response) => {
     try{
         const { n_table } = req.params ;
-        if(!n_table){
-            return res.sendStatus(400) ;
-        }
 
         const orders = await deleteOrdersByTable(n_table) ;
 

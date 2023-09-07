@@ -1,5 +1,5 @@
 import express from "express" 
-import { isAuthenticated, isAdmin, isWaiter, isWaiterOrAdmin } from '../middlewares/auth_role';
+import { isAuthenticated, isWaiterOrAdmin } from '../middlewares/auth_role';
 import { build_tab, delete_tab, update_tab, getAllTables, getTableByNumber } from "../controllers/tables_utilities";
 
 export default (router : express.Router) => {

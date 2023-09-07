@@ -8,8 +8,8 @@ const orderSchema = new mongoose.Schema({
     n_table      : {type : Number, required : true},
     staff        : [{username : String, role : String}],
     to_prepare   : [{_id : String ,element : String ,amount : Number, price : Number ,kind : String}], 
-    kitchen_time : {type : Number, required : Number},
-    bar_time : {type : Number, required : Number},
+    kitchen_time : {type : Number},
+    bar_time : {type : Number},
     ready_k      : {type : Boolean, default : false},
     ready_b      : {type : Boolean, default : false},
     date         : {type : Date, required : true }

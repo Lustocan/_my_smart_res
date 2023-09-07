@@ -17,20 +17,17 @@ import { TOKEN } from '../shared/constants/storage_name';
 export class UserService {
 
 	httpOptions = new HttpOptions();
-	constructor(private http: HttpClient ,private toastrService : ToastrService) {
-	}
+	constructor(private http: HttpClient ,private toastrService : ToastrService) {}
 
-	
-	//TODO da cambiare: eliminare 'User' dal localstorage e mantenere solo 'Token'
 	login(userLogin: IUserLogin): Observable<Users> {
 		return this.http.post<Users>(USERS_LOGIN_URL, userLogin, this.httpOptions).pipe(
 			tap({
 				next: (user) => {
-					this.toastrService.success('Login in Successful' );
+					this.toastrService.success('Login Successful' );
 					this.setUserToLocalStorage(user);
 				},
 				error: (errorResponse) => {
-					this.toastrService.error('Login in Failed');			
+					this.toastrService.error('Login Failed');			
 				}
 			})
 		);
@@ -53,7 +50,7 @@ export class UserService {
 	logout(_id : String){
 		this.deleteUserFromLocalStorage() ;
 	    window.location.reload();
-		return this.http.post<Users>(AUTH_URL+'/'+_id+'/logout', this.httpOptions).pipe(
+		return this.http.post<Users>(AUTH_URL+'/'+_id +'/logout', this.httpOptions).pipe(
 			tap({
 				next: (user) => {
 					this.toastrService.success('Logout Successful' );

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpOptions } from '../shared/models/httpOptions';
 import { Orders } from '../shared/models/orders';
 import { Observable } from 'rxjs';
-import { ORDERS_URL, TABLES_URL } from '../shared/constants/urls';
+import { ORDERS_URL, ORDER_URL } from '../shared/constants/urls';
 import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs';
 
@@ -48,7 +48,7 @@ export class OrdersService {
 
 
 	deleteOrderById(id: String): Observable<Orders> {
-		return this.http.delete<Orders>(ORDERS_URL + '/' + id , this.httpOptions).pipe(
+		return this.http.delete<Orders>(ORDER_URL + '/' + id , this.httpOptions).pipe(
 			tap({
 				next: () => {
 					this.toastrService.success('Order deleted');
@@ -71,7 +71,7 @@ export class OrdersService {
 		return this.http.patch<Orders>(ORDERS_URL+'/'+ _id , { to_prepare : to_prepare }, this.httpOptions) 
 	}
 
-	deleteAllOrdersInThisTable(n_table: Number): Observable<any> {
-		return this.http.delete<any>(ORDERS_URL + '/' +  n_table, this.httpOptions);
+	deleteAllOrdersInThisTable(n_table: Number): Observable<Orders> {
+		return this.http.delete<Orders>(ORDERS_URL + '/' +  n_table , this.httpOptions);
 	}
 }

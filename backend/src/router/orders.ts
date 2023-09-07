@@ -5,8 +5,8 @@ import { deleteAllOrdersInThisTable, deleteOrder, getAllOrders, getAllOrdersInTh
 export default (router : express.Router) => {
     router.get("/orders/:n_table", isAuthenticated ,isAdmin, getAllOrdersInThisTable) ;
     router.post("/orders/:n_table", isAuthenticated, isWaiterOrAdmin, new_Order) ;
-    router.delete("/orders/:n_table",isAuthenticated, isAdmin, deleteAllOrdersInThisTable);
-    router.delete("/orders/:_id", isAuthenticated, isAdmin, deleteOrder);
+    router.delete("/orders/:n_table",isAuthenticated, isWaiterOrAdmin, deleteAllOrdersInThisTable);
+    router.delete("/order/:_id", isAuthenticated, isAdmin, deleteOrder);
     router.patch("/orders/:_id", isAuthenticated , isBartenderCookOrAdmin, updateOrder);
     router.get("/orders", isAuthenticated, isAdmin ,getAllOrders);  
     router.get("/orders/kitchen/queue", isAuthenticated, isCookOrAdmin ,getAllOrders);

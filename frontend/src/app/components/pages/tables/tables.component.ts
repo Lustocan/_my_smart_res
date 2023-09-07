@@ -25,7 +25,7 @@ export class TablesComponent implements OnInit {
 
 	constructor(private tableService: TableService, private router: Router, 
 		        private toastrService : ToastrService, private userService : UserService,
-				private orderService : OrdersService) {}
+				private orderService : OrdersService ) {}
 
 	ngOnInit(): void {
 		this.getUser()       ;
@@ -57,6 +57,10 @@ export class TablesComponent implements OnInit {
 				)
 			})
 		});
+	}
+
+	delOrders(number : Number) {
+		this.orderService.deleteAllOrdersInThisTable(number).subscribe();
 	}
 
 	getAllTables(){

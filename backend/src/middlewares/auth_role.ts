@@ -17,7 +17,7 @@ export const isAuthenticated = async (req: express.Request, res: express.Respons
 
         const { _id } = jwt.verify(authorization, process.env.ACCESS_TOKEN_SECRET) as jwtPayload;
 
-        if (authentication(process.env.ACCESS_COOKIE_SECRET, _id) !== sessionCookie) {
+        if ((authentication(process.env.ACCESS_COOKIE_SECRET, _id) !== sessionCookie)||!(_id)) {
             return res.sendStatus(401);
         }
 

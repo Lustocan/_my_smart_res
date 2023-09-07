@@ -40,7 +40,7 @@ If you want to start the program without using docker compose you need to:
 
 2. download both backend and frontend libraries with the command :  npm install
 3. launch redis with the command : redis-server 
-    (redis-server funziona solo sul terminale linux o macOS)
+    (redis-server only works on linux or macOS terminal)
 4. start the backend with the command : npm start
 5. start the frontend with the command : ng serve
 

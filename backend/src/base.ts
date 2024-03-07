@@ -89,7 +89,7 @@ export const redisClient = createClient({socket:{
 })();
 
 // Our mongodb url 
-const MONGO_URL = "mongodb+srv://lustocan:lustocan@cluster0.moozrf8.mongodb.net/?retryWrites=true&w=majority"
+const MONGO_URL = "an empty url"
 
 // We establish a connection with the db
 mongoose.connect(MONGO_URL);
